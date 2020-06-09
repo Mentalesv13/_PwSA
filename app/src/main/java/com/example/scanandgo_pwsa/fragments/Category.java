@@ -99,6 +99,7 @@ public class Category extends Fragment {
             showAll.setText("Show all");
             showAll.setTextOn("Show all");
             showAll.setTextOff("Show all");
+            showAll.setAllCaps(false);
             showAll.setChecked(true);
 
             showAll.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +158,7 @@ public class Category extends Fragment {
                 temp.setText(temporary[0]);
                 temp.setTextOff(temporary[0]);
                 temp.setTextOn(temporary[0]);
+                temp.setAllCaps(false);
                 llmain.addView(temp);
                 temp.setChecked(false);
 
@@ -212,6 +214,7 @@ public class Category extends Fragment {
 
                                 final ToggleButton tempSecAll = new ToggleButton(getActivity().getBaseContext());
                                 tempSecAll.setText("all");
+                                tempSecAll.setAllCaps(false);
                                 tempSecAll.setTextOff("all");
                                 tempSecAll.setTextOn("all");
                                 tempSecAll.setChecked(true);
@@ -261,6 +264,7 @@ public class Category extends Fragment {
                                 for (String s : categoriesSec) {
                                     final ToggleButton tempSec = new ToggleButton(getActivity().getBaseContext());
                                     tempSec.setText(s);
+                                    tempSec.setAllCaps(false);
                                     tempSec.setTextOff(s);
                                     tempSec.setTextOn(s);
                                     tempSec.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
