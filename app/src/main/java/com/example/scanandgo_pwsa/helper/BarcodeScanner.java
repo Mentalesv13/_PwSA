@@ -53,11 +53,11 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
     private HashMap<String, Product> products;
     private StorageReference storageReference;
     private HashMap<String, ShoppingList> shoppingList;
+    private HashMap<String, ShoppingList> sagList;
     private LoadingDialog loadingDialog;
     private Context context;
     private View view;
-
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_price_reader, container, false);
@@ -70,7 +70,9 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
         products = databaseHandler.getProductsDetails();
         storageReference = FirebaseStorage.getInstance().getReference();
         shoppingList = new HashMap<>();
-        shoppingList = databaseHandler.getScanAndGoShoppingList();
+        shoppingList = databaseHandler.getShoppingList();
+        sagList = new HashMap<>();
+        sagList = databaseHandler.getScanAndGoShoppingList();
 
         if ( ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
                 Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED )
@@ -284,19 +286,25 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
         final ConstraintLayout isOnListTrue = dialogView.findViewById(R.id.isOnListTrue);
         final ConstraintLayout isOnListFalse = dialogView.findViewById(R.id.isOnListFalse);
 
-        if(shoppingList.get(temp.getBarcode())==null) {
+        if(sagList.get(temp.getBarcode())==null) {
             isOnListFalse.setVisibility(View.VISIBLE);
             isOnListTrue.setVisibility(View.GONE);
-            infoList.setText("This product is not on the shopping list");
             editAmount.setText("1");
 
         }
         else {
             isOnListFalse.setVisibility(View.GONE);
             isOnListTrue.setVisibility(View.VISIBLE);
-            infoList.setText("This product is already on shopping list");
-            tempSL[0] = shoppingList.get(temp.getBarcode());
+            tempSL[0] = sagList.get(temp.getBarcode());
             editAmount.setText(String.valueOf(tempSL[0].getAmount()));
+        }
+
+        if(shoppingList.get(temp.getBarcode())==null) {
+            infoList.setText("This product is not on the shopping list");
+
+        }
+        else {
+            infoList.setText("This product is already on shopping list");
         }
 
         if (String.valueOf(editAmount.getText()).equals("1")){
@@ -402,7 +410,7 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
                                             public void onClick(DialogInterface dialog, int id) {
                                                 databaseHandler.deleteFromScanAndGoList(product);
                                                 refreshAdapter();
-                                                tempSL[0] = shoppingList.get(product);
+                                                tempSL[0] = sagList.get(product);
                                                 dialog.cancel();
                                                 alertDialog.dismiss();
                                                 ((MainActivity)getActivity()).setFragment(new ScanAndGo(false));
@@ -430,7 +438,7 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
                             databaseHandler.updateScanAndGoList(temp.getName(), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
 
                             refreshAdapter();
-                            tempSL[0] = shoppingList.get(product);
+                            tempSL[0] = sagList.get(product);
                             //alertDialog.dismiss();
                             Toast.makeText(getContext(),"List updated successfully",Toast.LENGTH_SHORT).show();
                             dialog.cancel();
@@ -451,7 +459,8 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
     }
 
     private void refreshAdapter(){
-        shoppingList = databaseHandler.getScanAndGoShoppingList();
+        sagList = databaseHandler.getScanAndGoShoppingList();
+        shoppingList = databaseHandler.getShoppingList();
         products = databaseHandler.getProductsDetail();
     }
 

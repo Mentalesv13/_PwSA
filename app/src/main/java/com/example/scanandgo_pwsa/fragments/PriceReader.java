@@ -138,6 +138,7 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
                     public void onClick(View v) {
                         dialogBuilder.setCancelable(true);
                         alertDialog.dismiss();
+                        dialog.cancel();
                         mScannerView.resumeCameraPreview(PriceReader.this);
                     }
                 });
@@ -183,7 +184,7 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
         final Product temp = products.get(product.trim());
 
         final ShoppingList[] tempSL = new ShoppingList[1];
-
+        final String barcode = temp.getBarcode();
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.row_item, null);
@@ -258,6 +259,7 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
             @Override
             public void onClick(View v) {
                 //showCustomLoadingDialog();
+                tempSL[0] = shoppingList.get(barcode);
                 if (!String.valueOf(editAmount.getText()).equals("")) {
                     if (tempSL[0].isBought()) {
                         btnMark.setText("Mark as bought");

@@ -379,10 +379,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     tempSL[0] = shoppingList.get(barcode);
                     if (tempSL[0].isBought()) {
                         btnMark.setText("Mark as bought");
-                        databaseHandler.updateIsBought(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
+                        databaseHandler.updateIsBoughtByName(temp.getName(), String.valueOf(tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getPrice().toString());
                     } else {
                         btnMark.setText("Mark as not bought");
-                        databaseHandler.updateIsBought(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
+                        databaseHandler.updateIsBoughtByName(temp.getName(), String.valueOf(tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getPrice().toString());
                     }
                     refreshAdapter();
                     tempSL[0] = shoppingList.get(temp.getBarcode());
@@ -556,10 +556,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     public void onClick(View v) {
                         //showCustomLoadingDialog();
                         if(!String.valueOf(editAmount.getText()).equals("")){
-                            tempSL[0] = shoppingList.get(product);
-                            databaseHandler.updateIsBought(temp.getName(), String.valueOf(tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
+                            tempSL[0] = shoppingList.get(barcode);
+                            databaseHandler.updateIsBoughtByName(temp.getName(), String.valueOf(tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getPrice().toString());
                             refreshAdapter();
-                            tempSL[0] = shoppingList.get(product);
+                            tempSL[0] = shoppingList.get(barcode);
                             alertDialog.dismiss();
                             Toast.makeText(context,"List updated successfully",Toast.LENGTH_SHORT).show();
                         }
