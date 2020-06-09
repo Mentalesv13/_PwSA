@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".MainActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/Toolbar"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            app:backgroundTint="#FFFFFF"
+            app:fabSize="mini"
+            app:maxImageSize="24dp"
+            app:rippleColor="#FD8970"
+            app:srcCompat="@drawable/ic_profile" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/scangologo"
+            tools:visibility="invisible" />
+
+    </androidx.cardview.widget.CardView>
+
+    <com.example.scanandgo_pwsa.helper.CurvedBottomNavigationViewBlue
+        android:id="@+id/curvedBottomNavigationViewBlue"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </com.example.scanandgo_pwsa.helper.CurvedBottomNavigationViewBlue>
+
+    <com.example.scanandgo_pwsa.helper.CurvedBottomNavigationView
+        android:id="@+id/curvedBottomNavigationView"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        app:layout_constraintBottom_toBottomOf="@+id/curvedBottomNavigationViewBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="2dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:layout_weight=".33"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/ripple_effect"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    app:srcCompat="@drawable/ic_home" />
+
+                <ImageView
+                    android:id="@+id/iv_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/ripple_effect"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    app:srcCompat="@drawable/ic_list" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight=".33"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_weight="1"
+                    android:text="Scan&amp;Go"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_weight=".33"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/ripple_effect"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    app:srcCompat="@drawable/ic_search" />
+
+                <ImageView
+                    android:id="@+id/iv_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/ripple_effect"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    app:srcCompat="@drawable/ic_menu" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.example.scanandgo_pwsa.helper.CurvedBottomNavigationView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabScanGo"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:layout_marginBottom="40dp"
+        android:alpha="0.95"
+        android:clickable="true"
+        android:forceDarkAllowed="false"
+        app:backgroundTint="#FD8970"
+        app:elevation="4dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="32sp"
+        app:srcCompat="@drawable/ic_cart"
+        app:useCompatPadding="false" />
+
+    <fragment
+        android:id="@+id/fragmentContainer"
+        android:name="com.example.scanandgo_pwsa.fragments.HomePage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

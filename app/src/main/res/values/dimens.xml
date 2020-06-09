@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="cardCornerRadius">25dp</dimen>
+    <dimen name="cardElevation">4dp</dimen>
+</resources>
