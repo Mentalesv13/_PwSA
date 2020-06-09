@@ -285,6 +285,7 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         final ShoppingList[] tempSL = new ShoppingList[1];
         tempSL[0] = shoppingList.get(temp.getBarcode());
+        final String barcode = temp.getBarcode();
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context, R.style.MyAlertDialogTheme);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.row_item, null);
@@ -369,7 +370,7 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             public void onClick(View v) {
                 //showCustomLoadingDialog();
                 if (!String.valueOf(editAmount.getText()).equals("")) {
-                    tempSL[0] = shoppingList.get(temp.getBarcode());
+                    tempSL[0] = shoppingList.get(barcode);
                     if (tempSL[0].isBought()) {
                         btnMark.setText("Mark as bought");
                         databaseHandler.updateIsBoughtByName(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getPrice().toString());

@@ -291,6 +291,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         final ShoppingList[] tempSL = new ShoppingList[1];
         tempSL[0] = shoppingList.get(temp.getBarcode());
+        final String barcode = temp.getBarcode();
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context, R.style.MyAlertDialogTheme);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.row_item, null);
@@ -375,7 +376,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             public void onClick(View v) {
                 //showCustomLoadingDialog();
                 if (!String.valueOf(editAmount.getText()).equals("")) {
-                    tempSL[0] = shoppingList.get(product);
+                    tempSL[0] = shoppingList.get(barcode);
                     if (tempSL[0].isBought()) {
                         btnMark.setText("Mark as bought");
                         databaseHandler.updateIsBought(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
@@ -488,7 +489,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             Toast.makeText(context,"Please insert product amount.",Toast.LENGTH_SHORT).show();}
                         else{
                             databaseHandler.addToList(product,String.valueOf(editAmount.getText()),"false",temp.getBarcode(),temp.getPrice().toString());
-                            tempSL[0] = shoppingList.get(product);infoList.setText("This product is already on shopping list");
+                            tempSL[0] = shoppingList.get(temp.getBarcode());
+                            infoList.setText("This product is already on shopping list");
                            isOnListTrue.setVisibility(View.VISIBLE);
                            isOnListFalse.setVisibility(View.GONE);
                            Toast.makeText(context,"Product added to list successfully.",Toast.LENGTH_SHORT).show();
