@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,8 +74,8 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_maps);
+
         activity = this;
         sessionManager = new SessionManager(getBaseContext());
         databaseHandler = new DatabaseHandler(getBaseContext());
@@ -306,12 +307,27 @@ public class MapsActivity extends FragmentActivity implements
                         }
                     });
             //loadingDialog.hideDialog();
-            Bundle b = new Bundle();
-            b.putBoolean("select", true);
-            Intent intent = new Intent(MapsActivity.this, ShopSelectSignIn.class);
-            intent.putExtras(b);
-            startActivity(intent);
-            MapsActivity.this.finish();
+
+            Bundle b = getIntent().getExtras();
+            if (b!=null) {
+                if (b.getBoolean("select")) {
+                    Bundle c = new Bundle();
+                    c.putBoolean("select", true);
+                    Intent intent = new Intent(MapsActivity.this, ShopSelectSignIn.class);
+                    intent.putExtras(c);
+                    startActivity(intent);
+                    MapsActivity.this.finish();
+                } else {
+                    Bundle c = new Bundle();
+                    c.putBoolean("select", true);
+                    Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+                    intent.putExtras(c);
+                    startActivity(intent);
+                    MapsActivity.this.finish();
+                }
+            }
+
+
 
             return null;
 

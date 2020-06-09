@@ -35,6 +35,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.scanandgo_pwsa.MainActivity;
+import com.example.scanandgo_pwsa.MapsActivity;
 import com.example.scanandgo_pwsa.R;
 import com.example.scanandgo_pwsa.adapters.ShopAdapter;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
@@ -42,6 +44,7 @@ import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.helper.SessionManager;
 import com.example.scanandgo_pwsa.model.ExampleItem;
 import com.example.scanandgo_pwsa.model.Shop;
+import com.example.scanandgo_pwsa.welcome.ShopSelectSignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
@@ -76,7 +79,7 @@ public class SelectShop extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private ShopAdapter mAdapter;
-    private Button btnSelect, btnGetLocation;
+    private Button btnSelect, btnGetLocation, btnMap;
     private static final String TAG = "SS_LOG";
 
     Context context;
@@ -89,7 +92,31 @@ public class SelectShop extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         
         View view = inflater.inflate(R.layout.activity_select_shop, container, false);
-        
+
+        btnMap = view.findViewById(R.id.mapButton);
+
+        btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ( ContextCompat.checkSelfPermission(context,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED )
+                {
+
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                }
+                else {
+                    Bundle c = new Bundle();
+                    c.putBoolean("select", false);
+                    Intent intent = new Intent(getActivity(), MapsActivity.class);
+                    intent.putExtras(c);
+                    startActivity(intent);
+                    ((MainActivity)getActivity()).finish();
+                }
+            }
+        });
+
+
         name = view.findViewById(R.id.name);
         address = view.findViewById(R.id.address);
         localizationSet = false;

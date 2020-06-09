@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton4"
+                android:id="@+id/btnBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="15dp"
@@ -45,7 +45,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/floatingActionButton4"
+                app:layout_constraintStart_toEndOf="@+id/btnBack"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -82,7 +82,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
+                        android:id="@+id/btnProfile"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"
@@ -104,8 +104,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Hello"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
-                        app:layout_constraintTop_toTopOf="@+id/floatingActionButton2" />
+                        app:layout_constraintStart_toEndOf="@+id/btnProfile"
+                        app:layout_constraintTop_toTopOf="@+id/btnProfile" />
 
                     <TextView
                         android:id="@+id/helloDesc"
@@ -114,7 +114,7 @@
                         android:layout_marginStart="8dp"
                         android:text="YOUR PROFILE"
                         android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                        app:layout_constraintStart_toEndOf="@+id/btnProfile"
                         app:layout_constraintTop_toBottomOf="@+id/hello" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -152,7 +152,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
+                        android:id="@+id/btnScanGo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"
@@ -166,16 +166,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:maxImageSize="24dp"
                         app:rippleColor="#FD8970"
-                        app:srcCompat="@drawable/ic_profile" />
+                        app:srcCompat="@drawable/ic_scango" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView55"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Scan&amp;Go"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                        app:layout_constraintStart_toEndOf="@+id/btnScanGo"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -197,7 +197,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
+                        android:id="@+id/btnReader"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"
@@ -211,16 +211,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:maxImageSize="24dp"
                         app:rippleColor="#FD8970"
-                        app:srcCompat="@drawable/ic_profile" />
+                        app:srcCompat="@drawable/ic_pricereader" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView51"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Price reader"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                        app:layout_constraintStart_toEndOf="@+id/btnReader"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -242,7 +242,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
+                        android:id="@+id/btnShop"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"
@@ -256,16 +256,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:maxImageSize="24dp"
                         app:rippleColor="#FD8970"
-                        app:srcCompat="@drawable/ic_profile" />
+                        app:srcCompat="@drawable/ic_shopselect" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView52"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Shop selection"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                        app:layout_constraintStart_toEndOf="@+id/btnShop"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -287,7 +287,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
+                        android:id="@+id/btnCategory"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"
@@ -301,16 +301,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:maxImageSize="24dp"
                         app:rippleColor="#FD8970"
-                        app:srcCompat="@drawable/ic_profile" />
+                        app:srcCompat="@drawable/ic_category" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView53"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Product categories"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                        app:layout_constraintStart_toEndOf="@+id/btnCategory"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -332,30 +332,30 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
+                        android:id="@+id/btnPromo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:clickable="true"
+                        android:src="@drawable/ic_discount"
                         app:backgroundTint="#FFFFFF"
                         app:fabSize="mini"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:maxImageSize="24dp"
-                        app:rippleColor="#FD8970"
-                        app:srcCompat="@drawable/ic_profile" />
+                        app:rippleColor="#FD8970" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView54"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Product promotion"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                        app:layout_constraintStart_toEndOf="@+id/btnPromo"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -377,7 +377,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
+                        android:id="@+id/btnShoppingList"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"
@@ -391,16 +391,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:maxImageSize="24dp"
                         app:rippleColor="#FD8970"
-                        app:srcCompat="@drawable/ic_profile" />
+                        app:srcCompat="@drawable/ic_list" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView56"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Shopping list"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                        app:layout_constraintStart_toEndOf="@+id/btnShoppingList"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -437,7 +437,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
+                        android:id="@+id/btnLogout"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"
@@ -451,7 +451,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:maxImageSize="24dp"
                         app:rippleColor="#FD8970"
-                        app:srcCompat="@drawable/ic_profile" />
+                        app:srcCompat="@android:drawable/ic_lock_power_off" />
 
                     <TextView
                         android:id="@+id/textView5"
@@ -460,7 +460,7 @@
                         android:layout_marginStart="8dp"
                         android:text="Logout"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                        app:layout_constraintStart_toEndOf="@+id/btnLogout"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

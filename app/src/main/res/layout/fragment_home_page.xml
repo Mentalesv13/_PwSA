@@ -32,7 +32,7 @@
                 android:layout_marginBottom="8dp">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/Toolbar"
+                    android:id="@+id/tScanGo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
@@ -42,6 +42,7 @@
                     android:layout_marginBottom="12dp"
                     android:clipToPadding="true"
                     android:layoutMode="opticalBounds"
+                    android:translationZ="2dp"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="32dp"
                     app:cardElevation="8dp"
@@ -54,7 +55,7 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/imageView7"
+                            android:id="@+id/imageView3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
@@ -62,7 +63,7 @@
                             android:src="@drawable/barcode" />
 
                         <ImageView
-                            android:id="@+id/imageView6"
+                            android:id="@+id/imageView4"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="0dp"
@@ -82,7 +83,7 @@
                             app:cardCornerRadius="25dp">
 
                             <Button
-                                android:id="@+id/btnCancel"
+                                android:id="@+id/btnScanCode"
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
                                 android:background="@drawable/btnripple_effect"
@@ -139,7 +140,7 @@
                 android:layout_marginBottom="8dp">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewReservation2"
+                    android:id="@+id/tPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -147,6 +148,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="12dp"
                     android:layoutMode="opticalBounds"
+                    android:translationZ="2dp"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="32dp"
                     app:cardElevation="8dp"
@@ -157,7 +159,7 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/imageView7"
+                            android:id="@+id/imageView1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
@@ -165,7 +167,7 @@
                             android:src="@drawable/scanbarcode" />
 
                         <ImageView
-                            android:id="@+id/imageView6"
+                            android:id="@+id/imageView2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="0dp"
@@ -185,7 +187,7 @@
                             app:cardCornerRadius="25dp">
 
                             <Button
-                                android:id="@+id/btnScanCode"
+                                android:id="@+id/btnPriceReader"
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
                                 android:background="@drawable/btnripple_effect"
@@ -203,7 +205,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/address"
+                            android:id="@+id/address3"
                             android:layout_width="match_parent"
                             android:layout_height="24dp"
                             android:layout_marginStart="20dp"
@@ -217,7 +219,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <TextView
-                            android:id="@+id/textView6"
+                            android:id="@+id/textView61"
                             android:layout_width="160dp"
                             android:layout_height="38dp"
                             android:layout_marginStart="20dp"
@@ -242,7 +244,7 @@
                 android:layout_marginBottom="8dp">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewReservation3"
+                    android:id="@+id/tShopping"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -250,6 +252,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="12dp"
                     android:layoutMode="opticalBounds"
+                    android:translationZ="2dp"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="32dp"
                     app:cardElevation="6dp"
@@ -288,7 +291,7 @@
                             app:cardCornerRadius="25dp">
 
                             <Button
-                                android:id="@+id/btnCancel"
+                                android:id="@+id/btnShopping"
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
                                 android:background="@drawable/btnripple_effect"
@@ -306,7 +309,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/address"
+                            android:id="@+id/address1"
                             android:layout_width="match_parent"
                             android:layout_height="26dp"
                             android:layout_marginStart="20dp"
@@ -320,7 +323,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <TextView
-                            android:id="@+id/textView6"
+                            android:id="@+id/textView62"
                             android:layout_width="170dp"
                             android:layout_height="38dp"
                             android:layout_marginStart="20dp"

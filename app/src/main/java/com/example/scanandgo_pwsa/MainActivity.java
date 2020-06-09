@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +17,9 @@ import com.example.scanandgo_pwsa.fragments.Menu;
 import com.example.scanandgo_pwsa.fragments.Profile;
 import com.example.scanandgo_pwsa.fragments.ScanAndGo;
 import com.example.scanandgo_pwsa.fragments.SearchProduct;
+import com.example.scanandgo_pwsa.fragments.SelectShop;
 import com.example.scanandgo_pwsa.fragments.ShoppingList;
+import com.example.scanandgo_pwsa.welcome.ShopSelectSignIn;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,6 +50,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         shoppingList.setOnClickListener(this);
         fabScanGo.setOnClickListener(this);
         profile.setOnClickListener(this);
+
+        Bundle b = getIntent().getExtras();
+        if (b!=null) {
+            if (b.getBoolean("select")) {
+                toolbar.setVisibility(View.GONE);
+                setFragmentNoAnim(new SelectShop());
+            }
+        }
+
     }
 
     public void setFragment(Fragment fragment) {

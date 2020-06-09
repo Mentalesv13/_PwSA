@@ -152,7 +152,10 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 }
                 else {
+                    Bundle c = new Bundle();
+                    c.putBoolean("select", true);
                     Intent intent = new Intent(ShopSelectSignIn.this, MapsActivity.class);
+                    intent.putExtras(c);
                     startActivity(intent);
                     ShopSelectSignIn.this.finish();
                 }
