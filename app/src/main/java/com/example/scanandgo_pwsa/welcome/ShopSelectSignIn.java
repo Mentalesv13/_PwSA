@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -80,6 +81,7 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
     private SessionManager sessionManager;
     private DatabaseHandler databaseHandler;
     private SplashTask splashTask;
+    private Activity activity;
 
 
 //LOGIN---------------------------------------------------------------------------------------------
@@ -114,6 +116,7 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_select_sign_in);
+        activity = this;
         localizationSet = false;
         loadingDialog = new LoadingDialog(this);
         context = getApplicationContext();
@@ -141,9 +144,18 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShopSelectSignIn.this, MapsActivity.class);
-                startActivity(intent);
-                ShopSelectSignIn.this.finish();
+                if ( ContextCompat.checkSelfPermission(context,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED )
+                {
+
+                    ActivityCompat.requestPermissions(activity,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                }
+                else {
+                    Intent intent = new Intent(ShopSelectSignIn.this, MapsActivity.class);
+                    startActivity(intent);
+                    ShopSelectSignIn.this.finish();
+                }
             }
         });
 

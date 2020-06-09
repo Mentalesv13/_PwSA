@@ -14,23 +14,32 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateVisible|adjustPan"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".fragments.SelectShop" />
         <activity
             android:name=".welcome.ShopSelectSignIn"
+            android:screenOrientation="portrait"
             android:theme="@style/noAnimTheme" />
         <activity
             android:name=".welcome.FirstRun"
+            android:screenOrientation="portrait"
             android:theme="@style/noAnimTheme" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/noAnimTheme" />
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <meta-data
@@ -39,21 +48,17 @@
 
         <activity
             android:name=".MapsActivity"
+            android:screenOrientation="portrait"
             android:label="mapsactivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>
 </manifest>
 
-    <!-- TODO:  moduł Scan&Go ( sprawdzenie najdroższego produktu, porównanie z listą zakupów ) + płatność-->
+    <!-- TODO:  moduł Scan&Go ( sprawdzenie najdroższego produktu ) + płatność-->
     <!-- TODO:  profil - możliwość edycji, usunięcia-->
     <!-- TODO:  historia rachunków/podsumowanie?-->
-    <!-- TODO:  promocje-->
     <!-- TODO:  ∞ -->
 
 
@@ -112,9 +117,3 @@
 
     <!--    </application>-->
     <!--</manifest>-->
-
-    <!--    &lt;!&ndash; TODO:  moduł Scan&Go ( sprawdzenie najdroższego produktu, porównanie z listą zakupów ) + płatność&ndash;&gt;-->
-    <!--    &lt;!&ndash; TODO:  profil - możliwość edycji, usunięcia&ndash;&gt;-->
-    <!--    &lt;!&ndash; TODO:  historia rachunków/podsumowanie?&ndash;&gt;-->
-    <!--    &lt;!&ndash; TODO:  promocje&ndash;&gt;-->
-    <!--    &lt;!&ndash; TODO:  ∞ &ndash;&gt;-->
