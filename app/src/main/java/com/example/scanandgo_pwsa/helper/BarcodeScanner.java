@@ -57,7 +57,7 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
     private LoadingDialog loadingDialog;
     private Context context;
     private View view;
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_price_reader, container, false);
