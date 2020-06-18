@@ -62,9 +62,8 @@ public class Profile extends Fragment {
     private DatabaseHandler databaseHandler;
     private SessionManager sessionManager;
     private HashMap<String,String> userDetails;
-    private Button btnCancel, btnRegister, btnDelete, btnEdit;
-    private EditText firstName, lastName, etEmail, phone;
-    private ConstraintLayout ON, OFF, register;
+    private Button btnCancel;
+    private ConstraintLayout ON, OFF;
     private int RC_SIGN_IN = 1;
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -83,85 +82,68 @@ public class Profile extends Fragment {
         sessionManager = new SessionManager(getContext());
         ON = view.findViewById(R.id.ON);
         OFF = view.findViewById(R.id.welcome);
-        register = view.findViewById(R.id.register);
-        btnRegister = view.findViewById(R.id.btnRegister);
-        btnCancel = view.findViewById(R.id.btnCancel);
-        btnDelete = view.findViewById(R.id.btnDelete);
-        btnEdit = view.findViewById(R.id.btnEdit);
         name = view.findViewById(R.id.name);
         email = view.findViewById(R.id.email);
         userDetails = new HashMap<>();
         db = FirebaseFirestore.getInstance();
 
-        firstName = view.findViewById(R.id.etFirstName);
-        lastName = view.findViewById(R.id.etLastName);
-        etEmail = view.findViewById(R.id.etEmail);
-        phone = view.findViewById(R.id.etPhone);
-
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!sessionManager.isScanAndGoStarted()) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setMessage("Are you sure want to delete your account?")
-                            .setCancelable(false)
-                            .setTitle("** Delete confirmation **")
-                            .setPositiveButton("DELETE",
-                                    new DialogInterface.OnClickListener() {
-                                        @SuppressLint("SetTextI18n")
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                            showCustomLoadingDialog();
-                                            db.collection("users")
-                                                    .whereEqualTo("email", databaseHandler.getUserDetails().get("email")).get()
-                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                    document.getReference().delete();
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-
-                                            sessionManager.setLogin(false);
-                                            databaseHandler.resetLogin();
-                                            mGoogleSignInClient.signOut();
-                                            ON.setVisibility(View.GONE);
-                                            OFF.setVisibility(View.VISIBLE);
-                                            Toast.makeText(getContext(), "You are successfully logout.",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                    })
-                            .setNegativeButton("Cancel",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // cancel the dialog box
-                                            dialog.cancel();
-                                        }
-                                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-                else
-                {
-                    Toast.makeText(getContext(),"Your Scan&Go transcation in progress...",Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(),"End it or Cancel to use 'Logout'!",Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            updateLayout();
-            }
-        });
+//        btnDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!sessionManager.isScanAndGoStarted()) {
+//                    final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+//                    builder.setMessage("Are you sure want to delete your account?")
+//                            .setCancelable(false)
+//                            .setTitle("** Delete confirmation **")
+//                            .setPositiveButton("DELETE",
+//                                    new DialogInterface.OnClickListener() {
+//                                        @SuppressLint("SetTextI18n")
+//                                        public void onClick(DialogInterface dialog, int id) {
+//                                            dialog.cancel();
+//                                            showCustomLoadingDialog();
+//                                            db.collection("users")
+//                                                    .whereEqualTo("email", databaseHandler.getUserDetails().get("email")).get()
+//                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                                        @Override
+//                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                                            if (task.isSuccessful()) {
+//                                                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                                                    document.getReference().delete();
+//                                                                }
+//                                                            }
+//                                                        }
+//                                                    });
+//
+//                                            sessionManager.setLogin(false);
+//                                            databaseHandler.resetLogin();
+//                                            mGoogleSignInClient.signOut();
+//                                            ON.setVisibility(View.GONE);
+//                                            OFF.setVisibility(View.VISIBLE);
+//                                            Toast.makeText(getContext(), "You are successfully logout.",
+//                                                    Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    })
+//                            .setNegativeButton("Cancel",
+//                                    new DialogInterface.OnClickListener() {
+//                                        public void onClick(DialogInterface dialog, int id) {
+//                                            // cancel the dialog box
+//                                            dialog.cancel();
+//                                        }
+//                                    });
+//                    AlertDialog alert = builder.create();
+//                    alert.show();
+//                }
+//                else
+//                {
+//                    Toast.makeText(getContext(),"Your Scan&Go transcation in progress...",Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(),"End it or Cancel to use 'Logout'!",Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//
 
         ON.setVisibility(View.GONE);
         OFF.setVisibility(View.GONE);
-        register.setVisibility(View.GONE);
 
         if(sessionManager.isLoggedIn())
         {
@@ -218,65 +200,58 @@ public class Profile extends Fragment {
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Map<String, Object> collectionData = new HashMap<String, Object>() {{
-                    put("firstname", firstName.getText().toString().trim());
-                    put("lastname", lastName.getText().toString().trim());
-                    put("email", etEmail.getText().toString().trim());
-                    put("phone", phone.getText().toString().trim());
-                    put("uID", mAuth.getCurrentUser().getUid().trim());
-                }};
+//        btnRegister.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final Map<String, Object> collectionData = new HashMap<String, Object>() {{
+//                    put("firstname", firstName.getText().toString().trim());
+//                    put("lastname", lastName.getText().toString().trim());
+//                    put("email", etEmail.getText().toString().trim());
+//                    put("phone", phone.getText().toString().trim());
+//                    put("uID", mAuth.getCurrentUser().getUid().trim());
+//                }};
+//
+//                db.collection("users").document(mAuth.getCurrentUser().getUid().trim()).set(collectionData).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        sessionManager.setLogin(true);
+//                        databaseHandler.resetLogin();
+//                        databaseHandler.addUser(
+//                                firstName.getText().toString().trim(),
+//                                lastName.getText().toString().trim(),
+//                                etEmail.getText().toString().trim(),
+//                                phone.getText().toString().trim(),
+//                                mAuth.getCurrentUser().getUid().trim());
+//
+//                        firstName.getText().clear();
+//                        lastName.getText().clear();
+//                        etEmail.getText().clear();
+//                        phone.getText().clear();
+//                        register.setVisibility(View.GONE);
+//                        //start.setVisibility(View.VISIBLE);
+//                        ON.setVisibility(View.VISIBLE);
+//
+//                        userDetails = databaseHandler.getUserDetails();
+//                        name.setText(userDetails.get("fname") + " " + userDetails.get("lname"));
+//                        email.setText(userDetails.get("email"));
+//
+//                        Toast.makeText(getContext(),"ADDED", Toast.LENGTH_LONG).show();
+//                    }
+//                });
 
-                db.collection("users").document(mAuth.getCurrentUser().getUid().trim()).set(collectionData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        sessionManager.setLogin(true);
-                        databaseHandler.resetLogin();
-                        databaseHandler.addUser(
-                                firstName.getText().toString().trim(),
-                                lastName.getText().toString().trim(),
-                                etEmail.getText().toString().trim(),
-                                phone.getText().toString().trim(),
-                                mAuth.getCurrentUser().getUid().trim());
 
-                        firstName.getText().clear();
-                        lastName.getText().clear();
-                        etEmail.getText().clear();
-                        phone.getText().clear();
-                        register.setVisibility(View.GONE);
-                        //start.setVisibility(View.VISIBLE);
-                        ON.setVisibility(View.VISIBLE);
-
-                        userDetails = databaseHandler.getUserDetails();
-                        name.setText(userDetails.get("fname") + " " + userDetails.get("lname"));
-                        email.setText(userDetails.get("email"));
-
-                        Toast.makeText(getContext(),"ADDED", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-
-                JSONObject jsonObject = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
-
-                try {
-                    jsonObject.put("bill",jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-                db.collection("bills").document(mAuth.getCurrentUser().getUid().trim()).set(jsonMap);
-            }
-        });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OFF.setVisibility(View.VISIBLE);
-                register.setVisibility(View.GONE);
-            }
-        });
+//                JSONObject jsonObject = new JSONObject();
+//                JSONArray jsonArray = new JSONArray();
+//
+//                try {
+//                    jsonObject.put("bill",jsonArray);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+//                db.collection("bills").document(mAuth.getCurrentUser().getUid().trim()).set(jsonMap);
+//            }
+//        });
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -340,121 +315,92 @@ public class Profile extends Fragment {
     private void updateUI(FirebaseUser fUser) {
         final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(Objects.requireNonNull(getActivity()).getApplicationContext());
         if (account != null) {
+            databaseHandler.addUser(
+                    (account.getDisplayName()).split(" ")[0],
+                    (account.getDisplayName()).split(" ")[1],
+                    account.getEmail(),
+                    account.getId());
+            Log.e(TAG,account.getId());
+            Log.e(TAG,mAuth.getUid());
 
-            db.collection("users")
-                    .whereEqualTo("email", account.getEmail()).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                databaseHandler.resetLogin();
-                                boolean createdAccount = false;
-                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                    createdAccount = true;
-                                    databaseHandler.addUser(
-                                            (String)document.get("firstname"),
-                                            (String)document.get("lastname"),
-                                            (String)document.get("email"),
-                                            (String)document.get("phone"),
-                                            (String)document.get("uID"));
-                                }
+            sessionManager.setLogin(true);
+            OFF.setVisibility(View.GONE);
+            ON.setVisibility(View.VISIBLE);
+            userDetails = databaseHandler.getUserDetails();
+            name.setText(userDetails.get("fname") + " " + userDetails.get("lname"));
+            email.setText(userDetails.get("email"));
 
-                                if (createdAccount)
-                                {
-                                    sessionManager.setLogin(true);
-                                    register.setVisibility(View.GONE);
-                                    OFF.setVisibility(View.GONE);
-                                    //start.setVisibility(View.VISIBLE);
-                                    ON.setVisibility(View.VISIBLE);
-                                    userDetails = databaseHandler.getUserDetails();
-                                    name.setText(userDetails.get("fname") + " " + userDetails.get("lname"));
-                                    email.setText(userDetails.get("email"));
-                                }
-                                else {
-                                    OFF.setVisibility(View.GONE);
-                                    String[] names = Objects.requireNonNull(account.getDisplayName()).split(" ");
-                                    firstName.setText( names[0]);
-                                    lastName.setText( names[1]);
-                                    etEmail.setText(account.getEmail());
-                                    register.setVisibility(View.VISIBLE);
-                                }
-                            } else {
-                                Log.w(TAG, "Error getting documents.", task.getException());
-                            }
-                        }
-                    });
         }
 }
 
-    private void updateLayout() {
-
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View dialogView = inflater.inflate(R.layout.edituser_dialog, null);
-
-        final EditText firstName = dialogView.findViewById(R.id.etFirstName);
-        final EditText lastName = dialogView.findViewById(R.id.etLastName);
-        final EditText email = dialogView.findViewById(R.id.etEmail);
-        final EditText phone = dialogView.findViewById(R.id.etPhone);
-
-        firstName.setText(databaseHandler.getUserDetails().get("fname"));
-        lastName.setText(databaseHandler.getUserDetails().get("lname"));
-        email.setText(databaseHandler.getUserDetails().get("email"));
-        phone.setText(databaseHandler.getUserDetails().get("phone"));
-
-
-        dialogBuilder.setView(dialogView);
-        //dialogBuilder.setTitle("Select date");
-        dialogBuilder.setCancelable(true);
-
-
-        final AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(final DialogInterface dialog) {
-
-                final Button btnUpdate = dialogView.findViewById(R.id.btnEdit);
-
-                btnUpdate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final Map<String, Object> collectionData = new HashMap<String, Object>() {{
-                            put("firstname", firstName.getText().toString().trim());
-                            put("lastname", lastName.getText().toString().trim());
-                            put("phone", phone.getText().toString().trim());
-                        }};
-
-                        db.collection("users")
-                                .whereEqualTo("email", databaseHandler.getUserDetails().get("email")).get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                document.getReference().set(collectionData);
-                                            }
-                                        }
-                                    }
-                                });
-                        alertDialog.dismiss();
-                    }
-                });
-
-
-                final Button btnClose = dialogView.findViewById(R.id.btnCancel);
-
-                btnClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-            }
-        });
-
-        alertDialog.show();
-    }
+//    private void updateLayout() {
+//
+//        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
+//        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        final View dialogView = inflater.inflate(R.layout.edituser_dialog, null);
+//
+//        final EditText firstName = dialogView.findViewById(R.id.etFirstName);
+//        final EditText lastName = dialogView.findViewById(R.id.etLastName);
+//        final EditText email = dialogView.findViewById(R.id.etEmail);
+//        final EditText phone = dialogView.findViewById(R.id.etPhone);
+//
+//        firstName.setText(databaseHandler.getUserDetails().get("fname"));
+//        lastName.setText(databaseHandler.getUserDetails().get("lname"));
+//        email.setText(databaseHandler.getUserDetails().get("email"));
+//        phone.setText(databaseHandler.getUserDetails().get("phone"));
+//
+//
+//        dialogBuilder.setView(dialogView);
+//        //dialogBuilder.setTitle("Select date");
+//        dialogBuilder.setCancelable(true);
+//
+//
+//        final AlertDialog alertDialog = dialogBuilder.create();
+//        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//            @Override
+//            public void onShow(final DialogInterface dialog) {
+//
+//                final Button btnUpdate = dialogView.findViewById(R.id.btnEdit);
+//
+//                btnUpdate.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        final Map<String, Object> collectionData = new HashMap<String, Object>() {{
+//                            put("firstname", firstName.getText().toString().trim());
+//                            put("lastname", lastName.getText().toString().trim());
+//                            put("phone", phone.getText().toString().trim());
+//                        }};
+//
+//                        db.collection("users")
+//                                .whereEqualTo("email", databaseHandler.getUserDetails().get("email")).get()
+//                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                        if (task.isSuccessful()) {
+//                                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                                document.getReference().set(collectionData);
+//                                            }
+//                                        }
+//                                    }
+//                                });
+//                        alertDialog.dismiss();
+//                    }
+//                });
+//
+//
+//                final Button btnClose = dialogView.findViewById(R.id.btnCancel);
+//
+//                btnClose.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        alertDialog.dismiss();
+//                    }
+//                });
+//            }
+//        });
+//
+//        alertDialog.show();
+//    }
 
     private void showCustomLoadingDialog() {
         final LoadingDialog loadingDialog = new LoadingDialog(getActivity());

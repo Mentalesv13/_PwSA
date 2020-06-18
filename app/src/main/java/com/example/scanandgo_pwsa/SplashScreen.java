@@ -50,8 +50,8 @@ public class SplashScreen extends AppCompatActivity {
         databaseHandler = new DatabaseHandler(getApplicationContext());
         db = FirebaseFirestore.getInstance();
         session = new SessionManager(getApplicationContext());
-        session.setFirstRun(false);
-        session.setShopSelect("SKLEP#2");
+        //session.setFirstRun(false);
+        //session.setShopSelect("SKLEP#2");
 
         SplashTask task = new SplashTask();
         task.execute();

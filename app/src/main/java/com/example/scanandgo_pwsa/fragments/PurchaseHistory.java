@@ -278,11 +278,12 @@ return view;
                                 }
                             }
                         }
+                        else
+                        {
+                            clEmpty.setVisibility(View.VISIBLE);
+                        }
                     }
-                    else
-                    {
-                        clEmpty.setVisibility(View.VISIBLE);
-                    }
+
                 }
 
                 simpleExpandableListView = (ExpandableListView) view.findViewById(R.id.listView);

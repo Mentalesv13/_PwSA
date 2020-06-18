@@ -92,11 +92,9 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
 
 //LOGIN---------------------------------------------------------------------------------------------
 
-    private ConstraintLayout shopSelect, register, welcome;
-    private EditText firstName, lastName, email, phone;
-    private Button btnGetLocation, btnNext, btnSkip, btnBack, btnCancel, btnRegister, btnMap;
+    private ConstraintLayout shopSelect, welcome;
+    private Button btnGetLocation, btnNext, btnSkip, btnBack, btnMap;
     private FirebaseAuth mAuth;
-    private FirebaseUser user;
     private GoogleSignInClient mGoogleSignInClient;
     private SignInButton signInButton;
     private int RC_SIGN_IN = 1;
@@ -135,11 +133,9 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
         loadingDialog.showDialog();
 
         welcome = findViewById(R.id.welcome);
-        register = findViewById(R.id.register);
         shopSelect = findViewById(R.id.shopSelect);
 
         welcome.setVisibility(View.GONE);
-        register.setVisibility(View.GONE);
         shopSelect.setVisibility(View.VISIBLE);
 
 
@@ -251,19 +247,10 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
 
 //LOGIN---------------------------------------------------------------------------------------------
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
         db = FirebaseFirestore.getInstance();
 
-        btnRegister = findViewById(R.id.btnRegister);
-        btnCancel = findViewById(R.id.btnCancel);
         btnSkip = findViewById(R.id.btnSkip);
         btnBack = findViewById(R.id.btnBack);
-
-        firstName = findViewById(R.id.etFirstName);
-        lastName = findViewById(R.id.etLastName);
-        email = findViewById(R.id.etEmail);
-        phone = findViewById(R.id.etPhone);
 
         signInButton = findViewById(R.id.sign_in_button);
         mAuth = FirebaseAuth.getInstance();
@@ -279,66 +266,6 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
         //Logout
         sessionManager.setLogin(false);
         mGoogleSignInClient.signOut();
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingDialog.showDialog();
-                final Map<String, Object> collectionData = new HashMap<String, Object>() {{
-                    put("firstname", firstName.getText().toString().trim());
-                    put("lastname", lastName.getText().toString().trim());
-                    put("email", email.getText().toString().trim());
-                    put("phone", phone.getText().toString().trim());
-                    put("uID", mAuth.getCurrentUser().getUid().trim());
-                }};
-
-                db.collection("users")
-                        .document(mAuth.getCurrentUser().getUid().trim())
-                        .set(collectionData).addOnCompleteListener(new OnCompleteListener<Void>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        sessionManager.setLogin(true);
-                        databaseHandler.resetLogin();
-                        databaseHandler.addUser(
-                                firstName.getText().toString().trim(),
-                                lastName.getText().toString().trim(),
-                                email.getText().toString().trim(),
-                                phone.getText().toString().trim(),
-                                mAuth.getCurrentUser().getUid().trim());
-                        firstName.getText().clear();
-                        lastName.getText().clear();
-                        email.getText().clear();
-                        phone.getText().clear();
-                        register.setVisibility(View.GONE);
-                        sessionManager.setFirstRun(false);
-                        sessionManager.setLogin(true);
-                        Intent intent = new Intent(ShopSelectSignIn.this,
-                                MainActivity.class);
-                        splashTask = new SplashTask();
-                        splashTask.execute();
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-                loadingDialog.hideDialog();
-
-                JSONObject jsonObject = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
-
-                try {
-                    jsonObject.put("bill",jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-                db.collection("bills").document(mAuth.getCurrentUser().getUid().trim()).set(jsonMap);
-
-            }
-
-        });
-
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -367,15 +294,6 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sessionManager.setLogin(false);
-                mGoogleSignInClient.signOut();
-                register.setVisibility(View.GONE);
-                welcome.setVisibility(View.VISIBLE);
-            }
-        });
 
 //--------------------------------------------------------------------------------------------------
         Bundle b = getIntent().getExtras();
@@ -630,51 +548,23 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                 this.getApplicationContext());
         if (account != null)
         {
-        db.collection("users")
-                .whereEqualTo("email", account.getEmail()).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            databaseHandler.resetLogin();
-                            boolean createdAccount = false;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                createdAccount = true;
-                                databaseHandler.addUser(
-                                        (String)document.get("firstname"),
-                                        (String)document.get("lastname"),
-                                        (String)document.get("email"),
-                                        (String)document.get("phone"),
-                                        mAuth.getCurrentUser().getUid().trim());
-                            }
+            databaseHandler.addUser(
+                    (account.getDisplayName()).split(" ")[0],
+                    (account.getDisplayName()).split(" ")[1],
+                    account.getEmail(),
+                    account.getId());
+            Log.e(TAG,account.getId());
+            Log.e(TAG,mAuth.getUid());
 
-                            if (createdAccount)
-                            {
-                                sessionManager.setLogin(true);
-                                sessionManager.setFirstRun(false);
-                                Intent intent = new Intent(ShopSelectSignIn.this,
-                                        MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                startActivity(intent);
-                                splashTask = new SplashTask();
-                                splashTask.execute();
-                                finish();
-                            }
-                            else {
-                                String[] names = account.getDisplayName().split(" ");
-                                firstName.setText( names[0]);
-                                lastName.setText( names[1]);
-                                email.setText(account.getEmail());
-                                register.setVisibility(View.VISIBLE);
-                            }
-
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-
+            sessionManager.setLogin(true);
+            sessionManager.setFirstRun(false);
+            Intent intent = new Intent(ShopSelectSignIn.this,
+                    MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            splashTask = new SplashTask();
+            splashTask.execute();
+            finish();
         }
         loadingDialog.hideDialog();
     }

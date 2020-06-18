@@ -34,7 +34,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_FNAME = "firstname";
     private static final String KEY_LNAME = "lastname";
     private static final String KEY_EMAIL = "email";
-    private static final String KEY_PHONE = "phone";
     private static final String KEY_UID = "uid";
 
     // Category Table Columns names
@@ -84,7 +83,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + KEY_FNAME + " TEXT,"
             + KEY_LNAME + " TEXT,"
             + KEY_EMAIL + " TEXT UNIQUE,"
-            + KEY_PHONE + " TEXT UNIQUE,"
             + KEY_UID + " TEXT UNIQUE" + ")";
 
     private static final String CREATE_PRODUCTS_TABLE = " CREATE TABLE " + TABLE_PRODUCTS + "("
@@ -151,14 +149,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Storing user details in database
      * */
-    public void addUser(String fname, String lname, String email, String phone, String uid) {
+    public void addUser(String fname, String lname, String email, String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_FNAME, fname); // FirstName
         values.put(KEY_LNAME, lname); // LastName
         values.put(KEY_EMAIL, email); // Email
-        values.put(KEY_PHONE, phone); // Phone
         values.put(KEY_UID, uid); // uid
 
         // Inserting Row
@@ -259,8 +256,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             user.put("fname", cursor.getString(0));
             user.put("lname", cursor.getString(1));
             user.put("email", cursor.getString(2));
-            user.put("phone", cursor.getString(3));
-            user.put("uid", cursor.getString(4));
+            user.put("uid", cursor.getString(3));
         }
         cursor.close();
         db.close();
