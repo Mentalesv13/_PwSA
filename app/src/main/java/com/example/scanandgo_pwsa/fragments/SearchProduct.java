@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,7 +205,7 @@ public class SearchProduct extends Fragment {
     }
 
     private void loadMore() {
-        Log.e("TAG", "TEST1");
+        //Log.e("TAG", "TEST1");
         if (searchActive==0) {
             if (rowsArrayList.size() != productsList.size()) {
                 rowsArrayList.add(null);
@@ -216,7 +215,7 @@ public class SearchProduct extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("TAG", "TEST2");
+                        //Log.e("TAG", "TEST2");
                         rowsArrayList.remove(rowsArrayList.size() - 1);
                         int scrollPosition = rowsArrayList.size();
                         recyclerAdapter.notifyItemRemoved(scrollPosition);

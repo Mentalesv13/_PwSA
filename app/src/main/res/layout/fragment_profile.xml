@@ -281,7 +281,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Toolbar"
         tools:context=".fragments.Profile"
-        tools:visibility="gone">
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_chart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_history">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnChart"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                app:backgroundTint="#FFFFFF"
+                app:fabSize="mini"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:maxImageSize="24dp"
+                app:rippleColor="#FD8970"
+                app:srcCompat="@drawable/ic_chart" />
+
+            <TextView
+                android:id="@+id/textView55"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Monthly expenses"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btnChart"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TableRow
             android:id="@+id/tableRow2"
@@ -307,8 +344,8 @@
                     android:background="@drawable/btnripple_effect"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:textAllCaps="false"
                     android:text="Edit data"
+                    android:textAllCaps="false"
                     android:textSize="12sp" />
             </androidx.cardview.widget.CardView>
 
@@ -332,8 +369,8 @@
                     android:background="@drawable/btnripple_effect"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:textAllCaps="false"
                     android:text="Delete account"
+                    android:textAllCaps="false"
                     android:textColor="#DF0101"
                     android:textSize="12sp" />
             </androidx.cardview.widget.CardView>
@@ -373,6 +410,7 @@
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_history"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -380,7 +418,7 @@
             app:layout_constraintTop_toBottomOf="@+id/id">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton2"
+                android:id="@+id/btnHistory"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="15dp"
@@ -394,7 +432,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:maxImageSize="24dp"
                 app:rippleColor="#FD8970"
-                app:srcCompat="@drawable/ic_cart" />
+                app:srcCompat="@drawable/ic_purchasehistory" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -403,7 +441,7 @@
                 android:layout_marginStart="8dp"
                 android:text="Purchase history"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/floatingActionButton2"
+                app:layout_constraintStart_toEndOf="@+id/btnHistory"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

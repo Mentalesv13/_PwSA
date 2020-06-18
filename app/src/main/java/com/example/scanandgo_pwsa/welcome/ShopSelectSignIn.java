@@ -60,6 +60,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -245,7 +251,6 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
 
 //LOGIN---------------------------------------------------------------------------------------------
 
-
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         db = FirebaseFirestore.getInstance();
@@ -288,7 +293,7 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                 }};
 
                 db.collection("users")
-                        .document()
+                        .document(mAuth.getCurrentUser().getUid().trim())
                         .set(collectionData).addOnCompleteListener(new OnCompleteListener<Void>()
                 {
                     @Override
@@ -300,7 +305,8 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                                 firstName.getText().toString().trim(),
                                 lastName.getText().toString().trim(),
                                 email.getText().toString().trim(),
-                                phone.getText().toString().trim());
+                                phone.getText().toString().trim(),
+                                mAuth.getCurrentUser().getUid().trim());
                         firstName.getText().clear();
                         lastName.getText().clear();
                         email.getText().clear();
@@ -317,7 +323,20 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                     }
                 });
                 loadingDialog.hideDialog();
+
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+
+                try {
+                    jsonObject.put("bill",jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                db.collection("bills").document(mAuth.getCurrentUser().getUid().trim()).set(jsonMap);
+
             }
+
         });
 
 
@@ -626,7 +645,8 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                                         (String)document.get("firstname"),
                                         (String)document.get("lastname"),
                                         (String)document.get("email"),
-                                        (String)document.get("phone"));
+                                        (String)document.get("phone"),
+                                        mAuth.getCurrentUser().getUid().trim());
                             }
 
                             if (createdAccount)

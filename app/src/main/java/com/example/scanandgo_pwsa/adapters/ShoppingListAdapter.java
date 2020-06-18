@@ -223,17 +223,17 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHolder.checked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TAG","zadymka");
+                //Log.e("TAG","zadymka");
                 if (viewHolder.checked.isChecked())
                 {
-                    Log.e("TAG","true");
-                    Log.e("TAG",viewHolder.barcodes.getText().toString());
+                    //Log.e("TAG","true");
+                    //Log.e("TAG",viewHolder.barcodes.getText().toString());
                     viewHolder.productInfo.setAlpha(0.5f);
                     databaseHandler.updateIsBoughtByName(String.valueOf(viewHolder.tvItem.getText()),String.valueOf(true),String.valueOf(viewHolder.amount.getText()),String.valueOf(viewHolder.price.getText()));
                 }
                 else
                 {
-                    Log.e("TAG","false");
+                    //Log.e("TAG","false");
                     viewHolder.productInfo.setAlpha(1.0f);
                     databaseHandler.updateIsBoughtByName(String.valueOf(viewHolder.tvItem.getText()),String.valueOf(false),String.valueOf(viewHolder.amount.getText()),String.valueOf(viewHolder.price.getText()));
                 }
@@ -251,7 +251,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (temp != null) {
                 viewHolder.tvItem.setText(temp.getName());
 
-                Log.e("TAG", temp.getName() + " " + temp.getBarcode());
+                //Log.e("TAG", temp.getName() + " " + temp.getBarcode());
 
                 viewHolder.tvAccessible.setVisibility(View.GONE);
                 if (Double.parseDouble(temp.getDiscount().toString()) > 0) {
@@ -308,7 +308,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     final RequestOptions requestOptions = new RequestOptions()
                             .placeholder(R.drawable.ic_placeholder)
                             .error(R.drawable.ic_placeholder);
-                    Log.e(TAG, temp.getBarcode());
+                    //Log.e(TAG, temp.getBarcode());
                     storageReference.child("products/" + temp.getBarcode() + ".jpg").getDownloadUrl()
                             .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
@@ -374,7 +374,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             viewHolder.ivItem.setColorFilter(filter);
             viewHolder.ivItem.setAlpha(1f);
-            Log.e("TAG",item.trim());
+            //Log.e("TAG",item.trim());
             viewHolder.barcodes.setText(item.trim());
         }
     }
@@ -602,7 +602,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         public void onClick(View v) {
                             //showCustomLoadingDialog();
                             if (!String.valueOf(editAmount.getText()).equals("")) {
-                                Log.e("TAG", tempSL[0].getBarcode());
+                                //Log.e("TAG", tempSL[0].getBarcode());
                                 databaseHandler.updateIsBought(tempSL[0].getProductName(), String.valueOf(tempSL[0].isBought()), String.valueOf(editAmount.getText()), product,temp.getPrice().toString());
 
                                 refreshAdapter();

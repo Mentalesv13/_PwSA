@@ -60,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginBottom="65dp"
+            android:background="@android:color/background_light"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
@@ -286,7 +287,8 @@
                 android:background="@drawable/btnripple_effect"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:text="GPS LOCALIZATION"
+                android:textAllCaps="false"
+                android:text="GPS localization"
                 android:textSize="12sp" />
         </androidx.cardview.widget.CardView>
 

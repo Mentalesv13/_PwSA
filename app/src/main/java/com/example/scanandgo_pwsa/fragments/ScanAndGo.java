@@ -2,6 +2,7 @@ package com.example.scanandgo_pwsa.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,21 +35,17 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.scanandgo_pwsa.MainActivity;
 import com.example.scanandgo_pwsa.R;
-import com.example.scanandgo_pwsa.adapters.CustomArrayAdapter;
 import com.example.scanandgo_pwsa.adapters.ScanAndGoAdapter;
 import com.example.scanandgo_pwsa.helper.BarcodeScanner;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
@@ -56,6 +53,7 @@ import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.helper.SessionManager;
 import com.example.scanandgo_pwsa.model.Product;
 import com.example.scanandgo_pwsa.model.Shop;
+import com.example.scanandgo_pwsa.payments.PayPalConfig;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -70,14 +68,28 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -165,7 +177,6 @@ public class ScanAndGo extends Fragment {
                 if (sagList.size()>0)
                 {
                     confirmList();
-
                 }
                 else
                 {
@@ -207,9 +218,10 @@ public class ScanAndGo extends Fragment {
         cardViewStart = view.findViewById(R.id.cardViewStart);
 
 
-        discount = view.findViewById(R.id.discount);
+
         products = new HashMap<>();
         products = databaseHandler.getProductsDetails();
+        discount = view.findViewById(R.id.discount);
         totalPrice = view.findViewById(R.id.totalPrice);
         totalProducts = view.findViewById(R.id.totalProducts);
         productsList = new ArrayList<>();
@@ -346,7 +358,7 @@ public class ScanAndGo extends Fragment {
 
 
 
-            if (productsList.size() > 0) {
+            if (sagList.size() > 0) {
                 start.setVisibility(View.GONE);
                 productL.setVisibility(View.VISIBLE);
             } else {
@@ -463,9 +475,10 @@ public class ScanAndGo extends Fragment {
                             put("lastname", lastName.getText().toString().trim());
                             put("email", email.getText().toString().trim());
                             put("phone", phone.getText().toString().trim());
+                            put("uID", mAuth.getCurrentUser().getUid().trim());
                         }};
 
-                        db.collection("users").document().set(collectionData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        db.collection("users").document(mAuth.getCurrentUser().getUid().trim()).set(collectionData).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 sessionManager.setLogin(true);
@@ -474,7 +487,8 @@ public class ScanAndGo extends Fragment {
                                         firstName.getText().toString().trim(),
                                         lastName.getText().toString().trim(),
                                         email.getText().toString().trim(),
-                                        phone.getText().toString().trim());
+                                        phone.getText().toString().trim(),
+                                        mAuth.getCurrentUser().getUid().trim());
                                 firstName.getText().clear();
                                 lastName.getText().clear();
                                 email.getText().clear();
@@ -486,6 +500,19 @@ public class ScanAndGo extends Fragment {
                                 Toast.makeText(getContext(), "ADDED", Toast.LENGTH_LONG).show();
                             }
                         });
+
+                        JSONObject jsonObject = new JSONObject();
+                        JSONArray jsonArray = new JSONArray();
+
+                        try {
+                            jsonObject.put("bill",jsonArray);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        db.collection("bills").document(mAuth.getCurrentUser().getUid().trim()).set(jsonMap);
+
+
                     }
                 });
                 btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -537,48 +564,148 @@ public class ScanAndGo extends Fragment {
 
         sagList = databaseHandler.getScanAndGoShoppingList();
         shoppingList = databaseHandler.getShoppingList();
+        boolean isListComplete = false;
         for (Map.Entry product : shoppingList.entrySet())
         {
             String barcode = (String) product.getKey();
-            Log.e("TAG",barcode);
+            //Log.e("TAG",barcode);
 
             if(sagList.get(barcode) == null)
             {
-                Log.e("TAG","Test");
-                com.example.scanandgo_pwsa.model.ShoppingList temp =
-                        (com.example.scanandgo_pwsa.model.ShoppingList) product.getValue();
-                Log.e("TAG",temp.getProductName());
-                final TextView textView = new TextView(getActivity().getBaseContext());
-                textView.setText(temp.getProductName() + " " + temp.getAmount() + "pcs.");
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                if (products.get(barcode) != null ) {
+                    isListComplete = true;
+                    //Log.e("TAG", "Test");
+                    com.example.scanandgo_pwsa.model.ShoppingList temp =
+                            (com.example.scanandgo_pwsa.model.ShoppingList) product.getValue();
+                    //Log.e("TAG", temp.getProductName());
+                    final TextView textView = new TextView(getActivity().getBaseContext());
+                    textView.setText(temp.getProductName() + " " + temp.getAmount() + "pcs.");
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
-                listView.addView(textView);
+                    listView.addView(textView);
+                }
             }
         }
 
-        scrollView.addView(listView);
+        if(isListComplete) {
 
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.setCancelable(true);
+            scrollView.addView(listView);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setCancelable(true);
 
 
-        final AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            final AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(final DialogInterface dialog) {
+                final Button btnClose = dialogView.findViewById(R.id.btnClose);
+                final Button btnContinue = dialogView.findViewById(R.id.btnContinue);
+
+
+                btnContinue.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        paymentLayout();
+                    }
+                });
+
+                btnClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+                }
+            });
+            alertDialog.show();
+        }
+        else
+        {
+            paymentLayout();
+        }
+    }
+
+    private void paymentLayout() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat decf = new DecimalFormat("#####0.00", symbols);
+        decf.setRoundingMode(RoundingMode.HALF_UP);
+
+
+
+
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context, R.style.MyAlertDialogTheme);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.paymentlayout, null);
+        updateValues();
+
+        ImageView btnPay = dialogView.findViewById(R.id.btnPayPal);
+
+        btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onShow(final DialogInterface dialog) {
-//                final Button btnClose = dialogView.findViewById(R.id.btnClose);
-//
-//                btnClose.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        alertDialog.dismiss();
-//                    }
-//                });
+            public void onClick(View v) {
+                getPayment();
             }
         });
-        alertDialog.show();
 
+        TextView discount = dialogView.findViewById(R.id.discount);
+        TextView totalPrice = dialogView.findViewById(R.id.totalPrice);
+        TextView totalProducts = dialogView.findViewById(R.id.totalProducts);
+
+
+
+        sagList = databaseHandler.getScanAndGoShoppingList();
+        shoppingList = databaseHandler.getShoppingList();
+        for (Map.Entry product : shoppingList.entrySet())
+        {
+            String barcode = (String) product.getKey();
+            //Log.e("TAG",barcode);
+
+        }
+        totalPrice.setText(decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
+                Double.parseDouble(decf.format(discountValue))));
+        discount.setText("- " + decf.format(discountValue));
+        totalProducts.setText(decf.format(totalProductsValue));
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setCancelable(true);
+
+
+            final AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(final DialogInterface dialog) {
+
+                }
+            });
+            alertDialog.show();
     }
+
+    private void getPayment() {
+        //Getting the amount from editText
+
+        //Creating a paypalpayment
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat decf = new DecimalFormat("#####0.00", symbols);
+        decf.setRoundingMode(RoundingMode.HALF_UP);
+
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
+                Double.parseDouble(decf.format(discountValue)))), "PLN", "Scan&Go payment",
+                PayPalPayment.PAYMENT_INTENT_SALE);
+
+        //Creating Paypal Payment activity intent
+        Intent intent = new Intent(getActivity(), PaymentActivity.class);
+
+        //putting the paypal configuration to the intent
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+        //Starting the intent activity for result
+        //the request code will be used on the method onActivityResult
+        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+    }
+
 
     private void initAdapter() {
         ScanAndGoAdapter recyclerAdapter = new ScanAndGoAdapter(productsList, getContext(), getActivity(),
@@ -661,6 +788,139 @@ public class ScanAndGo extends Fragment {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
+
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+
+            //If the result is OK i.e. user has not canceled the payment
+            if (resultCode == Activity.RESULT_OK) {
+                //Getting the payment confirmation
+
+                databaseHandler.resetShopAndGoList();
+                sessionManager.setScanAndGoStarted(false);
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+                DecimalFormat decf = new DecimalFormat("#####0.00", symbols);
+                decf.setRoundingMode(RoundingMode.HALF_UP);
+
+                //if confirmation is not null
+                if (confirm != null) {
+                    try {
+                        //Getting the payment details
+                        String paymentDetails = confirm.toJSONObject().toString(4);
+                        Log.i("paymentExample", paymentDetails);
+
+
+
+
+                        //Starting a new activity for the payment details and also putting the payment details with intent
+                        startActivity(new Intent(getActivity(), MainActivity.class)
+                                .putExtra("PaymentDetails", paymentDetails)
+                                .putExtra("confirm", true)
+                                .putExtra("select", false)
+                                .putExtra("PaymentAmount", decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
+                                        Double.parseDouble(decf.format(discountValue)))));
+
+
+                        JSONObject jsonDetails = new JSONObject(paymentDetails);
+
+                        JSONObject json = jsonDetails.getJSONObject("response");
+
+                        String pID = json.getString("id");
+
+                        DateFormat df = new SimpleDateFormat(
+                                "yyyy.MM.dd' 'HH:mm:ss");
+                        String date = df.format(Calendar.getInstance().getTime());
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("shopCode", databaseHandler.getShopDetails().get("shopID"));
+                            jsonObject.put("shopName", databaseHandler.getShopDetails().get("shopname"));
+                            jsonObject.put("shopAddress", databaseHandler.getShopDetails().get("address"));
+                            jsonObject.put("date", date);
+                            jsonObject.put("total", Double.parseDouble(decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
+                                    Double.parseDouble(decf.format(discountValue)))));
+                            jsonObject.put("paymentID", pID);
+
+                            JSONArray jsonArray = new JSONArray();
+                            JSONObject jsonProduct;
+                            for (Map.Entry mapElement : sagList.entrySet()) {
+                                jsonProduct = new JSONObject();
+                                com.example.scanandgo_pwsa.model.ShoppingList temp =
+                                        (com.example.scanandgo_pwsa.model.ShoppingList) mapElement.getValue();
+
+                                if(products.get(temp.getBarcode())!=null) {
+                                    Product temporary = products.get(temp.getBarcode());
+
+                                    if (temporary != null) {
+                                        jsonProduct.put("amount",temp.getAmount());
+                                        jsonProduct.put("name",temporary.getName());
+
+                                        if (Double.parseDouble(temporary.getDiscount().toString()) > 0) {
+                                            try {
+                                                Date d1 = df.parse(date);
+
+                                                Date d2 = df.parse(temporary.getPromoStart());
+
+                                                Date d3 = df.parse(temporary.getPromoEnd());
+                                                if (d1 != null && (d1.compareTo(d2) > 0) && (d1.compareTo(d3) < 0)) {
+                                                    double tempValue = ((Double.parseDouble(decf.format(
+                                                            Double.parseDouble(temporary.getPrice().toString()) *
+                                                                    (1.0-Double.parseDouble(temporary.getDiscount().toString()))))));
+                                                    jsonProduct.put("price",tempValue);
+                                                    jsonProduct.put("total",((Double.parseDouble(decf.format(
+                                                            (Double.parseDouble(temporary.getPrice().toString()) *
+                                                                    (1.0-Double.parseDouble(temporary.getDiscount().toString()))) * temp.getAmount())))));
+                                                }
+                                                else
+                                                {
+
+                                                    jsonProduct.put("price",temporary.getPrice());
+
+                                                    jsonProduct.put("total",Double.parseDouble(decf.format(
+                                                            Double.parseDouble(temporary.getPrice().toString()) *
+                                                                    temp.getAmount())));}
+
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            jsonProduct.put("price",temporary.getPrice());
+                                            jsonProduct.put("total",Double.parseDouble(decf.format(
+                                                    Double.parseDouble(temporary.getPrice().toString()) *
+                                                            temp.getAmount())));
+                                        }
+                                    }
+                                }
+
+                                jsonArray.put(jsonProduct);
+
+                            }
+
+                            jsonObject.put("products",jsonArray);
+
+                            DocumentReference washingtonRef = db.collection("bills").document(databaseHandler.getUserDetails().get("uid"));
+
+                            Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+
+                            washingtonRef.update("bill", FieldValue.arrayUnion(jsonMap));
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    } catch (JSONException e) {
+                        //Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("paymentExample", "The user canceled.");
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+            }
+        }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -718,7 +978,8 @@ public class ScanAndGo extends Fragment {
                                             (String)document.get("firstname"),
                                             (String)document.get("lastname"),
                                             (String)document.get("email"),
-                                            (String)document.get("phone"));
+                                            (String)document.get("phone"),
+                                            mAuth.getCurrentUser().getUid().trim());
                                 }
 
                                 if (createdAccount)
@@ -843,9 +1104,10 @@ public class ScanAndGo extends Fragment {
                     key = iterator.next();
                 }
                         Shop temp = shopHashMap.get(key);
-                        Log.e("TAG",temp.getDocumentID());
+                        //Log.e("TAG",temp.getDocumentID());
                         sessionManager.setScanShopSelect(temp.getDocumentID());
                         databaseHandler.resetShop();
+                        //Log.e("TAG",temp.getName() + " " +temp.getLatitude()+ "," + temp.getLongitude() + " " +temp.getAddress() + " " +temp.getShopCode() + " " +temp.getDocumentID());
                         databaseHandler.addShop(temp.getName(),temp.getLatitude()+ "," + temp.getLongitude(),temp.getAddress(),temp.getShopCode(),temp.getDocumentID());
                         selected = true;
                         currentShop.setVisibility(View.VISIBLE);
@@ -959,5 +1221,11 @@ public class ScanAndGo extends Fragment {
 
         }
     }
+
+    public static final int PAYPAL_REQUEST_CODE = 123;
+
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX).clientId(
+                    PayPalConfig.PAYPAL_CLIENT_ID);
 
 }

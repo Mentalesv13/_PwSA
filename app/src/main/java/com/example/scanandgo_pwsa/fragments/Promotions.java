@@ -2,16 +2,11 @@ package com.example.scanandgo_pwsa.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -21,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.scanandgo_pwsa.MainActivity;
 import com.example.scanandgo_pwsa.R;
 import com.example.scanandgo_pwsa.adapters.PromoAdapter;
-import com.example.scanandgo_pwsa.adapters.RecyclerAdapter;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
 import com.example.scanandgo_pwsa.model.Product;
 
@@ -156,7 +150,6 @@ public class Promotions extends Fragment {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e("TAG", "TEST2");
                     rowsArrayList.remove(rowsArrayList.size() - 1);
                     int scrollPosition = rowsArrayList.size();
                     recyclerAdapter.notifyItemRemoved(scrollPosition);

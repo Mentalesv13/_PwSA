@@ -260,7 +260,7 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.ic_placeholder)
                 .error(R.drawable.ic_placeholder);
-        Log.e(TAG,temp.getBarcode());
+        //FF656565(TAG,temp.getBarcode());
         storageReference.child("products/"+temp.getBarcode()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -281,7 +281,7 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void buyLayout(final String product, final int position) {
         final Product temp = products.get(product.trim());
-        Log.e("TAG",product.trim());
+        //FF656565("TAG",product.trim());
 
         final ShoppingList[] tempSL = new ShoppingList[1];
         tempSL[0] = shoppingList.get(temp.getBarcode());

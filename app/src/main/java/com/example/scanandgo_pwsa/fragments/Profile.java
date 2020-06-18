@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,30 +13,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.se.omapi.Session;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.scanandgo_pwsa.MainActivity;
 import com.example.scanandgo_pwsa.R;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
 import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.helper.SessionManager;
-import com.example.scanandgo_pwsa.model.Product;
-import com.example.scanandgo_pwsa.model.ShoppingList;
-import com.example.scanandgo_pwsa.welcome.ShopSelectSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,9 +34,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,17 +44,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -200,21 +185,38 @@ public class Profile extends Fragment {
 
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
-        //Logout
-        //sessionManager.setLogin(false);
-        //mGoogleSignInClient.signOut();
+        ConstraintLayout clHistory = view.findViewById(R.id.cl_history);
+        ConstraintLayout clChart = view.findViewById(R.id.cl_chart);
+        FloatingActionButton btnHistory = view.findViewById(R.id.btnHistory);
+        FloatingActionButton btnChart = view.findViewById(R.id.btnChart);
 
-//        if (user != null) {
-//            // User is signed in
-//            start.setVisibility(View.VISIBLE);
-//            scanProduct.setVisibility(View.VISIBLE);
-//            Toast.makeText(getContext(),"USER LOGIN", Toast.LENGTH_SHORT).show();
-//        } else {
-//            welcome.setVisibility(View.VISIBLE);
-//            scanProduct.setVisibility(View.GONE);
-//            Toast.makeText(getContext(),"USER LOGOUT", Toast.LENGTH_SHORT).show();
-//            // No user is signed in
-//        }
+        clHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).setFragment(new PurchaseHistory());
+            }
+        });
+
+        clChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).setFragment(new ExpensesChart());
+            }
+        });
+
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).setFragment(new PurchaseHistory());
+            }
+        });
+
+        btnChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).setFragment(new ExpensesChart());
+            }
+        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,11 +224,12 @@ public class Profile extends Fragment {
                 final Map<String, Object> collectionData = new HashMap<String, Object>() {{
                     put("firstname", firstName.getText().toString().trim());
                     put("lastname", lastName.getText().toString().trim());
-                    put("email", email.getText().toString().trim());
+                    put("email", etEmail.getText().toString().trim());
                     put("phone", phone.getText().toString().trim());
+                    put("uID", mAuth.getCurrentUser().getUid().trim());
                 }};
 
-                db.collection("users").document().set(collectionData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                db.collection("users").document(mAuth.getCurrentUser().getUid().trim()).set(collectionData).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         sessionManager.setLogin(true);
@@ -235,7 +238,9 @@ public class Profile extends Fragment {
                                 firstName.getText().toString().trim(),
                                 lastName.getText().toString().trim(),
                                 etEmail.getText().toString().trim(),
-                                phone.getText().toString().trim());
+                                phone.getText().toString().trim(),
+                                mAuth.getCurrentUser().getUid().trim());
+
                         firstName.getText().clear();
                         lastName.getText().clear();
                         etEmail.getText().clear();
@@ -251,6 +256,18 @@ public class Profile extends Fragment {
                         Toast.makeText(getContext(),"ADDED", Toast.LENGTH_LONG).show();
                     }
                 });
+
+
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+
+                try {
+                    jsonObject.put("bill",jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                db.collection("bills").document(mAuth.getCurrentUser().getUid().trim()).set(jsonMap);
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -339,7 +356,8 @@ public class Profile extends Fragment {
                                             (String)document.get("firstname"),
                                             (String)document.get("lastname"),
                                             (String)document.get("email"),
-                                            (String)document.get("phone"));
+                                            (String)document.get("phone"),
+                                            (String)document.get("uID"));
                                 }
 
                                 if (createdAccount)
@@ -385,32 +403,6 @@ public class Profile extends Fragment {
         email.setText(databaseHandler.getUserDetails().get("email"));
         phone.setText(databaseHandler.getUserDetails().get("phone"));
 
-        final Button btnUpdate = dialogView.findViewById(R.id.btnEdit);
-
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Map<String, Object> collectionData = new HashMap<String, Object>() {{
-                    put("firstname", firstName.getText().toString().trim());
-                    put("lastname", lastName.getText().toString().trim());
-                    put("email", email.getText().toString().trim());
-                    put("phone", phone.getText().toString().trim());
-                }};
-
-                db.collection("users")
-                        .whereEqualTo("email", databaseHandler.getUserDetails().get("email")).get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        document.getReference().set(collectionData);
-                                    }
-                                }
-                            }
-                        });
-            }
-        });
 
         dialogBuilder.setView(dialogView);
         //dialogBuilder.setTitle("Select date");
@@ -421,6 +413,34 @@ public class Profile extends Fragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
+
+                final Button btnUpdate = dialogView.findViewById(R.id.btnEdit);
+
+                btnUpdate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Map<String, Object> collectionData = new HashMap<String, Object>() {{
+                            put("firstname", firstName.getText().toString().trim());
+                            put("lastname", lastName.getText().toString().trim());
+                            put("phone", phone.getText().toString().trim());
+                        }};
+
+                        db.collection("users")
+                                .whereEqualTo("email", databaseHandler.getUserDetails().get("email")).get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                document.getReference().set(collectionData);
+                                            }
+                                        }
+                                    }
+                                });
+                        alertDialog.dismiss();
+                    }
+                });
+
 
                 final Button btnClose = dialogView.findViewById(R.id.btnCancel);
 

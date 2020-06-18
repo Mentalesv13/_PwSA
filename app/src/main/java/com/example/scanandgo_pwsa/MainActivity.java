@@ -19,6 +19,7 @@ import com.example.scanandgo_pwsa.fragments.ScanAndGo;
 import com.example.scanandgo_pwsa.fragments.SearchProduct;
 import com.example.scanandgo_pwsa.fragments.SelectShop;
 import com.example.scanandgo_pwsa.fragments.ShoppingList;
+import com.example.scanandgo_pwsa.payments.PayPalConfirm;
 import com.example.scanandgo_pwsa.welcome.ShopSelectSignIn;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fabScanGo = findViewById(R.id.fabScanGo);
         profile = findViewById(R.id.profile);
 
-
         searchProduct.setOnClickListener(this);
         home.setOnClickListener(this);
         shoppingList.setOnClickListener(this);
@@ -56,6 +56,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (b.getBoolean("select")) {
                 toolbar.setVisibility(View.GONE);
                 setFragmentNoAnim(new SelectShop());
+            }
+            else if (b.getBoolean("confirm"))
+            {
+                toolbar.setVisibility(View.GONE);
+                setFragmentNoAnim(new PayPalConfirm(b.getString("PaymentDetails"), b.getString("PaymentAmount")));
             }
         }
 

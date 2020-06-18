@@ -35,6 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_LNAME = "lastname";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PHONE = "phone";
+    private static final String KEY_UID = "uid";
 
     // Category Table Columns names
     private static final String KEY_CATEGORY_MAIN = "categorymain";
@@ -52,7 +53,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_CATEGORY2 = "category2";
 
     //Shops Table Columns names
-    private static final String KEY_SNAME = "shopname";
+    private static final String KEY_SNAME = "sname";
     private static final String KEY_LOCALIZATION = "localization";
     private static final String KEY_ADDRESS = "address";
     private static final String KEY_SCODE = "shopcode";
@@ -83,7 +84,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + KEY_FNAME + " TEXT,"
             + KEY_LNAME + " TEXT,"
             + KEY_EMAIL + " TEXT UNIQUE,"
-            + KEY_PHONE + " TEXT UNIQUE" + ")";
+            + KEY_PHONE + " TEXT UNIQUE,"
+            + KEY_UID + " TEXT UNIQUE" + ")";
 
     private static final String CREATE_PRODUCTS_TABLE = " CREATE TABLE " + TABLE_PRODUCTS + "("
             + KEY_BARCODE + " TEXT UNIQUE,"
@@ -149,7 +151,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Storing user details in database
      * */
-    public void addUser(String fname, String lname, String email, String phone) {
+    public void addUser(String fname, String lname, String email, String phone, String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -157,6 +159,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_LNAME, lname); // LastName
         values.put(KEY_EMAIL, email); // Email
         values.put(KEY_PHONE, phone); // Phone
+        values.put(KEY_UID, uid); // uid
 
         // Inserting Row
         db.insert(TABLE_LOGIN, null, values);
@@ -257,6 +260,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             user.put("lname", cursor.getString(1));
             user.put("email", cursor.getString(2));
             user.put("phone", cursor.getString(3));
+            user.put("uid", cursor.getString(4));
         }
         cursor.close();
         db.close();
@@ -273,7 +277,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Move to first row
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
-            Log.e("TAG",cursor.getString(0) + " " + cursor.getString(1));
+            //Log.e("TAG",cursor.getString(0) + " " + cursor.getString(1));
             category.put(cursor.getString(0),  cursor.getString(1));
         }
         cursor.close();

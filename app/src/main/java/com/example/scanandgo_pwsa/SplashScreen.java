@@ -50,6 +50,9 @@ public class SplashScreen extends AppCompatActivity {
         databaseHandler = new DatabaseHandler(getApplicationContext());
         db = FirebaseFirestore.getInstance();
         session = new SessionManager(getApplicationContext());
+        session.setFirstRun(false);
+        session.setShopSelect("SKLEP#2");
+
         SplashTask task = new SplashTask();
         task.execute();
         //StartAnimations();
@@ -145,7 +148,7 @@ public class SplashScreen extends AppCompatActivity {
                             databaseHandler.resetCategory();
                             StringBuilder sb = new StringBuilder();
                             for (QueryDocumentSnapshot document : value) {
-                                Log.e("TAG",document.getId());
+                                //Log.e("TAG",document.getId());
                                 List<String> group = (List<String>) document.get("specific");
 
                                 sb.append(document.getId() + "{");
@@ -163,7 +166,7 @@ public class SplashScreen extends AppCompatActivity {
                                 group.clear();
 
 
-                                Log.e("TAG",sb.toString());
+                                //Log.e("TAG",sb.toString());
 
                             }
                             databaseHandler.addCategory("Category", sb.toString());
@@ -172,35 +175,6 @@ public class SplashScreen extends AppCompatActivity {
 
 
             if(session.isShopSet()>-1) {
-//                db.collection("shops")
-//                        .document(session.isShopSelect())
-//                        .collection("products")
-//                        .get()
-//                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                if (task.isSuccessful()) {
-//                                    databaseHandler.resetProducts();
-//                                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                                        Log.d("SearchProduct", document.getId() + " => " + document.getData().get("name"));
-//                                        String name = (String) document.getData().get("name");
-//                                        String image = (String) document.getData().get("image");
-//                                        String price = String.valueOf(document.getData().get("price"));
-//                                        String barcode = (String) document.getData().get("barcode");
-//                                        String promoEnd = (String) document.getData().get("promoEnd");
-//                                        String promoStart = (String) document.getData().get("promoStart");
-//                                        String discount = (String) String.valueOf(document.getData().get("discount"));
-//                                        String quantity = (String) String.valueOf(document.getData().get("quantity"));
-//
-//                                        databaseHandler.addProduct(barcode, image, name, price,promoEnd,promoStart,discount,quantity);
-//
-//                                    }
-//                                    session.setProduct(true);
-//                                } else {
-//                                    Log.d("SearchProduct", "Error getting documents: ", task.getException());
-//                                }
-//                            }
-//                        });
                 db.collection("shops")
                         .document(session.isShopSelect())
                         .collection("products")
@@ -215,7 +189,7 @@ public class SplashScreen extends AppCompatActivity {
                                 databaseHandler.resetProducts();
                                 for (QueryDocumentSnapshot document : value) {
                                     if (document.get("name") != null) {
-                                        Log.e("TAG",document.getId() + " "+ document.getData());
+                                        //Log.e("TAG",document.getId() + " "+ document.getData());
                                         String name = (String) document.getData().get("name");
                                         String price = String.valueOf(document.getData().get("price"));
                                         String barcode = (String) document.getData().get("barcode");
@@ -226,8 +200,8 @@ public class SplashScreen extends AppCompatActivity {
                                         List<String> categories = (List<String>) document.get("category");
                                         String category1 = String.valueOf(categories.get(0));
                                         String category2 = String.valueOf(categories.get(1));
-                                        Log.e("CATEGORY1: ",category1);
-                                        Log.e("CATEGORY2: ",category2);
+                                        //Log.e("CATEGORY1: ",category1);
+                                        //Log.e("CATEGORY2: ",category2);
                                         databaseHandler.addProduct(barcode, name, price,promoEnd,promoStart,discount,quantity, category1, category2);
                                     }
                                 }
@@ -236,8 +210,6 @@ public class SplashScreen extends AppCompatActivity {
                         });
                 }
                 return null;
-
-
             }
         }
 }

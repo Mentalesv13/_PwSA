@@ -41,14 +41,14 @@ public class CustomArrayAdapter extends ArrayAdapter<String> {
         for (Map.Entry product : shoppingList.entrySet())
         {
             String barcode = (String) product.getKey();
-            Log.e("TAG",barcode);
+            //Log.e("TAG",barcode);
 
             if(sagList.get(barcode) == null)
             {
-                Log.e("TAG","Test");
+                //Log.e("TAG","Test");
                 com.example.scanandgo_pwsa.model.ShoppingList temp =
                         (com.example.scanandgo_pwsa.model.ShoppingList) product.getValue();
-                Log.e("TAG",temp.getProductName());
+                //Log.e("TAG",temp.getProductName());
                 moviesList.add(temp.getProductName());
             }
         }

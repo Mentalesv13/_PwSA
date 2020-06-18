@@ -13,7 +13,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,7 +45,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -287,7 +285,7 @@ public class MapsActivity extends FragmentActivity implements
                             databaseHandler.resetProducts();
                             for (QueryDocumentSnapshot document : value) {
                                 if (document.get("name") != null) {
-                                    Log.e("TAG",document.getId() + " "+ document.getData());
+                                    //Log.e("TAG",document.getId() + " "+ document.getData());
                                     String name = (String) document.getData().get("name");
                                     String price = String.valueOf(document.getData().get("price"));
                                     String barcode = (String) document.getData().get("barcode");
@@ -298,8 +296,8 @@ public class MapsActivity extends FragmentActivity implements
                                     List<String> categories = (List<String>) document.get("category");
                                     String category1 = String.valueOf(categories.get(0));
                                     String category2 = String.valueOf(categories.get(1));
-                                    Log.e("CATEGORY1: ",category1);
-                                    Log.e("CATEGORY2: ",category2);
+                                    //Log.e("CATEGORY1: ",category1);
+                                    //Log.e("CATEGORY2: ",category2);
                                     databaseHandler.addProduct(barcode, name, price,promoEnd,promoStart,discount,quantity, category1, category2);
                                 }
                             }
@@ -320,20 +318,26 @@ public class MapsActivity extends FragmentActivity implements
                 } else {
                     Bundle c = new Bundle();
                     c.putBoolean("select", true);
+                    c.putBoolean("confirm", false);
                     Intent intent = new Intent(MapsActivity.this, MainActivity.class);
                     intent.putExtras(c);
                     startActivity(intent);
                     MapsActivity.this.finish();
                 }
             }
-
-
-
             return null;
-
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        Bundle c = new Bundle();
+        c.putBoolean("select", true);
+        c.putBoolean("confirm", false);
+        Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+        intent.putExtras(c);
+        startActivity(intent);
+        MapsActivity.this.finish();
+    }
 
 
 

@@ -208,13 +208,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void populateItemRows(final ItemViewHolder viewHolder, int position) {
         String item = moviesList.get(position);
         viewHolder.tvItem.setText(item);
-        Log.e("TEST", item);
+        //Log.e("TEST", item);
         if (products.get(item.trim()) != null)
         {
             Product temp = products.get(item.trim());
 
-            Log.e("TEST", temp.getName());
-            Log.e("TEST", temp.getDiscount().toString());
+            //Log.e("TEST", temp.getName());
+            //Log.e("TEST", temp.getDiscount().toString());
 
             if (Double.parseDouble(temp.getDiscount().toString()) > 0) {
                 DateFormat df = new SimpleDateFormat("yyyy.MM.dd' 'HH:mm:ss");
@@ -242,7 +242,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         String tempString = "Promotions Ends ";
                         Date d4 = dfOld.parse(temp.getPromoEnd().split(" ")[0]);
                         String tempDate = dfNew.format(d4);
-                        Log.e("TAG", "test3");
+                        //Log.e("TAG", "test3");
                         viewHolder.promo.setText(tempString + tempDate);
 
                     } else {
@@ -266,7 +266,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             final RequestOptions requestOptions = new RequestOptions()
                     .placeholder(R.drawable.ic_placeholder)
                     .error(R.drawable.ic_placeholder);
-            Log.e(TAG, temp.getBarcode());
+            //Log.e(TAG, temp.getBarcode());
             storageReference.child("products/" + temp.getBarcode() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

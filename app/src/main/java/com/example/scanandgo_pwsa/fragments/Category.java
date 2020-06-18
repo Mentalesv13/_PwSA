@@ -93,7 +93,7 @@ public class Category extends Fragment {
         initScrollListener();
 
         for (Map.Entry mapElement : category.entrySet()) {
-            Log.e("TAG", (String) mapElement.getValue());
+            //Log.e("TAG", (String) mapElement.getValue());
             final LinearLayout llmain = new LinearLayout(getActivity().getBaseContext());
             final ToggleButton showAll = new ToggleButton(getActivity().getBaseContext());
             showAll.setText("Show all");
@@ -389,7 +389,7 @@ public class Category extends Fragment {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e("TAG", "TEST2");
+                    //Log.e("TAG", "TEST2");
                     rowsArrayList.remove(rowsArrayList.size() - 1);
                     int scrollPosition = rowsArrayList.size();
                     recyclerAdapter.notifyItemRemoved(scrollPosition);

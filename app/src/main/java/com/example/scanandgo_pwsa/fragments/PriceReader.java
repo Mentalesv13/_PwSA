@@ -122,7 +122,7 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
                 apply.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.e("TAG","click");
+                        //Log.e("TAG","click");
                         if(products.get(barcode.getText().toString().trim())!=null) {
                             showCustomLoadingDialog(barcode.getText().toString());
                         }

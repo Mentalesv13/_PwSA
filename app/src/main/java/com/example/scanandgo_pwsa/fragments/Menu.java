@@ -75,9 +75,17 @@ public class Menu extends Fragment {
         cvSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new SelectShop());
+                if (!sessionManager.isScanAndGoStarted()) {
+                    ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new SelectShop());
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"Your Scan&Go transcation in progress...",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"End it or Cancel to use 'Shop selection'!",Toast.LENGTH_LONG).show();
+                }
             }
         });
+
         cvScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,7 +171,14 @@ public class Menu extends Fragment {
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new SelectShop());
+                if (!sessionManager.isScanAndGoStarted()) {
+                    ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new SelectShop());
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"Your Scan&Go transcation in progress...",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"End it or Cancel to use 'Shop selection'!",Toast.LENGTH_LONG).show();
+                }
             }
         });
         btnScan.setOnClickListener(new View.OnClickListener() {
@@ -223,8 +238,8 @@ public class Menu extends Fragment {
                                             databaseHandler.resetLogin();
                                             mGoogleSignInClient.signOut();
                                             hello.setText("HELLO");
+                                            cvLogout.setVisibility(View.GONE);
                                             helloDesc.setText("Login to use all functionality of our service");
-                                            btnLogout.setVisibility(View.GONE);
                                             Toast.makeText(getContext(), "You are successfully logout.",
                                                     Toast.LENGTH_SHORT).show();
                                         }

@@ -3,7 +3,6 @@ package com.example.scanandgo_pwsa.fragments;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,7 +42,6 @@ import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.helper.SessionManager;
 import com.example.scanandgo_pwsa.model.ExampleItem;
 import com.example.scanandgo_pwsa.model.Shop;
-import com.example.scanandgo_pwsa.welcome.ShopSelectSignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
@@ -322,7 +319,7 @@ public class SelectShop extends Fragment implements View.OnClickListener {
                 double latitude = loc.getLatitude();
 
                 shopDistance.clear();
-                Log.e(TAG, "size: " + shopHashMap.size());
+                ////Log.e(TAG, "size: " + shopHashMap.size());
                 for (int i = 0; i < shopHashMap.size(); i++) {
                     Shop temp = shopHashMap.get(i);
 
@@ -335,7 +332,7 @@ public class SelectShop extends Fragment implements View.OnClickListener {
                     loc2.setLongitude(longitude);
 
                     double distanceInMeters = loc1.distanceTo(loc2);
-                    Log.e(TAG, i + " " + distanceInMeters);
+                    ////Log.e(TAG, i + " " + distanceInMeters);
                     shopDistance.put(i, distanceInMeters);
                 }
 
@@ -343,7 +340,7 @@ public class SelectShop extends Fragment implements View.OnClickListener {
                 exampleList.clear();
 
                 for (Map.Entry<Integer, Double> en : sortedDistance.entrySet()) {
-                    Log.e(TAG, String.valueOf(en.getKey()));
+                    ////Log.e(TAG, String.valueOf(en.getKey()));
                     Shop temp = shopHashMap.get(en.getKey());
                     double value = en.getValue()/1000.0;
                     exampleList.add(new ExampleItem(R.drawable.ic_home, temp.getName(),
@@ -461,7 +458,7 @@ public class SelectShop extends Fragment implements View.OnClickListener {
                             databaseHandler.resetProducts();
                             for (QueryDocumentSnapshot document : value) {
                                 if (document.get("name") != null) {
-                                    Log.e("TAG",document.getId() + " "+ document.getData());
+                                    ////Log.e("TAG",document.getId() + " "+ document.getData());
                                     String name = (String) document.getData().get("name");
                                     String price = String.valueOf(document.getData().get("price"));
                                     String barcode = (String) document.getData().get("barcode");
@@ -472,8 +469,8 @@ public class SelectShop extends Fragment implements View.OnClickListener {
                                     List<String> categories = (List<String>) document.get("category");
                                     String category1 = String.valueOf(categories.get(0));
                                     String category2 = String.valueOf(categories.get(1));
-                                    Log.e("CATEGORY1: ",category1);
-                                    Log.e("CATEGORY2: ",category2);
+                                    ////Log.e("CATEGORY1: ",category1);
+                                    ////Log.e("CATEGORY2: ",category2);
                                     databaseHandler.addProduct(barcode, name, price,promoEnd,promoStart,discount,quantity, category1, category2);
                                 }
                             }

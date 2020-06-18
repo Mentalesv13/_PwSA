@@ -142,7 +142,7 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
                 apply.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.e("TAG","click");
+                        //Log.e("TAG","click");
                         if(products.get(barcode.getText().toString().trim())!=null) {
                             alertDialog.dismiss();
                             dialog.cancel();

@@ -260,7 +260,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.ic_placeholder)
                 .error(R.drawable.ic_placeholder);
-        Log.e(TAG,temp.getBarcode());
+        //Log.e(TAG,temp.getBarcode());
         storageReference.child("products/"+temp.getBarcode()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

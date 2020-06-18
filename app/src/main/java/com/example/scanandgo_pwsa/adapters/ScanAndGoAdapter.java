@@ -272,7 +272,7 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     final RequestOptions requestOptions = new RequestOptions()
                             .placeholder(R.drawable.ic_placeholder)
                             .error(R.drawable.ic_placeholder);
-                    Log.e(TAG, temp.getBarcode());
+                    //Log.e(TAG, temp.getBarcode());
                     storageReference.child("products/" + temp.getBarcode() + ".jpg").getDownloadUrl()
                             .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
@@ -531,7 +531,7 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         public void onClick(View v) {
                             //showCustomLoadingDialog();
                             if (!String.valueOf(editAmount.getText()).equals("")) {
-                                Log.e("TAG", tempSL[0].getBarcode());
+                                //Log.e("TAG", tempSL[0].getBarcode());
                                 databaseHandler.updateScanAndGoList(tempSL[0].getProductName(), String.valueOf(editAmount.getText()), product,temp.getPrice().toString());
 
                                 refreshAdapter();
