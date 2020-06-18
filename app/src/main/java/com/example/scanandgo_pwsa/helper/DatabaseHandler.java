@@ -15,7 +15,6 @@ import java.util.HashMap;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
@@ -58,8 +57,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_SCODE = "shopcode";
     private static final String KEY_SHOPID = "shopID";
 
-    //Shoping List Table Columns name
-
+    //Shopping List Table Columns name
     private static final String KEY_LIST_PNAME = "productname";
     private static final String KEY_AMOUNT = "amount";
     private static final String KEY_BOUGHT = "isBought";
@@ -67,12 +65,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_SLPRICE = "slprice";
 
     //ScanAndGo List Table Columns name
-
     private static final String KEY_SAG_LIST_PNAME = "sag_productname";
     private static final String KEY_SAG_AMOUNT = "sag_amount";
     private static final String KEY_SAG_SLBARCODE = "sag_slbarcode";
     private static final String KEY_SAG_SLPRICE = "sag_slprice";
-
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -121,7 +117,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + KEY_CATEGORY_MAIN + " TEXT,"
             + KEY_CATEGORY_SEC + " TEXT" + ")";
 
-    // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_LOGIN_TABLE);
@@ -132,7 +127,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_CATEGORY_TABLE);
     }
 
-    // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
@@ -190,7 +184,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-
     public void addProduct(String barcode, String pName, String price, String promoEnd, String promoStart, String discount, String quantity, String category1, String category2) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -239,11 +232,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-
-    /**
-     * Getting user data from database
-     * */
-
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         String selectQuery = "SELECT  * FROM " + TABLE_LOGIN;
@@ -281,7 +269,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return category
         return category;
     }
-
 
     public HashMap<String, Product> getProductsDetail(){
         HashMap<String, Product> products = new HashMap<>();
@@ -438,32 +425,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
-    public HashMap<String, ShoppingList> getShopList(){
-        HashMap<String, ShoppingList> list = new HashMap<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_LIST;
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
-        cursor.moveToFirst();
-        do
-        {
-            if(cursor.getCount() > 0) {
-                String name = cursor.getString(0);
-                int amount = Integer.parseInt(cursor.getString(1));
-                boolean isBought = Boolean.parseBoolean(cursor.getString(2));
-                String barcode = cursor.getString(3);
-                String price = cursor.getString(4);
-
-                list.put(name, new ShoppingList(name,amount,isBought,barcode,price));
-            }
-        } while (cursor.moveToNext());
-        cursor.close();
-        db.close();
-        // return user
-        return list;
-    }
-
     public HashMap<String, ShoppingList> getScanAndGoShoppingList(){
         HashMap<String, ShoppingList> list = new HashMap<>();
         String selectQuery = "SELECT  * FROM " + TABLE_SAG_LIST;
@@ -488,37 +449,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return user
         return list;
     }
-
-    public HashMap<String, ShoppingList> getScanAndGoShopList(){
-        HashMap<String, ShoppingList> list = new HashMap<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_SAG_LIST;
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
-        cursor.moveToFirst();
-        do
-        {
-            if(cursor.getCount() > 0) {
-                String name = cursor.getString(0);
-                int amount = Integer.parseInt(cursor.getString(1));
-                String barcode = cursor.getString(2);
-                String price = cursor.getString(3);
-
-                list.put(name, new ShoppingList(name,amount,barcode,price));
-            }
-        } while (cursor.moveToNext());
-        cursor.close();
-        db.close();
-        // return user
-        return list;
-    }
-
-
-    private static boolean containsIgnoreCase(String str, String subString) {
-        return str.toLowerCase().contains(subString.toLowerCase());
-    }
-
 
     public void updateIsBought(String name, String isBought, String amount, String barcode, String price)
     {

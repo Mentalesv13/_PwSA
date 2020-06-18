@@ -51,7 +51,6 @@ public class ShopSelection extends Fragment implements ZXingScannerView.ResultHa
     private FirebaseFirestore db;
     private SessionManager sessionManager;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shop_selection, container, false);
@@ -181,20 +180,5 @@ public class ShopSelection extends Fragment implements ZXingScannerView.ResultHa
             }
         }, 500);
     }
-    private void showCustomLoadingDialog() {
-
-        loadingDialog.showDialog();
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadingDialog.hideDialog();
-                mScannerView.resumeCameraPreview(ShopSelection.this);
-            }
-        }, 1000);
-    }
-
-
 
 }

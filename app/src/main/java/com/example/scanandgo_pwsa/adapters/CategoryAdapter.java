@@ -589,6 +589,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }, 500);
     }
+
     private void refreshAdapter() {
         shoppingList = databaseHandler.getShoppingList();
         //products = databaseHandler.getProductsDetail();

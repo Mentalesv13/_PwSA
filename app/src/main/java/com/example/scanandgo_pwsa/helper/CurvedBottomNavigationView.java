@@ -15,7 +15,6 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
     private Path mPath;
     private Paint mPaint;
 
-    /** the CURVE_CIRCLE_RADIUS represent the radius of the fab button */
     private int CURVE_CIRCLE_RADIUS=56 ;
 
 
@@ -60,7 +59,6 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
         mPaint.setColor(Color.WHITE);
         setBackgroundColor(Color.TRANSPARENT);
     }
-
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -109,7 +107,6 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
         mPath.lineTo(0, mNavigationBarHeight);
         mPath.close();
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {

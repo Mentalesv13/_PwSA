@@ -195,15 +195,6 @@ public class SearchProduct extends Fragment {
 
     }
 
-    private void populateData() {
-        int i = 0;
-        rowsArrayList.clear();
-        while (i < 10) {
-            rowsArrayList.add(productsList.get(i));
-            i++;
-        }
-    }
-
     private void loadMore() {
         //Log.e("TAG", "TEST1");
         if (searchActive==0) {
@@ -268,6 +259,5 @@ public class SearchProduct extends Fragment {
         }
 
     }
-
 
 }

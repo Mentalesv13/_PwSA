@@ -339,7 +339,5 @@ public class MapsActivity extends FragmentActivity implements
         MapsActivity.this.finish();
     }
 
-
-
 }
 

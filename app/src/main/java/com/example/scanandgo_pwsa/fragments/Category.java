@@ -47,7 +47,6 @@ public class Category extends Fragment {
     private List<String> rowsArrayList;
     private ConstraintLayout noProduct;
     private HorizontalScrollView categorySecScrollView, categoryMainScrollView;
-    private ConstraintLayout cl;
     private HashMap<String, Product> products;
     private HashMap<String, String> category;
     private String[] categorie;
@@ -72,7 +71,6 @@ public class Category extends Fragment {
         category = databaseHandler.getCategoryDetails();
         categorySecScrollView = view.findViewById(R.id.hsv_category_secondary);
         categoryMainScrollView = view.findViewById(R.id.hsv_category_main);
-        cl = view.findViewById(R.id.cl);
         categorySecScrollView.setVisibility(View.GONE);
         noProduct.setVisibility(View.GONE);
         loadingDialog = new LoadingDialog(getActivity());
@@ -435,6 +433,5 @@ public class Category extends Fragment {
             }
         }, 1000);
     }
-
 
 }

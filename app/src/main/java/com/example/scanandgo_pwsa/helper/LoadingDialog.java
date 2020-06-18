@@ -23,8 +23,6 @@ public class LoadingDialog {
         this.activity = activity;
     }
 
-
-
     public void showDialog() {
 
         dialog  = new Dialog(activity);

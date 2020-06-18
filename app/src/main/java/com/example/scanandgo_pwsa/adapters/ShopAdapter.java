@@ -29,10 +29,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ExampleViewHol
         void onItemClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
-    }
-
     static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
         public TextView mTextView1;

@@ -179,7 +179,6 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
         mScannerView.stopCamera();
     }
 
-
     private void buyLayout(final String product) {
         final Product temp = products.get(product.trim());
 
@@ -478,6 +477,7 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
             }
         }, 500);
     }
+
     private void showCustomLoadingDialog() {
 
         loadingDialog.showDialog();

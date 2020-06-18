@@ -59,15 +59,9 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void StartAnimations() {
-        Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
-//        anim.reset();
-//        ConstraintLayout l = findViewById(R.id.lin_lay);
-//        l.clearAnimation();
-//        l.startAnimation(anim);
+        Animation anim;
 
         ConstraintLayout constraintLayout = findViewById(R.id.lin_lay);
-//        constraintLayout.clearAnimation();
-//        constraintLayout.startAnimation(anim);
         AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
         animationDrawable.setEnterFadeDuration(1000);
         animationDrawable.setExitFadeDuration(4000);

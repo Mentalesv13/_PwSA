@@ -28,10 +28,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -48,7 +52,6 @@ public class PurchaseHistory extends Fragment {
     private FloatingActionButton btnBack;
     private FirebaseAuth mAuth;
     View view;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,7 +77,6 @@ public class PurchaseHistory extends Fragment {
 return view;
     }
 
-    // here we maintain songsList and songs names
     private int addProduct(String shopName, String productName,  String price, String date, String total, String shopAddress, String amount) {
 
         int groupPosition = 0;
@@ -240,7 +242,6 @@ return view;
         }
     }
 
-
     private void loadData() {
 
         DocumentReference docRef = db.collection("bills").document(mAuth.getCurrentUser().getUid().trim());
@@ -251,6 +252,9 @@ return view;
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+                        DecimalFormat decf = new DecimalFormat("#0", symbols);
+                        decf.setRoundingMode(RoundingMode.HALF_UP);
                         //Log.e("TAG", document.getData().toString());
                         List<Map> categories = (List<Map>) document.get("bill");
                         if (categories.size() > 0) {
@@ -273,8 +277,7 @@ return view;
                                             bill.get("date").toString().trim(),
                                             bill.get("total").toString(),
                                             bill.get("shopAddress").toString(),
-                                            product.get("amount").toString());
-
+                                            decf.format(product.get("amount")));
                                 }
                             }
                         }
@@ -311,6 +314,5 @@ return view;
             }
         });
     }
-
 
 }

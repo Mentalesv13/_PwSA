@@ -52,9 +52,6 @@ public class ShoppingList extends Fragment {
     private Double discountValue=0.0, totalProductsValue=0.0;
     private ImageView clearList;
 
-
-
-
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

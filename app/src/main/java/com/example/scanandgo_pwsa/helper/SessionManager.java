@@ -22,9 +22,6 @@ public class SessionManager {
     private static final String KEY_IS_FIRSTRUN = "isFirstRun";
     private static final String KEY_IS_SHOPSET = "isShopSet";
     private static final String KEY_IS_SHOPSELECT = "isShopSelect";
-    private static final String KEY_IS_SHOPLIST = "isShopList";
-    private static final String KEY_IS_SEARCHON = "isSearchOn";
-    private static final String KEY_IS_SCANSHOPSET = "isScanShopSet";
     private static final String KEY_IS_SCANSHOPSELECT = "isScanShopSelect";
     private static final String KEY_IS_SCANANDGOSTARTED = "isScanAndGoStarted";
 
@@ -59,32 +56,6 @@ public class SessionManager {
         editor.commit();
 
         Log.d(TAG, "Shop select modified!");
-    }
-
-    public Boolean isShopList(){
-        return pref.getBoolean(KEY_IS_SHOPLIST, false);
-    }
-
-    public void setShopList(Boolean isShopList) {
-
-        editor.putBoolean(KEY_IS_SHOPLIST, isShopList);
-
-        editor.commit();
-
-        Log.d(TAG, "Shop select modified!");
-    }
-
-
-    public void setScanShop(boolean isShopSet){
-        editor.putBoolean(KEY_IS_SCANSHOPSET, isShopSet);
-
-        editor.commit();
-
-        Log.d(TAG, "Shop set modified!");
-    }
-
-    public boolean isScanShopSet(){
-        return pref.getBoolean(KEY_IS_SCANSHOPSET, false);
     }
 
     public void setShop(int isShopSet){
@@ -125,7 +96,6 @@ public class SessionManager {
         return pref.getBoolean(KEY_IS_LOGGEDIN, false);
     }
 
-
     public void setProduct(boolean isProductSet) {
 
         editor.putBoolean(KEY_IS_PRODUCTSET, isProductSet);
@@ -133,23 +103,6 @@ public class SessionManager {
         editor.commit();
 
         Log.d(TAG, "Product session modified!");
-    }
-
-    public boolean isProductSet(){
-        return pref.getBoolean(KEY_IS_PRODUCTSET, false);
-    }
-
-    public boolean isSearchOn() {
-        return pref.getBoolean(KEY_IS_SEARCHON, false);
-    }
-
-    public void setSearchOn(boolean isSearchOn) {
-
-        editor.putBoolean(KEY_IS_SEARCHON, isSearchOn);
-
-        editor.commit();
-
-        Log.d(TAG, "Search session modified!");
     }
 
     public boolean isScanAndGoStarted() {

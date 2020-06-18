@@ -128,48 +128,6 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return moviesListAll.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
-//    Filter myFilter = new Filter() {
-//
-//        //Automatic on background thread
-//        @Override
-//        protected FilterResults performFiltering(CharSequence charSequence) {
-//
-//            List<String> filteredList = new ArrayList<>();
-//
-//            if (charSequence == null || charSequence.length() == 0) {
-//                filteredList.addAll(moviesListAllAll);
-//            } else {
-//                for (String movie: moviesListAllAll) {
-//                    if (movie.toLowerCase().contains(charSequence.toString().toLowerCase())) {
-//                        filteredList.add(movie);
-//                    }
-//                }
-//            }
-//
-//            FilterResults filterResults = new FilterResults();
-//            filterResults.values = filteredList;
-//            return filterResults;
-//        }
-//
-//
-//        //Automatic on UI thread
-//
-//        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//            moviesListAll.clear();
-//            //moviesListAll.addAll((Collection<? extends String>) filterResults.values);
-//            ArrayList <String> searchList = new ArrayList<>();
-//            searchList.addAll((Collection<? extends String>) filterResults.values);
-//            int i = 0;
-//            while (i < 20) {
-//                if (i < searchList.size()){
-//                moviesListAll.add(searchList.get(i));
-//                i++;}
-//                else {break;}
-//            }
-//            notifyDataSetChanged();
-//        }
-//    };
-
     private class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvItem, price, oldPrice, zloty1, zloty2, amount, toPay;
