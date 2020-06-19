@@ -32,7 +32,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/noAnimTheme" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".helper.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -47,7 +47,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".maps.MapsActivity"
             android:screenOrientation="portrait"
             android:label="mapsactivity">
 

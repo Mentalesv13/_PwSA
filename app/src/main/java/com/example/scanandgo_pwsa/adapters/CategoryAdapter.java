@@ -30,9 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.scanandgo_pwsa.MainActivity;
 import com.example.scanandgo_pwsa.R;
-import com.example.scanandgo_pwsa.fragments.SearchProduct;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
 import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.model.Product;

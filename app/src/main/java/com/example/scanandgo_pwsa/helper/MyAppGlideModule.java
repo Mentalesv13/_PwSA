@@ -1,4 +1,4 @@
-package com.example.scanandgo_pwsa;
+package com.example.scanandgo_pwsa.helper;
 
 import android.content.Context;
 

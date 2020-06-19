@@ -301,9 +301,7 @@ public class Profile extends Fragment {
                     (account.getDisplayName()).split(" ")[0],
                     (account.getDisplayName()).split(" ")[1],
                     account.getEmail(),
-                    account.getId());
-            Log.e(TAG,account.getId());
-            Log.e(TAG,mAuth.getUid());
+                    mAuth.getUid());
 
             sessionManager.setLogin(true);
             OFF.setVisibility(View.GONE);

@@ -77,6 +77,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -767,13 +768,31 @@ public class ScanAndGo extends Fragment {
                             JSONObject jsonProduct;
                             for (Map.Entry mapElement : sagList.entrySet()) {
                                 jsonProduct = new JSONObject();
-                                com.example.scanandgo_pwsa.model.ShoppingList temp =
+                                final com.example.scanandgo_pwsa.model.ShoppingList temp =
                                         (com.example.scanandgo_pwsa.model.ShoppingList) mapElement.getValue();
 
                                 if(products.get(temp.getBarcode())!=null) {
                                     Product temporary = products.get(temp.getBarcode());
 
                                     if (temporary != null) {
+
+
+                                        db.collection("shops").document(databaseHandler.getShopDetails().get("shopID")).collection("products")
+                                            .whereEqualTo("barcode", temp.getBarcode()).get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            DocumentReference documentReference = db.collection("shops").document(databaseHandler.getShopDetails().get("shopID")).collection("products").document(document.getId());
+                                                            int ultima= ((Long) document.get("quantity")).intValue();
+                                                            documentReference.update("quantity",(ultima-temp.getAmount()));
+
+                                                        }
+                                                    }
+                                                }
+                                            });
+
                                         jsonProduct.put("amount",temp.getAmount());
                                         jsonProduct.put("name",temporary.getName());
 
@@ -822,11 +841,11 @@ public class ScanAndGo extends Fragment {
 
                             jsonObject.put("products",jsonArray);
 
-                            DocumentReference washingtonRef = db.collection("bills").document(databaseHandler.getUserDetails().get("uid"));
-
+                            DocumentReference billRef = db.collection("bills").document(databaseHandler.getUserDetails().get("uid"));
+                            Log.e("TAG", databaseHandler.getUserDetails().get("uid"));
                             Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
-                            washingtonRef.update("bill", FieldValue.arrayUnion(jsonMap));
+                            billRef.update("bill", FieldValue.arrayUnion(jsonMap));
 
 
                         } catch (JSONException e) {
@@ -890,9 +909,7 @@ public class ScanAndGo extends Fragment {
                     (account.getDisplayName()).split(" ")[0],
                     (account.getDisplayName()).split(" ")[1],
                     account.getEmail(),
-                    account.getId());
-            Log.e(TAG,account.getId());
-            Log.e(TAG,mAuth.getUid());
+                    mAuth.getUid());
 
             sessionManager.setLogin(true);
             welcome.setVisibility(View.GONE);

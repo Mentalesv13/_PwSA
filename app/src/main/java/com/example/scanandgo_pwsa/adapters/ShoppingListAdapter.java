@@ -298,34 +298,33 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         else
         {
-                //viewHolder.itemView.setClickable(false);
-            if(temporary != null) {
-                viewHolder.tvAccessible.setVisibility(View.VISIBLE);
-                viewHolder.productInfo.setAlpha(0.65f);
-                viewHolder.checked.setAlpha(0.65f);
-                viewHolder.checked.setEnabled(false);
-                viewHolder.tvItem.setText(temporary.getProductName());
-                viewHolder.price.setText(temporary.getPrice());
-                viewHolder.amount.setText(String.valueOf(temporary.getAmount()));
-                viewHolder.oldPrice.setVisibility(View.GONE);
-                viewHolder.zloty2.setVisibility(View.GONE);
-                viewHolder.promo.setVisibility(View.GONE);
-                viewHolder.barcodes.setVisibility(View.GONE);
-                viewHolder.toPay.setText(decf.format(Double.valueOf(temporary.getPrice()) * temporary.getAmount()));
+        if(temporary != null) {
+            viewHolder.tvAccessible.setVisibility(View.VISIBLE);
+            viewHolder.productInfo.setAlpha(0.65f);
+            viewHolder.checked.setAlpha(0.65f);
+            viewHolder.checked.setEnabled(false);
+            viewHolder.tvItem.setText(temporary.getProductName());
+            viewHolder.price.setText(temporary.getPrice());
+            viewHolder.amount.setText(String.valueOf(temporary.getAmount()));
+            viewHolder.oldPrice.setVisibility(View.GONE);
+            viewHolder.zloty2.setVisibility(View.GONE);
+            viewHolder.promo.setVisibility(View.GONE);
+            viewHolder.barcodes.setVisibility(View.GONE);
+            viewHolder.toPay.setText(decf.format(Double.valueOf(temporary.getPrice()) * temporary.getAmount()));
 
-                final RequestOptions requestOptions = new RequestOptions()
-                        .placeholder(R.drawable.ic_placeholder)
-                        .error(R.drawable.ic_placeholder);
-                storageReference.child("products/" + temporary.getBarcode() + ".jpg").getDownloadUrl()
-                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Glide.with(viewHolder.ivItem.getContext())
-                                        .load(uri.toString())
-                                        .apply(requestOptions)
-                                        .into(viewHolder.ivItem);
-                            }
-                        });
+            final RequestOptions requestOptions = new RequestOptions()
+                    .placeholder(R.drawable.ic_placeholder)
+                    .error(R.drawable.ic_placeholder);
+            storageReference.child("products/" + temporary.getBarcode() + ".jpg").getDownloadUrl()
+                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(viewHolder.ivItem.getContext())
+                                    .load(uri.toString())
+                                    .apply(requestOptions)
+                                    .into(viewHolder.ivItem);
+                        }
+                    });
             }
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);

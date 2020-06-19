@@ -548,7 +548,7 @@
         android:id="@+id/scanProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="65dp"
+        android:layout_marginBottom="72dp"
         android:background="@color/cardview_light_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -558,12 +558,17 @@
             android:id="@+id/addProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginBottom="2dp"
             android:clickable="true"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:src="@drawable/scanicon"
             app:backgroundTint="@color/colorRipple"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:maxImageSize="40dp" />
 
         <TextView

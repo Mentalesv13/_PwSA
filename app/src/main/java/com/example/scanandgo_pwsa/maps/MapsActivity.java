@@ -1,4 +1,4 @@
-package com.example.scanandgo_pwsa;
+package com.example.scanandgo_pwsa.maps;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -20,6 +20,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.scanandgo_pwsa.MainActivity;
+import com.example.scanandgo_pwsa.R;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
 import com.example.scanandgo_pwsa.helper.SessionManager;
 import com.example.scanandgo_pwsa.welcome.ShopSelectSignIn;

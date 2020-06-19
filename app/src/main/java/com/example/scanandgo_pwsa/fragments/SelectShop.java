@@ -34,7 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.scanandgo_pwsa.MainActivity;
-import com.example.scanandgo_pwsa.MapsActivity;
+import com.example.scanandgo_pwsa.maps.MapsActivity;
 import com.example.scanandgo_pwsa.R;
 import com.example.scanandgo_pwsa.adapters.ShopAdapter;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;

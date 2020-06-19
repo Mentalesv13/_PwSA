@@ -1,4 +1,4 @@
-package com.example.scanandgo_pwsa;
+package com.example.scanandgo_pwsa.helper;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,8 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.scanandgo_pwsa.helper.DatabaseHandler;
-import com.example.scanandgo_pwsa.helper.SessionManager;
+import com.example.scanandgo_pwsa.MainActivity;
+import com.example.scanandgo_pwsa.R;
 import com.example.scanandgo_pwsa.welcome.FirstRun;
 
 import com.google.firebase.firestore.EventListener;
@@ -26,7 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

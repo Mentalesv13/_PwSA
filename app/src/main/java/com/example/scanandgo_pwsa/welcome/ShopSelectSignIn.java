@@ -30,11 +30,10 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.scanandgo_pwsa.MainActivity;
-import com.example.scanandgo_pwsa.MapsActivity;
+import com.example.scanandgo_pwsa.maps.MapsActivity;
 import com.example.scanandgo_pwsa.R;
 import com.example.scanandgo_pwsa.adapters.ShopAdapter;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
@@ -60,12 +59,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -552,9 +545,7 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                     (account.getDisplayName()).split(" ")[0],
                     (account.getDisplayName()).split(" ")[1],
                     account.getEmail(),
-                    account.getId());
-            Log.e(TAG,account.getId());
-            Log.e(TAG,mAuth.getUid());
+                    mAuth.getUid());
 
             sessionManager.setLogin(true);
             sessionManager.setFirstRun(false);
