@@ -114,7 +114,6 @@ import java.util.Objects;
 public class ScanAndGo extends Fragment {
     private ConstraintLayout welcome, start, scanProduct, shopSelection, currentShop, productL;
 
-    //GPS
     private Button btnScanCode, btnGPS, btnStart;
     private boolean flag, localizationSet;
 
@@ -122,11 +121,9 @@ public class ScanAndGo extends Fragment {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    //helper
     private Context context;
     private LoadingDialog loadingDialog;
 
-    //Sign In
     private GoogleSignInClient mGoogleSignInClient;
     private String TAG = "ScanAndGo";
     private FirebaseAuth mAuth;
@@ -140,7 +137,6 @@ public class ScanAndGo extends Fragment {
     private CardView cardViewStart;
     private ImageView cartCancel, cartEnd;
 
-    //Scan&Go
     private RecyclerView recyclerView;
     private List<String> productsList;
     private TextView discount, totalProducts, totalPrice;
@@ -150,7 +146,6 @@ public class ScanAndGo extends Fragment {
     private Double discountValue=0.0, totalProductsValue=0.0;
     private FloatingActionButton addProduct;
 
-    //Session, localStorage
     private SessionManager sessionManager;
     private DatabaseHandler databaseHandler;
 
@@ -161,7 +156,7 @@ public class ScanAndGo extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        //View
+
         ((MainActivity)getActivity()).setToolbar(false);
         View view = inflater.inflate(R.layout.fragment_scan_and_go, container, false);
         databaseHandler = new DatabaseHandler(Objects.requireNonNull(getActivity()).getApplicationContext());
@@ -185,8 +180,8 @@ public class ScanAndGo extends Fragment {
                 }
                 else
                 {
-                    Toast.makeText(getActivity(),"It seems that your cart was empty!",Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity(),"Add some products to continue! ",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.cartwasempty,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.productstocontinue,Toast.LENGTH_LONG).show();
                     cartEnd.setEnabled(false);
                     ColorMatrix matrix = new ColorMatrix();
                     matrix.setSaturation(0.1f);
@@ -218,7 +213,6 @@ public class ScanAndGo extends Fragment {
         currentShop = view.findViewById(R.id.currentShop);
         btnScanCode = view.findViewById(R.id.btnScanCode);
         cardViewStart = view.findViewById(R.id.cardViewStart);
-
 
         products = new HashMap<>();
         products = databaseHandler.getProductsDetails();
@@ -276,9 +270,8 @@ public class ScanAndGo extends Fragment {
 
         totalPrice.setText(decf.format(Double.parseDouble(decf.format(totalProductsValue))-
                 Double.parseDouble(decf.format(discountValue))));
-        discount.setText("- " + decf.format(discountValue));
+        discount.setText(decf.format(discountValue));
         totalProducts.setText(decf.format(totalProductsValue));
-
 
         initAdapter();
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(Objects.requireNonNull(getActivity())
@@ -316,10 +309,10 @@ public class ScanAndGo extends Fragment {
                 @Override
                 public void onClick(View v) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setMessage("Are you sure want to cancel Scan&Go transaction?")
+                    builder.setMessage(getString(R.string.CancelScanAndGo))
                             .setCancelable(false)
-                            .setTitle("** Transaction cancel confirmation **")
-                            .setPositiveButton("Yes",
+                            .setTitle(getString(R.string.Transactioncancelconfirmation))
+                            .setPositiveButton(getString(R.string.yes),
                                     new DialogInterface.OnClickListener() {
                                         @SuppressLint("SetTextI18n")
                                         public void onClick(DialogInterface dialog, int id)
@@ -340,11 +333,11 @@ public class ScanAndGo extends Fragment {
                                             cartCancel.setVisibility(View.GONE);
                                             cartEnd.setVisibility(View.GONE);
                                             sessionManager.setScanAndGoStarted(false);
-                                            Toast.makeText(getContext(),"Transaction canceled.",
+                                            Toast.makeText(getContext(), R.string.Transactioncanceled,
                                                     Toast.LENGTH_SHORT).show();
                                         }
                                     })
-                            .setNegativeButton("No",
+                            .setNegativeButton(getString(R.string.no),
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // cancel the dialog box
@@ -436,7 +429,7 @@ public class ScanAndGo extends Fragment {
                                     .GPS_PROVIDER, 5000, 10, locationListener);
 
                         } else {
-                            alertbox("Gps Status!!", "Your GPS is: OFF");
+                            alertbox(getString(R.string.GpsStatus), getString(R.string.YourGPSisOFF));
                             locationListener = null;
                         }
                     }
@@ -510,6 +503,7 @@ public class ScanAndGo extends Fragment {
 
             if(sagList.get(barcode) == null)
             {
+                Log.e("Tag",String.valueOf(products.get(barcode)));
                 if (products.get(barcode) != null ) {
                     isListComplete = true;
                     //Log.e("TAG", "Test");
@@ -517,7 +511,7 @@ public class ScanAndGo extends Fragment {
                             (com.example.scanandgo_pwsa.model.ShoppingList) product.getValue();
                     //Log.e("TAG", temp.getProductName());
                     final TextView textView = new TextView(getActivity().getBaseContext());
-                    textView.setText(temp.getProductName() + " " + temp.getAmount() + "pcs.");
+                    textView.setText(temp.getProductName() + " " + temp.getAmount() + " " + getString(R.string.pcs));
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
                     listView.addView(textView);
@@ -587,14 +581,12 @@ public class ScanAndGo extends Fragment {
         TextView totalPrice = dialogView.findViewById(R.id.totalPrice);
         TextView totalProducts = dialogView.findViewById(R.id.totalProducts);
 
-
-
         sagList = databaseHandler.getScanAndGoShoppingList();
         shoppingList = databaseHandler.getShoppingList();
 
         totalPrice.setText(decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
                 Double.parseDouble(decf.format(discountValue))));
-        discount.setText("- " + decf.format(discountValue));
+        discount.setText(decf.format(discountValue));
         totalProducts.setText(decf.format(totalProductsValue));
             dialogBuilder.setView(dialogView);
             dialogBuilder.setCancelable(true);
@@ -616,20 +608,21 @@ public class ScanAndGo extends Fragment {
         DecimalFormat decf = new DecimalFormat("#####0.00", symbols);
         decf.setRoundingMode(RoundingMode.HALF_UP);
 
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
-                Double.parseDouble(decf.format(discountValue)))), "PLN", "Scan&Go payment",
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(decf.format(Double.parseDouble(decf.format(totalProductsValue/3.75)) -
+                Double.parseDouble(decf.format(discountValue/3.75)))), "USD", "Scan&Go payment",
                 PayPalPayment.PAYMENT_INTENT_SALE);
 
-        //Creating Paypal Payment activity intent
+        payment.payeeEmail("garbalinski1@gmail.com");
+
+        //Creating PayPal Payment activity intent
         Intent intent = new Intent(getActivity(), PaymentActivity.class);
 
-        //putting the paypal configuration to the intent
+        //Putting the PayPal configuration to the intent
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
 
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
 
         //Starting the intent activity for result
-        //the request code will be used on the method onActivityResult
         startActivityForResult(intent, PAYPAL_REQUEST_CODE);
     }
 
@@ -698,7 +691,7 @@ public class ScanAndGo extends Fragment {
             }
             totalPrice.setText(decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
                     Double.parseDouble(decf.format(discountValue))));
-            discount.setText("- " + decf.format(discountValue));
+            discount.setText(decf.format(discountValue));
             totalProducts.setText(decf.format(totalProductsValue));
         }
     }
@@ -717,10 +710,7 @@ public class ScanAndGo extends Fragment {
         }
 
         if (requestCode == PAYPAL_REQUEST_CODE) {
-
-            //If the result is OK i.e. user has not canceled the payment
             if (resultCode == Activity.RESULT_OK) {
-                //Getting the payment confirmation
 
                 databaseHandler.resetShopAndGoList();
                 sessionManager.setScanAndGoStarted(false);
@@ -741,8 +731,8 @@ public class ScanAndGo extends Fragment {
                                 .putExtra("PaymentDetails", paymentDetails)
                                 .putExtra("confirm", true)
                                 .putExtra("select", false)
-                                .putExtra("PaymentAmount", decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
-                                        Double.parseDouble(decf.format(discountValue)))));
+                                .putExtra("PaymentAmount", decf.format(Double.parseDouble(decf.format(totalProductsValue/3.75)) -
+                                        Double.parseDouble(decf.format(discountValue/3.75)))));
 
 
                         JSONObject jsonDetails = new JSONObject(paymentDetails);
@@ -775,8 +765,6 @@ public class ScanAndGo extends Fragment {
                                     Product temporary = products.get(temp.getBarcode());
 
                                     if (temporary != null) {
-
-
                                         db.collection("shops").document(databaseHandler.getShopDetails().get("shopID")).collection("products")
                                             .whereEqualTo("barcode", temp.getBarcode()).get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -842,7 +830,7 @@ public class ScanAndGo extends Fragment {
                             jsonObject.put("products",jsonArray);
 
                             DocumentReference billRef = db.collection("bills").document(databaseHandler.getUserDetails().get("uid"));
-                            Log.e("TAG", databaseHandler.getUserDetails().get("uid"));
+                            //Log.e("TAG", databaseHandler.getUserDetails().get("uid"));
                             Map<String, Object> jsonMap = new Gson().fromJson(jsonObject.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
                             billRef.update("bill", FieldValue.arrayUnion(jsonMap));
@@ -854,7 +842,7 @@ public class ScanAndGo extends Fragment {
 
 
                     } catch (JSONException e) {
-                        //Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                        //Log.e("paymentExample", "a: ", e);
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -869,11 +857,11 @@ public class ScanAndGo extends Fragment {
         try {
 
             GoogleSignInAccount acc = completedTask.getResult(ApiException.class);
-            Toast.makeText(getContext(), "Signed In Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.SignInSucces, Toast.LENGTH_SHORT).show();
             welcome.setVisibility(View.GONE);
             FirebaseGoogleAuth(acc);
         } catch (ApiException e) {
-            Toast.makeText(getContext(), "Sign In Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.SignInFail, Toast.LENGTH_SHORT).show();
             FirebaseGoogleAuth(null);
         }
     }
@@ -886,18 +874,18 @@ public class ScanAndGo extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.Successful, Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         welcome.setVisibility(View.GONE);
                         updateUI(user);
                     } else {
-                        Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
                 }
             });
         } else {
-            Toast.makeText(getContext(), "acc failed", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "acc failed", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -939,10 +927,10 @@ public class ScanAndGo extends Fragment {
 
     private void alertbox(String title, String mymessage) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("Your Device's GPS is Disable")
+        builder.setMessage(getString(R.string.GPSisDisable))
                 .setCancelable(false)
-                .setTitle("** Gps Status **")
-                .setPositiveButton("Enable GPS",
+                .setTitle(getString(R.string.GPSs))
+                .setPositiveButton(getString(R.string.EnableGPS),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // finish the current activity
@@ -953,7 +941,7 @@ public class ScanAndGo extends Fragment {
                                 dialog.cancel();
                             }
                         })
-                .setNegativeButton("Cancel",
+                .setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // cancel the dialog box
@@ -1078,7 +1066,6 @@ public class ScanAndGo extends Fragment {
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
                         }
-                        // ...
                     });
 
             registration.remove();
@@ -1102,10 +1089,10 @@ public class ScanAndGo extends Fragment {
                                     String barcode = (String) document.getData().get("barcode");
                                     String promoEnd = (String) document.getData().get("promoEnd");
                                     String promoStart = (String) document.getData().get("promoStart");
-                                    String discount = (String) String.valueOf(document.getData().get("discount"));
-                                    String quantity = (String) String.valueOf(document.getData().get("quantity"));
-                                    String category1 = (String) String.valueOf(document.getData().get("category[0]"));
-                                    String category2 = (String) String.valueOf(document.getData().get("category[1]"));
+                                    String discount =  String.valueOf(document.getData().get("discount"));
+                                    String quantity = String.valueOf(document.getData().get("quantity"));
+                                    String category1 = String.valueOf(document.getData().get("category[0]"));
+                                    String category2 =  String.valueOf(document.getData().get("category[1]"));
                                     databaseHandler.addProduct(barcode, name, price,promoEnd,promoStart,discount,quantity, category1, category2);
                                 }
                             }
@@ -1118,7 +1105,7 @@ public class ScanAndGo extends Fragment {
         }
     }
 
-    public static final int PAYPAL_REQUEST_CODE = 123;
+    private static final int PAYPAL_REQUEST_CODE = 123;
 
     private static PayPalConfiguration config = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX).clientId(

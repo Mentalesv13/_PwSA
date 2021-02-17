@@ -15,29 +15,18 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
     private Path mPath;
     private Paint mPaint;
 
-    private int CURVE_CIRCLE_RADIUS=56 ;
-
-
-    // the coordinates of the first curve
     private Point mFirstCurveStartPoint = new Point();
     private Point mFirstCurveEndPoint = new Point();
     private Point mFirstCurveControlPoint1 = new Point();
     private Point mFirstCurveControlPoint2 = new Point();
 
-    //the coordinates of the second curve
-    @SuppressWarnings("FieldCanBeLocal")
-    private Point mSecondCurveStartPoint = new Point();
+
     private Point mSecondCurveEndPoint = new Point();
     private Point mSecondCurveControlPoint1 = new Point();
     private Point mSecondCurveControlPoint2 = new Point();
 
-    private int mNavigationBarWidth;
-    private int mNavigationBarHeight;
-
-
     public CurvedBottomNavigationView(Context context) {
         super(context);
-        // CURVE_CIRCLE_RADIUS=(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, context.getResources().getDisplayMetrics());
 
         init();
     }
@@ -63,23 +52,16 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        // get width and height of navigation bar
-        // Navigation bar bounds (width & height)
-        mNavigationBarWidth = getWidth();
-        mNavigationBarHeight = getHeight();
+        int mNavigationBarWidth = getWidth();
+        int mNavigationBarHeight = getHeight();
 
-
-        // the coordinates (x,y) of the start point before curve
+        int CURVE_CIRCLE_RADIUS = 56;
         mFirstCurveStartPoint.set((mNavigationBarWidth / 2) - (CURVE_CIRCLE_RADIUS * 2) - (CURVE_CIRCLE_RADIUS / 1), 0);
-        // the coordinates (x,y) of the end point after curve
         mFirstCurveEndPoint.set(mNavigationBarWidth / 2, CURVE_CIRCLE_RADIUS + (CURVE_CIRCLE_RADIUS / 4));
-        // same thing for the second curve
-        mSecondCurveStartPoint = mFirstCurveEndPoint;
+        Point mSecondCurveStartPoint = mFirstCurveEndPoint;
         mSecondCurveEndPoint.set((mNavigationBarWidth / 2) + (CURVE_CIRCLE_RADIUS * 2) + (CURVE_CIRCLE_RADIUS / 1), 0);
 
-        // the coordinates (x,y)  of the 1st control point on a cubic curve
         mFirstCurveControlPoint1.set(mFirstCurveStartPoint.x + CURVE_CIRCLE_RADIUS + (CURVE_CIRCLE_RADIUS / 4), mFirstCurveStartPoint.y);
-        // the coordinates (x,y)  of the 2nd control point on a cubic curve
         mFirstCurveControlPoint2.set(mFirstCurveEndPoint.x - (CURVE_CIRCLE_RADIUS * 2) + CURVE_CIRCLE_RADIUS, mFirstCurveEndPoint.y);
 
         mSecondCurveControlPoint1.set(

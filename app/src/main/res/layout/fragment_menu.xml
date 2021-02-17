@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.Menu">
 
     <androidx.cardview.widget.CardView
@@ -24,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:text="Menu"
+                android:text="@string/menu"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -86,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Hello"
+                        android:text="@string/hello"
                         app:layout_constraintStart_toEndOf="@+id/btnProfile"
                         app:layout_constraintTop_toTopOf="@+id/btnProfile" />
 
@@ -95,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="YOUR PROFILE"
+                        android:text="@string/your_profile"
                         android:textSize="12sp"
                         app:layout_constraintStart_toEndOf="@+id/btnProfile"
                         app:layout_constraintTop_toBottomOf="@+id/hello" />
@@ -114,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:background="#00FFFFFF"
-                    android:text="SHOPPING"
+                    android:text="@string/shopping"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -156,7 +158,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Scan&amp;Go"
+                        android:text="@string/scan_amp_go"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/btnScanGo"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -201,7 +203,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Price reader"
+                        android:text="@string/price_reader"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/btnReader"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -246,7 +248,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Shop selection"
+                        android:text="@string/shop_selection"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/btnShop"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -291,7 +293,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Product categories"
+                        android:text="@string/product_categories"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/btnCategory"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -336,7 +338,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Product promotion"
+                        android:text="@string/product_promotion"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/btnPromo"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -381,7 +383,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Shopping list"
+                        android:text="@string/shopping_list"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/btnShoppingList"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -441,7 +443,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Logout"
+                        android:text="@string/logout"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/btnLogout"
                         app:layout_constraintTop_toTopOf="parent" />

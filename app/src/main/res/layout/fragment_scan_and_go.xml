@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.ScanAndGo">
 
     <ImageView
@@ -37,8 +39,9 @@
         android:id="@+id/textView9"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/cardview_light_background"
         android:gravity="center"
-        android:text="Processing..."
+        android:text="@string/processing"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Toolbar"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -69,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="Total products:"
+                android:text="@string/total_products"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -138,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Discount:"
+                android:text="@string/discount"
                 app:layout_constraintEnd_toEndOf="@+id/textView17"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -147,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Total price:"
+                android:text="@string/total_price"
                 app:layout_constraintEnd_toEndOf="@+id/textView18"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -156,6 +159,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/cardview_light_background"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -176,7 +180,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Toolbar"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewStart"
@@ -199,8 +203,8 @@
                 android:background="@drawable/btnripple_effect"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:text="@string/let_s_start_s"
                 android:textAllCaps="false"
-                android:text="Let's Start"
                 android:textSize="12sp" />
         </androidx.cardview.widget.CardView>
 
@@ -217,7 +221,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="Selected shop:"
+                android:text="@string/selected_shop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -238,7 +242,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:padding="2dp"
-                        app:srcCompat="@drawable/ic_home" />
+                        app:srcCompat="@drawable/splash_logo" />
 
                     <TextView
                         android:id="@+id/name"
@@ -287,8 +291,8 @@
                 android:background="@drawable/btnripple_effect"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:text="@string/gps_localization"
                 android:textAllCaps="false"
-                android:text="GPS localization"
                 android:textSize="12sp" />
         </androidx.cardview.widget.CardView>
 
@@ -313,8 +317,8 @@
                 android:background="@drawable/btnripple_effect"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:text="@string/scan_qr_code"
                 android:textAllCaps="false"
-                android:text="Scan QR Code"
                 android:textSize="12sp" />
         </androidx.cardview.widget.CardView>
 
@@ -363,7 +367,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="You can scan the shop QR code that is in the store entrance or use the location to determine the store automatically"
+            android:text="@string/you_can_scan_the_shop_qr"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -374,7 +378,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Welcome in Scan&amp;Go service!"
+            android:text="@string/welcome_in_scan_amp_go"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -447,7 +451,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Please login to start using Scan&amp;Go service!"
+            android:text="@string/please_login_to_start_using_scan_amp_go_service"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -458,7 +462,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Welcome in Scan&amp;Go service!"
+            android:text="@string/welcome_in_scan_amp_go"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -523,7 +527,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="To start click button in right bottom corner \n and scan your product"
+            android:text="@string/to_start_click_button_in_"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -534,7 +538,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Welcome in Scan&amp;Go service!"
+            android:text="@string/welcome_in_scan_amp_go"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -576,7 +580,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Scan product"
+            android:text="@string/scan_product"
             app:layout_constraintBottom_toBottomOf="@+id/addProduct"
             app:layout_constraintEnd_toStartOf="@+id/addProduct"
             app:layout_constraintTop_toTopOf="@+id/addProduct" />
@@ -587,6 +591,7 @@
         android:id="@+id/Toolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="#FFFFFF"
         app:cardElevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -597,7 +602,7 @@
             android:layout_height="24dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="17dp"
-            android:text="Scan&amp;Go"
+            android:text="@string/scan_amp_go"
             android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>

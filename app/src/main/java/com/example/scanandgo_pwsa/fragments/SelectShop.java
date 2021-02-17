@@ -40,7 +40,7 @@ import com.example.scanandgo_pwsa.adapters.ShopAdapter;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
 import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.helper.SessionManager;
-import com.example.scanandgo_pwsa.model.ExampleItem;
+import com.example.scanandgo_pwsa.model.ShopListItem;
 import com.example.scanandgo_pwsa.model.Shop;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -66,7 +66,7 @@ import java.util.Map;
 public class SelectShop extends Fragment implements View.OnClickListener {
 
     private boolean flag, localizationSet;
-    ArrayList<ExampleItem> exampleList;
+    ArrayList<ShopListItem> exampleList;
     FirebaseFirestore db;
     LoadingDialog loadingDialog;
     HashMap<Integer, Shop> shopHashMap;
@@ -166,7 +166,7 @@ public class SelectShop extends Fragment implements View.OnClickListener {
                                         name,
                                         0,
                                         document.getId()));
-                                exampleList.add(new ExampleItem(R.drawable.ic_home,
+                                exampleList.add(new ShopListItem(R.drawable.splash_logo,
                                         name, address,"", document.getId()));
                                 temp++;
                                 //moviesList.add(name);
@@ -343,7 +343,7 @@ public class SelectShop extends Fragment implements View.OnClickListener {
                     ////Log.e(TAG, String.valueOf(en.getKey()));
                     Shop temp = shopHashMap.get(en.getKey());
                     double value = en.getValue()/1000.0;
-                    exampleList.add(new ExampleItem(R.drawable.ic_home, temp.getName(),
+                    exampleList.add(new ShopListItem(R.drawable.splash_logo, temp.getName(),
                             temp.getAddress(),
                             String.format(Locale.ENGLISH,
                                     "%.1f",(value))+ "km",temp.getDocumentID()));

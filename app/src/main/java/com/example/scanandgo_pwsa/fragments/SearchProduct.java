@@ -139,7 +139,7 @@ public class SearchProduct extends Fragment {
 
         searchView.requestFocusFromTouch();
         searchView.setIconified(false);
-        searchView.setQueryHint("Search for products");
+        searchView.setQueryHint(getString(R.string.Search_for_products));
 
         ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
 

@@ -145,8 +145,8 @@ public class ShopSelection extends Fragment implements ZXingScannerView.ResultHa
 
         }
         else {
-            Toast.makeText(getActivity(), "No shop with this code ( or the code was read incorrectly )!", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(), "Try Again...!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.NoShopWithCode, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.TryAgain, Toast.LENGTH_SHORT).show();
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override

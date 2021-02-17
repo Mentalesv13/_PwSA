@@ -35,6 +35,7 @@ import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Category extends Fragment {
@@ -49,26 +50,34 @@ public class Category extends Fragment {
     private HorizontalScrollView categorySecScrollView, categoryMainScrollView;
     private HashMap<String, Product> products;
     private HashMap<String, String> category;
+    private HashMap<String, String> categoryPL;
+    private HashMap<Integer, String> categoriesPL;
     private String[] categorie;
+    private String[] categoriePL;
     private LoadingDialog loadingDialog;
     private String alreadySelected;
     private DatabaseHandler databaseHandler;
     private Fragment fragment;
     private boolean start = true;
+    private boolean polish = false;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         fragment = this;
         view = inflater.inflate(R.layout.fragment_category, container, false);
         products = new HashMap<>();
         category = new HashMap<>();
+        categoryPL = new HashMap<>();
+        categoriesPL = new HashMap<>();
         noProduct = view.findViewById(R.id.noProduct);
         databaseHandler = new DatabaseHandler(getContext());
         products = databaseHandler.getProductsDetail();
         category = databaseHandler.getCategoryDetails();
+        categoryPL = databaseHandler.getCategoryPLDetails();
         categorySecScrollView = view.findViewById(R.id.hsv_category_secondary);
         categoryMainScrollView = view.findViewById(R.id.hsv_category_main);
         categorySecScrollView.setVisibility(View.GONE);
@@ -89,14 +98,26 @@ public class Category extends Fragment {
         populateData();
         initAdapter();
         initScrollListener();
+        if(Locale.getDefault().getDisplayLanguage().equals("polski"))
+        {
+            polish = true;
+        }
+        int z = 0;
+        for (Map.Entry mapElement : categoryPL.entrySet()) {
+            categoriesPL.put(z,mapElement.getValue().toString());
+            //categorie = ((String) mapElement.getValue()).split("/");
+            z++;
+        }
 
+        int counter = 0;
         for (Map.Entry mapElement : category.entrySet()) {
             //Log.e("TAG", (String) mapElement.getValue());
             final LinearLayout llmain = new LinearLayout(getActivity().getBaseContext());
             final ToggleButton showAll = new ToggleButton(getActivity().getBaseContext());
-            showAll.setText("Show all");
-            showAll.setTextOn("Show all");
-            showAll.setTextOff("Show all");
+            showAll.setTag("all");
+            showAll.setText(R.string.show_all);
+            showAll.setTextOn(getString(R.string.show_all));
+            showAll.setTextOff(getString(R.string.show_all));
             showAll.setAllCaps(false);
             showAll.setChecked(true);
 
@@ -141,7 +162,7 @@ public class Category extends Fragment {
                     }
                     else
                     {
-                        Toast.makeText(getActivity().getBaseContext(),"This category is already selected",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity().getBaseContext(),R.string.This_category_is_already_selected,Toast.LENGTH_LONG).show();
                         showAll.setChecked(true);
                     }
                 }
@@ -149,13 +170,29 @@ public class Category extends Fragment {
             llmain.addView(showAll);
 
             categorie = ((String) mapElement.getValue()).split("/");
+
+            categoriePL = (categoriesPL.get(counter)).split("/");
+
+
             for (int i = 0; i < categorie.length; i++) {
                 String[] temporary = categorie[i].split("\\{");
+
+
                 final ToggleButton temp = new ToggleButton(getActivity().getBaseContext());
                 temp.setId(i);
-                temp.setText(temporary[0]);
-                temp.setTextOff(temporary[0]);
-                temp.setTextOn(temporary[0]);
+                temp.setTag(temporary[0]);
+                if(polish)
+                {
+                    String[] temporaryPL = categoriePL[i].split("\\{");
+                    temp.setText(temporaryPL[0]);
+                    temp.setTextOff(temporaryPL[0]);
+                    temp.setTextOn(temporaryPL[0]);}
+                    else
+                {
+                    temp.setText(temporary[0]);
+                    temp.setTextOff(temporary[0]);
+                    temp.setTextOn(temporary[0]);
+                }
                 temp.setAllCaps(false);
                 llmain.addView(temp);
                 temp.setChecked(false);
@@ -169,7 +206,8 @@ public class Category extends Fragment {
                             rowsArrayList.clear();
                             productsList.clear();
 
-                            products = databaseHandler.getProductsDetailsWithCategory1(temp.getText().toString());
+                            //products = databaseHandler.getProductsDetailsWithCategory1(temp.getText().toString());
+                            products = databaseHandler.getProductsDetailsWithCategory1(temp.getTag().toString());
 
                             for (Map.Entry mapElement : products.entrySet()) {
 
@@ -183,8 +221,8 @@ public class Category extends Fragment {
                                 categorySecScrollView.setVisibility(View.VISIBLE);
                                 recyclerView.setVisibility(View.VISIBLE);
                                 populateData2();
-//                                                    initAdapter();
-//                                                    initScrollListener();
+//                              initAdapter();
+//                              initScrollListener();
                                 recyclerAdapter.notifyDataSetChanged();
                             } else {
                                 recyclerView.setVisibility(View.GONE);
@@ -192,11 +230,10 @@ public class Category extends Fragment {
                                 categorySecScrollView.setVisibility(View.GONE);
                             }
 
-                            alreadySelected = temp.getText().toString();
+                            //alreadySelected = temp.getText().toString();
+                            alreadySelected = temp.getTag().toString();
 
                             for (int j = 0; j < categorie.length; j++) {
-
-
 
                                 for (int i = 0; i < llmain.getChildCount(); i++) {
                                     ToggleButton child = (ToggleButton) llmain.getChildAt(i);
@@ -205,16 +242,20 @@ public class Category extends Fragment {
                                 temp.setChecked(true);
 
                                 String categorySec = categorie[temp.getId()].substring(categorie[temp.getId()].indexOf("{") + 1, categorie[temp.getId()].indexOf("}"));
-                                String[] categoriesSec = categorySec.split(",");
 
+                                String categorySecPL = categoriePL[temp.getId()].substring(categoriePL[temp.getId()].indexOf("{") + 1, categoriePL[temp.getId()].indexOf("}"));
+                                String[] categoriesSec = categorySec.split(",");
+                                String[] categoriesSecPL = categorySecPL.split(",");
+                                HashMap<Integer,String> categoriesSecPLHashMap = new HashMap<>();
                                 categorySecScrollView.removeAllViews();
                                 final LinearLayout llSec = new LinearLayout(getActivity().getBaseContext());
 
                                 final ToggleButton tempSecAll = new ToggleButton(getActivity().getBaseContext());
-                                tempSecAll.setText("all");
+                                tempSecAll.setTag("all");
+                                tempSecAll.setText(R.string.all);
                                 tempSecAll.setAllCaps(false);
-                                tempSecAll.setTextOff("all");
-                                tempSecAll.setTextOn("all");
+                                tempSecAll.setTextOff(getString(R.string.all));
+                                tempSecAll.setTextOn(getString(R.string.all));
                                 tempSecAll.setChecked(true);
                                 tempSecAll.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                         ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -252,19 +293,36 @@ public class Category extends Fragment {
                                             }
                                             tempSecAll.setChecked(true);
                                         } else {
-                                            Toast.makeText(getActivity().getBaseContext(), "This category is already selected", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getActivity().getBaseContext(), getString(R.string.This_category_is_already_selected), Toast.LENGTH_LONG).show();
                                             tempSecAll.setChecked(true);
                                         }
                                     }
                                 });
                                 llSec.addView(tempSecAll);
-
+                                int counter = 0;
+                                for (String s : categoriesSecPL) {
+                                    categoriesSecPLHashMap.put(counter,s);
+                                            counter++;
+                                }
+                                counter = 0;
                                 for (String s : categoriesSec) {
                                     final ToggleButton tempSec = new ToggleButton(getActivity().getBaseContext());
-                                    tempSec.setText(s);
+
+                                    tempSec.setTag(s);
                                     tempSec.setAllCaps(false);
-                                    tempSec.setTextOff(s);
-                                    tempSec.setTextOn(s);
+                                    if(polish)
+                                    {
+                                        tempSec.setText(categoriesSecPLHashMap.get(counter));
+                                        tempSec.setTextOff(categoriesSecPLHashMap.get(counter));
+                                        tempSec.setTextOn(categoriesSecPLHashMap.get(counter));
+                                    }
+                                    else{
+                                        tempSec.setText(s);
+                                        tempSec.setTextOff(s);
+                                        tempSec.setTextOn(s);
+                                    }
+
+
                                     tempSec.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                             ViewGroup.LayoutParams.WRAP_CONTENT));
                                     tempSec.setOnClickListener(new View.OnClickListener() {
@@ -275,7 +333,8 @@ public class Category extends Fragment {
                                                 products.clear();
                                                 rowsArrayList.clear();
                                                 productsList.clear();
-                                                products = databaseHandler.getProductsDetailsWithCategory2(tempSec.getText().toString());
+                                                //products = databaseHandler.getProductsDetailsWithCategory2(tempSec.getText().toString());
+                                                products = databaseHandler.getProductsDetailsWithCategory2(tempSec.getTag().toString());
 
                                                 for (Map.Entry mapElement : products.entrySet()) {
 
@@ -304,18 +363,19 @@ public class Category extends Fragment {
 
                                             }
                                             else {
-                                                Toast.makeText(getActivity().getBaseContext(), "This category is already selected", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity().getBaseContext(), getString(R.string.This_category_is_already_selected), Toast.LENGTH_LONG).show();
                                                 tempSec.setChecked(true);
                                             }
                                         }
                                     });
                                     llSec.addView(tempSec);
+                                    counter++;
                                 }
                                 categorySecScrollView.addView(llSec);
                             }
                         }
                         else {
-                            Toast.makeText(getActivity().getBaseContext(), "This category is already selected", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getBaseContext(), getString(R.string.This_category_is_already_selected), Toast.LENGTH_LONG).show();
                             temp.setChecked(true);
                         }
                     }
@@ -323,6 +383,8 @@ public class Category extends Fragment {
                 });
             }
             categoryMainScrollView.addView(llmain);
+
+            counter++;
         }
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity().getApplicationContext(), DividerItemDecoration.VERTICAL);
@@ -407,17 +469,17 @@ public class Category extends Fragment {
     }
 
     private void showCustomLoadingDialog() {
-        recyclerView.setAlpha(0.10f);
-        loadingDialog.showDialog();
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadingDialog.hideDialog();
-                recyclerView.setAlpha(1f);
-            }
-        }, 750);
+//        recyclerView.setAlpha(0.10f);
+//        loadingDialog.showDialog();
+//
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                loadingDialog.hideDialog();
+//                recyclerView.setAlpha(1f);
+//            }
+//        }, 300);
     }
 
     private void showCustomLoadingDialogLong() {
@@ -431,7 +493,7 @@ public class Category extends Fragment {
                 loadingDialog.hideDialog();
                 recyclerView.setAlpha(1f);
             }
-        }, 1000);
+        }, 750);
     }
 
 }

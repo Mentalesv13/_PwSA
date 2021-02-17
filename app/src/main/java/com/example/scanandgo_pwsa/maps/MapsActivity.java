@@ -54,7 +54,8 @@ public class MapsActivity extends FragmentActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
-        LocationListener     {
+        LocationListener
+{
 
     class Shop{
         float lat;
@@ -70,12 +71,13 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap;
     private Activity activity;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private boolean isDraw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        isDraw = false;
         activity = this;
         sessionManager = new SessionManager(getBaseContext());
         databaseHandler = new DatabaseHandler(getBaseContext());
@@ -152,10 +154,10 @@ public class MapsActivity extends FragmentActivity implements
             final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
             final Shop temp = shops.get(marker.getTag());
-            builder.setMessage("Are you sure want to select:\n\n"+ temp.name+ "\n" + temp.address)
+            builder.setMessage(getString(R.string.AreYouSureWantToSelect)+ "\n" + temp.name+ "\n" + temp.address)
                     .setCancelable(false)
-                    .setTitle("** Shop selection **")
-                    .setPositiveButton("Select",
+                    .setTitle(getString(R.string.Shop_selection_))
+                    .setPositiveButton(R.string.select,
                             new DialogInterface.OnClickListener() {
                                 @SuppressLint("SetTextI18n")
                                 public void onClick(DialogInterface dialog, int id) {
@@ -169,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements
                                     task.execute();
                                 }
                             })
-                    .setNegativeButton("Cancel",
+                    .setNegativeButton(R.string.cancel,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // cancel the dialog box
@@ -188,6 +190,9 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
+        LatLng MyPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        float zoomLevel = 15.5f;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MyPosition, zoomLevel));
         //Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
 
     }
@@ -195,36 +200,35 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public boolean onMyLocationButtonClick() {
 
-        //Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        if(!isDraw) {
+            //String address = "";
+            try {
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                //address = addresses.get(0).getAddressLine(0);
+                isDraw = true;
+            } catch (Exception e) {
 
-        String address="";
-        try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            address=addresses.get(0).getAddressLine(0);
+            }
 
-        }catch(Exception e)
-        {
+            LatLng MyPosition = new LatLng(location.getLatitude(), location.getLongitude());
+//            Marker myMarker = mMap.addMarker(new MarkerOptions().
+//                    position(MyPosition)
+//                    .title(address)
+//                    .snippet(getString(R.string.youarethere))
+//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+//
+//            myMarker.setTag(-1);
+//            myMarker.showInfoWindow();
+            float zoomLevel = 16.5f;
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MyPosition, zoomLevel));
 
         }
-
-        LatLng MyPosition = new LatLng(location.getLatitude(),location.getLongitude());
-        Marker myMarker = mMap.addMarker(new MarkerOptions().
-                position(MyPosition)
-                .title(address)
-                .snippet("you are there")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-
-        myMarker.setTag(-1);
-        myMarker.showInfoWindow();
-        float zoomLevel = 12.0f; //This goes up to 21
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MyPosition, zoomLevel));
-
     }
 
     @Override
@@ -268,7 +272,7 @@ public class MapsActivity extends FragmentActivity implements
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
                         }
-                        // ...
+
                     });
 
             registration.remove();
@@ -340,6 +344,5 @@ public class MapsActivity extends FragmentActivity implements
         startActivity(intent);
         MapsActivity.this.finish();
     }
-
 }
 

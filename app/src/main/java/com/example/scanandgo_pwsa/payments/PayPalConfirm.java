@@ -100,7 +100,7 @@ public class PayPalConfirm extends Fragment {
 
         orderDate.setText(result);
         paymentID.setText(pID);
-        paymentAmount.setText(payAmount + " zł");
+        paymentAmount.setText(payAmount + " USD");
         status.setText(stat);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -109,7 +109,7 @@ public class PayPalConfirm extends Fragment {
         try {
 
         jsonObject.put("createTime",result);
-        jsonObject.put("currency","PLN");
+        jsonObject.put("currency","USD");
         jsonObject.put("paypalID",pID);
         jsonObject.put("state",stat);
         jsonObject.put("total",payAmount);
@@ -126,19 +126,19 @@ public class PayPalConfirm extends Fragment {
 
         if(databaseHandler.getShoppingList().size()>0) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            builder.setMessage("Do you want to clear your shopping list?")
+            builder.setMessage(getString(R.string.wanttoclear))
                     .setCancelable(false)
-                    .setPositiveButton("Clear",
+                    .setPositiveButton(R.string.clear,
                             new DialogInterface.OnClickListener() {
                                 @SuppressLint("SetTextI18n")
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                     databaseHandler.resetList();
-                                    Toast.makeText(getContext(), "Your list has been cleared.",
+                                    Toast.makeText(getContext(), R.string.Your_list_has_been_cleared,
                                             Toast.LENGTH_SHORT).show();
                                 }
                             })
-                    .setNegativeButton("Cancel",
+                    .setNegativeButton(R.string.cancel,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();

@@ -79,10 +79,10 @@ public class ShoppingList extends Fragment {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setMessage("Are you sure want to clear your shopping list?")
+                builder.setMessage(getString(R.string.AreYouSureClear))
                         .setCancelable(false)
-                        .setTitle("** Delete confirmation **")
-                        .setPositiveButton("Clear",
+                        .setTitle(R.string.delete_conf)
+                        .setPositiveButton(getString(R.string.clear),
                                 new DialogInterface.OnClickListener() {
                                     @SuppressLint("SetTextI18n")
                                     public void onClick(DialogInterface dialog, int id)
@@ -94,11 +94,11 @@ public class ShoppingList extends Fragment {
                                         discount.setText("0.00");
                                         totalProducts.setText("0.00");
                                         recyclerView.setVisibility(View.GONE);
-                                        Toast.makeText(getContext(),"Products deleted from list",
+                                        Toast.makeText(getContext(), R.string.Products_deleted,
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 })
-                        .setNegativeButton("Cancel",
+                        .setNegativeButton(R.string.cancel,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // cancel the dialog box
@@ -164,7 +164,7 @@ public class ShoppingList extends Fragment {
 
         totalPrice.setText(decf.format(Double.parseDouble(decf.format(totalProductsValue))-
                 Double.parseDouble(decf.format(discountValue))));
-        discount.setText("- " + decf.format(discountValue));
+        discount.setText(decf.format(discountValue));
         totalProducts.setText(decf.format(totalProductsValue));
 
 
@@ -207,7 +207,7 @@ public class ShoppingList extends Fragment {
             clearList.setVisibility(View.GONE);
             totalPrice.setText(decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
                     Double.parseDouble(decf.format(discountValue))));
-            discount.setText("- " + decf.format(discountValue));
+            discount.setText(decf.format(discountValue));
             totalProducts.setText(decf.format(totalProductsValue));
 
         } else {
@@ -256,7 +256,7 @@ public class ShoppingList extends Fragment {
 
             totalPrice.setText(decf.format(Double.parseDouble(decf.format(totalProductsValue)) -
                     Double.parseDouble(decf.format(discountValue))));
-            discount.setText("- " + decf.format(discountValue));
+            discount.setText(decf.format(discountValue));
             totalProducts.setText(decf.format(totalProductsValue));
         }
     }

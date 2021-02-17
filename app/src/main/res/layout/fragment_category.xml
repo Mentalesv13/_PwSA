@@ -6,12 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.Category">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/Toolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="#FFFFFF"
         app:cardElevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:text="Categories"
+                android:text="@string/categories"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -123,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="There is no such product in the store's offer"
+            android:text="@string/there_is_no_such_product_in_the_store"
             android:textSize="16sp"
             android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"

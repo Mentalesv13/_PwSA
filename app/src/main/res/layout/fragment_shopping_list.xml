@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.ShoppingList">
 
     <androidx.cardview.widget.CardView
@@ -25,7 +27,7 @@
             android:layout_height="24dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="17dp"
-            android:text="Shopping list"
+            android:text="@string/shopping_list"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -74,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Add product"
+            android:text="@string/add_product"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addProduct"
             app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Total products:"
+            android:text="@string/total_products"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -113,10 +115,9 @@
             android:id="@+id/textView24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
             android:layout_marginTop="4dp"
             android:text="zł"
-            app:layout_constraintStart_toEndOf="@+id/discount"
+            app:layout_constraintEnd_toEndOf="@+id/textView23"
             app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
         <TextView
@@ -133,10 +134,10 @@
             android:id="@+id/discount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="2dp"
             android:text="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView17"
+            app:layout_constraintEnd_toStartOf="@+id/textView24"
             app:layout_constraintTop_toBottomOf="@+id/totalProducts" />
 
         <TextView
@@ -146,7 +147,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:text="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView17"
+            app:layout_constraintStart_toEndOf="@+id/textView19"
             app:layout_constraintTop_toBottomOf="@+id/discount" />
 
         <TextView
@@ -154,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Discount:"
+            android:text="@string/discount"
             app:layout_constraintEnd_toEndOf="@+id/textView17"
             app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -163,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Total price:"
+            android:text="@string/total_price"
             app:layout_constraintEnd_toEndOf="@+id/textView18"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -182,7 +183,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Your shopping list is empty."
+            android:text="@string/your_shopping_list_is_empty"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -193,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:clipToPadding="true"
             android:layoutMode="opticalBounds"
             app:cardBackgroundColor="#FFFFFF"

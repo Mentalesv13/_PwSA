@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -138,37 +140,49 @@ public class SplashScreen extends AppCompatActivity {
                             }
 
                             databaseHandler.resetCategory();
+                            databaseHandler.resetCategoryPL();
+
                             StringBuilder sb = new StringBuilder();
+                            StringBuilder sbPL = new StringBuilder();
                             for (QueryDocumentSnapshot document : value) {
                                 //Log.e("TAG",document.getId());
                                 List<String> group = (List<String>) document.get("specific");
+                                List<String> groupPL = (List<String>) document.get("specific_pl");
 
                                 sb.append(document.getId() + "{");
+                                sbPL.append(document.getData().get("translate_pl") + "{");
 
                                 for (int i=0; i<group.size();i++)
                                 {
                                     sb.append(group.get(i));
-                                    if(i+1<group.size())
+                                    sbPL.append(groupPL.get(i));
+                                    if(i+1<group.size()) {
                                         sb.append(",");
-                                    else
+                                        sbPL.append(",");
+                                    }
+                                    else {
                                         sb.append("}");
+                                        sbPL.append("}");
+                                    }
 
                                 }
                                 sb.append("/");
+                                sbPL.append("/");
                                 group.clear();
+                                groupPL.clear();
 
-
-                                //Log.e("TAG",sb.toString());
-
+                                Log.e("TAG",sb.toString());
+                                Log.e("TAG",sbPL.toString());
                             }
                             databaseHandler.addCategory("Category", sb.toString());
+                            databaseHandler.addCategoryPL("Category", sbPL.toString());
                         }
                     });
 
-
             if(session.isShopSet()>-1) {
+                HashMap<String,String> temp = databaseHandler.getShopDetails();
                 db.collection("shops")
-                        .document(session.isShopSelect())
+                        .document(temp.get("shopID"))
                         .collection("products")
                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
@@ -178,6 +192,8 @@ public class SplashScreen extends AppCompatActivity {
 
                                     return;
                                 }
+                                Log.e("TAG",session.isShopSelect());
+
                                 databaseHandler.resetProducts();
                                 for (QueryDocumentSnapshot document : value) {
                                     if (document.get("name") != null) {

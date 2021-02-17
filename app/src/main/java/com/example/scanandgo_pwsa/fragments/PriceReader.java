@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.scanandgo_pwsa.R;
-import com.example.scanandgo_pwsa.helper.BarcodeScanner;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
 import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.model.Product;
@@ -161,8 +159,8 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
             mScannerView.stopCameraPreview();
         }
         else {
-            Toast.makeText(getActivity(), "No product with this code ( or the code was read incorrectly )!", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(), "Try Again...!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.NoProductWithCode, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.TryAgain, Toast.LENGTH_SHORT).show();
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -261,15 +259,15 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
                 tempSL[0] = shoppingList.get(barcode);
                 if (!String.valueOf(editAmount.getText()).equals("")) {
                     if (tempSL[0].isBought()) {
-                        btnMark.setText("Mark as bought");
+                        btnMark.setText(R.string.mark_as_bought);
                         databaseHandler.updateIsBought(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
                     } else {
-                        btnMark.setText("Mark as not bought");
+                        btnMark.setText(R.string.Mark_as_not_bought);
                         databaseHandler.updateIsBought(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString()); }
                     refreshAdapter();
                     tempSL[0] = shoppingList.get(product);
                 }
-                else {Toast.makeText(getContext(),"Please insert product amount",Toast.LENGTH_SHORT).show();}
+                else {Toast.makeText(getContext(), R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();}
             }
         });
 
@@ -291,14 +289,14 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
         if(shoppingList.get(temp.getBarcode())==null) {
             isOnListFalse.setVisibility(View.VISIBLE);
             isOnListTrue.setVisibility(View.GONE);
-            infoList.setText("This product is not on the shopping list");
+            infoList.setText(R.string.This_product_is_not);
             editAmount.setText("1");
 
         }
         else {
             isOnListFalse.setVisibility(View.GONE);
             isOnListTrue.setVisibility(View.VISIBLE);
-            infoList.setText("This product is already on shopping list");
+            infoList.setText(R.string.This_product_is_already);
             tempSL[0] = shoppingList.get(temp.getBarcode());
             editAmount.setText(String.valueOf(tempSL[0].getAmount()));
         }
@@ -340,8 +338,8 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
         }
 
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_placeholder);
+                .placeholder(R.drawable.ic_placehold)
+                .error(R.drawable.ic_placehold);
 
 
         StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
@@ -367,14 +365,14 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
                     @Override
                     public void onClick(View v) {
                         if(String.valueOf(editAmount.getText()).equals("")){
-                            Toast.makeText(getContext(),"Please insert product amount.",Toast.LENGTH_SHORT).show();}
+                            Toast.makeText(getContext(),R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();}
                         else{
                             databaseHandler.addToList(product,String.valueOf(editAmount.getText()),"false",temp.getBarcode(),temp.getPrice().toString());
 
 
                             isOnListTrue.setVisibility(View.VISIBLE);
                             isOnListFalse.setVisibility(View.GONE);
-                            Toast.makeText(getContext(),"Product added to list successfully.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.Product_added,Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -406,10 +404,10 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
                     public void onClick(View v) {
                         //showCustomLoadingDialog();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("Are you sure to delete this product from your shopping list?")
+                        builder.setMessage(getString(R.string.AreYouDeleteProd))
                                 .setCancelable(false)
-                                .setTitle("** Delete confirmation **")
-                                .setPositiveButton("Delete",
+                                .setTitle(getString(R.string.delete_conf))
+                                .setPositiveButton(getString(R.string.delete),
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 databaseHandler.deleteFromShoppingList(product);
@@ -418,7 +416,7 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
                                                 dialog.cancel();
                                                 alertDialog.dismiss();
                                                 showCustomLoadingDialog();
-                                                Toast.makeText(getContext(),"Product deleted from list",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getContext(), R.string.ProdDeleteList,Toast.LENGTH_SHORT).show();
                                             }
                                         })
                                 .setNegativeButton("Cancel",
@@ -444,10 +442,10 @@ public class PriceReader extends Fragment implements ZXingScannerView.ResultHand
                             refreshAdapter();
                             tempSL[0] = shoppingList.get(product);
                             //alertDialog.dismiss();
-                            Toast.makeText(getContext(),"List updated successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.ListUpdateSuccess,Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(getContext(),"Please insert product amount",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

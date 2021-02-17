@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:autoText="false"
-            android:text="pcs."
+            android:text="@string/pcs"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/price" />

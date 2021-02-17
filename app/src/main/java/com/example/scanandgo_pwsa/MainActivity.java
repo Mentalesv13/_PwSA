@@ -7,8 +7,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -23,6 +28,9 @@ import com.example.scanandgo_pwsa.payments.PayPalConfirm;
 import com.example.scanandgo_pwsa.welcome.ShopSelectSignIn;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Locale;
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView searchProduct, home, shoppingList, menu;
@@ -33,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         lastFragment = HomePage.class.getName();
         searchProduct = findViewById(R.id.iv_search);
@@ -63,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setFragmentNoAnim(new PayPalConfirm(b.getString("PaymentDetails"), b.getString("PaymentAmount")));
             }
         }
-
     }
 
     public void setFragment(Fragment fragment) {
@@ -104,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setVisibility(View.VISIBLE);
         if (!lastFragment.equals(HomePage.class.getName())) {
             setFragment(new HomePage());
+            setFabScanGo(true);
         } else {
             moveTaskToBack(true);
         }
@@ -117,26 +126,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.iv_home:
                 setFragmentNoAnim(new HomePage());
                 toolbar.setVisibility(View.VISIBLE);
+                setFabScanGo(true);
                 break;
-
             case R.id.iv_list:
                 setFragmentNoAnim(new ShoppingList());
+                setFabScanGo(true);
                 //toolbar.setVisibility(View.GONE);
                 break;
             case R.id.iv_search:
-                setFragment(new SearchProduct(false));
+                setFragmentNoAnim(new SearchProduct(false));
+                setFabScanGo(true);
                 //toolbar.setVisibility(View.GONE);
                 break;
             case R.id.iv_menu:
-                setFragment(new Menu());
+                setFragmentNoAnim(new Menu());
+                setFabScanGo(false);
                 //toolbar.setVisibility(View.GONE);
                 break;
             case R.id.fabScanGo:
                 setFragmentNoAnim(new ScanAndGo(false));
+                setFabScanGo(false);
                 //toolbar.setVisibility(View.GONE);
                 break;
             case R.id.profile:
-                setFragment(new Profile());
+                setFragmentNoAnim(new Profile());
+                setFabScanGo(true);
                 //toolbar.setVisibility(View.GONE);
                 break;
         }
@@ -148,4 +162,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {toolbar.setVisibility(View.VISIBLE);}
         else {toolbar.setVisibility(View.GONE);}
     }
+
+    public void setFabScanGo(boolean visible)
+    {
+        if (visible)
+        {fabScanGo.setVisibility(View.VISIBLE);}
+        else {fabScanGo.setVisibility(View.GONE);}
+    }
+
 }

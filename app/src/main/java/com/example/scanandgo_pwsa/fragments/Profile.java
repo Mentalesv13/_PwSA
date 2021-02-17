@@ -262,11 +262,11 @@ public class Profile extends Fragment {
         try {
 
             GoogleSignInAccount acc = completedTask.getResult(ApiException.class);
-            Toast.makeText(getContext(), "Signed In Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.SignInSucces, Toast.LENGTH_SHORT).show();
             OFF.setVisibility(View.GONE);
             FirebaseGoogleAuth(acc);
         } catch (ApiException e) {
-            Toast.makeText(getContext(), "Sign In Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.SignInFail, Toast.LENGTH_SHORT).show();
             FirebaseGoogleAuth(null);
         }
     }
@@ -279,18 +279,18 @@ public class Profile extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.Successful, Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         OFF.setVisibility(View.GONE);
                         updateUI(user);
                     } else {
-                        Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
                 }
             });
         } else {
-            Toast.makeText(getContext(), "acc failed", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "acc failed", Toast.LENGTH_SHORT).show();
         }
     }
 

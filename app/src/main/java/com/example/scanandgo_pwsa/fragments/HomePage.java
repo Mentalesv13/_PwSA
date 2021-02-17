@@ -20,17 +20,24 @@ import java.util.Objects;
 
 public class HomePage extends Fragment {
 
+    private CardView cvScanGo;
+    private CardView cvPriceReader;
+    private CardView cvShopping;
+    private Button btnPriceReader;
+    private Button btnScanAndGo;
+    private Button btnShoppingList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        CardView cvScanGo = view.findViewById(R.id.tScanGo);
-        CardView cvPriceReader = view.findViewById(R.id.tPrice);
-        CardView cvShopping = view.findViewById(R.id.tShopping);
-        Button btnPriceReader = view.findViewById(R.id.btnPriceReader);
-        Button btnScanAndGo = view.findViewById(R.id.btnScanCode);
-        Button btnShoppingList = view.findViewById(R.id.btnShopping);
+        cvScanGo = view.findViewById(R.id.tScanGo);
+        cvPriceReader = view.findViewById(R.id.tPrice);
+        cvShopping = view.findViewById(R.id.tShopping);
+        btnPriceReader = view.findViewById(R.id.btnPriceReader);
+        btnScanAndGo = view.findViewById(R.id.btnScanCode);
+        btnShoppingList = view.findViewById(R.id.btnShopping);
 
         btnPriceReader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,4 +83,6 @@ public class HomePage extends Fragment {
 
         return view;
     }
+
+
 }

@@ -9,6 +9,8 @@
             android:layout_centerInParent="true"
             android:clipToPadding="false"
             android:foregroundGravity="center"
+            android:clickable="true"
+            android:focusable="true"
             android:overScrollMode="never">
 
     </androidx.viewpager.widget.ViewPager>
@@ -24,7 +26,7 @@
         android:paddingLeft="30dp"
         android:background="@drawable/round"
         android:textColor="#fff"
-        android:text="LET'S START!"/>
+        android:text="@string/let_s_start"/>
 
     <ImageView
         android:id="@+id/logo"
@@ -48,7 +50,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="0dp"
-        android:text="Welcome To"
+        android:text="@string/welcome_to"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="36sp"
@@ -64,7 +66,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="0dp"
-        android:text="Scan&amp;Go"
+        android:text="@string/scan_amp_go1"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="30sp"

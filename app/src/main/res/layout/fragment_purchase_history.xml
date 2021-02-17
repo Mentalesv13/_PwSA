@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.PurchaseHistory">
 
 
@@ -42,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
-                android:text="Purchase history"
+                android:text="@string/purchase_history"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="You don't have any transcation yet."
+            android:text="@string/you_dont_have_any_transaction"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

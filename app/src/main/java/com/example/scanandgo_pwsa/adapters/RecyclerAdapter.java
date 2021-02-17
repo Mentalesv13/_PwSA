@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,8 +52,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
@@ -232,7 +229,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     viewHolder.tvItem3.setText(decf.format(temp.getPrice()) + " zł");
                     viewHolder.zloty1.setVisibility(View.VISIBLE);
                     viewHolder.zloty2.setVisibility(View.GONE);
-                    String tempString = "Promotions Ends ";
+                    String tempString = context.getString(R.string.promotions_ends);
                     Date d4 = dfOld.parse(temp.getPromoEnd().split(" ")[0]);
                     String tempDate = dfNew.format(d4);
                     viewHolder.promo.setText(tempString + tempDate);
@@ -258,18 +255,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         //Picasso.load("https://www.officeroom.pl/environment/cache/images/0_0_productGfx_22066/dfdb2777cf2bc063e9188e28245a6a03.jpg").into(viewHolder.ivItem);
         final RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_placeholder);
+                .placeholder(R.drawable.ic_placehold)
+                .error(R.drawable.ic_placehold);
         //Log.e(TAG,temp.getBarcode());
-        storageReference.child("products/"+temp.getBarcode()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(viewHolder.ivItem.getContext())
-                .load(uri.toString())
-                .apply(requestOptions)
-                .into(viewHolder.ivItem);
-            }
-        });
+//        storageReference.child("products/"+temp.getBarcode()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//                Glide.with(viewHolder.ivItem.getContext())
+//                .load(uri.toString())
+//                .apply(requestOptions)
+//                .into(viewHolder.ivItem);
+//            }
+//        });
 
 //        StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
 //
@@ -293,13 +290,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final Button btnAdd =dialogView.findViewById(R.id.btnAdd);
         final Button btnMark =dialogView.findViewById(R.id.btnMark);
         if (shoppingList.get(temp.getBarcode())==null) {
-            btnMark.setText("Mark as bought");
+            btnMark.setText(R.string.mark_as_bought);
         }
         else {
             if (tempSL[0].isBought()) {
-                btnMark.setText("Mark as not bought");
+                btnMark.setText(R.string.Mark_as_not_bought);
             } else {
-                btnMark.setText("Mark as bought");
+                btnMark.setText(R.string.mark_as_bought);
             }
         }
 
@@ -368,18 +365,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             public void onClick(View v) {
                 //showCustomLoadingDialog();
                 if (!String.valueOf(editAmount.getText()).equals("")) {
-                    tempSL[0] = shoppingList.get(product);
+                    tempSL[0] = shoppingList.get(temp.getBarcode());
                     if (tempSL[0].isBought()) {
-                        btnMark.setText("Mark as bought");
+                        btnMark.setText(R.string.mark_as_bought);
                         databaseHandler.updateIsBought(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
                     } else {
-                        btnMark.setText("Mark as not bought");
+                        btnMark.setText(R.string.Mark_as_not_bought);
                         databaseHandler.updateIsBought(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
                     }
-                    refreshAdapter();
+                     refreshAdapter();
                     tempSL[0] = shoppingList.get(temp.getBarcode());
                 }
-                else {Toast.makeText(context,"Please insert product amount",Toast.LENGTH_SHORT).show();}
+                else {Toast.makeText(context,R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();}
             }
         });
 
@@ -401,14 +398,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(shoppingList.get(temp.getBarcode())==null) {
             isOnListFalse.setVisibility(View.VISIBLE);
             isOnListTrue.setVisibility(View.GONE);
-            infoList.setText("This product is not on the shopping list");
+            infoList.setText(R.string.This_product_is_not);
             editAmount.setText("1");
 
         }
         else {
             isOnListFalse.setVisibility(View.GONE);
             isOnListTrue.setVisibility(View.VISIBLE);
-            infoList.setText("This product is already on shopping list");
+            infoList.setText(R.string.This_product_is_already);
             tempSL[0] = shoppingList.get(temp.getBarcode());
             editAmount.setText(String.valueOf(tempSL[0].getAmount()));
         }
@@ -451,16 +448,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_placeholder);
+                .placeholder(R.drawable.ic_placehold)
+                .error(R.drawable.ic_placehold);
 
 
-        StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
-
-        Glide.with(image.getContext())
-                .load(pathReference)
-                .apply(requestOptions)
-                .into(image);
+//        StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
+//
+//        Glide.with(image.getContext())
+//                .load(pathReference)
+//                .apply(requestOptions)
+//                .into(image);
 
         dialogBuilder.setView(dialogView);
         //dialogBuilder.setTitle("Select date");
@@ -477,11 +474,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Toast.makeText(context,"TXT", Toast.LENGTH_SHORT);
                         if(String.valueOf(editAmount.getText()).equals("")){
-                            Toast.makeText(context,"Please insert product amount.",Toast.LENGTH_SHORT).show();}
+                            Toast.makeText(context,R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();}
                         else{
                             databaseHandler.addToList(product,String.valueOf(editAmount.getText()),"false",temp.getBarcode(),temp.getPrice().toString());
-                            tempSL[0] = shoppingList.get(product);
+                            tempSL[0] = shoppingList.get(temp.getBarcode());
                             if(((SearchProduct)fragment).isSearchOn())
                            {
                                alertDialog.dismiss();
@@ -492,8 +490,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                            {
                                isOnListTrue.setVisibility(View.VISIBLE);
                                isOnListFalse.setVisibility(View.GONE);
-                               infoList.setText("This product is already on shopping list");
-                               Toast.makeText(context,"Product added to list successfully.",Toast.LENGTH_SHORT).show();
+                               infoList.setText(R.string.This_product_is_already);
+                               Toast.makeText(context,R.string.Product_added,Toast.LENGTH_SHORT).show();
 
                                refreshAdapter();
                            }
@@ -522,10 +520,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     public void onClick(View v) {
                         //showCustomLoadingDialog();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setMessage("Are you sure to delete this product from your shopping list?")
+                        builder.setMessage(R.string.AreYouDeleteProd)
                                 .setCancelable(false)
-                                .setTitle("** Delete confirmation **")
-                                .setPositiveButton("Delete",
+                                .setTitle(R.string.delete_conf)
+                                .setPositiveButton(R.string.delete,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 databaseHandler.deleteFromShoppingList(temp.getBarcode());
@@ -534,10 +532,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                                 dialog.cancel();
                                                 alertDialog.dismiss();
                                                 moviesListAll.remove(position);
-                                                Toast.makeText(context,"Product deleted from list",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context,R.string.ProdDeleteList,Toast.LENGTH_SHORT).show();
                                             }
                                         })
-                                .setNegativeButton("Cancel",
+                                .setNegativeButton(R.string.cancel,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 // cancel the dialog box
@@ -555,15 +553,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     public void onClick(View v) {
                         //showCustomLoadingDialog();
                         if(!String.valueOf(editAmount.getText()).equals("")){
-                            tempSL[0] = shoppingList.get(product);
+                            tempSL[0] = shoppingList.get(temp.getBarcode());
                             databaseHandler.updateIsBought(temp.getName(), String.valueOf(tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
                             refreshAdapter();
-                            tempSL[0] = shoppingList.get(product);
+                            tempSL[0] = shoppingList.get(temp.getBarcode());
                             alertDialog.dismiss();
-                            Toast.makeText(context,"List updated successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,R.string.ListUpdateSuccess,Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(context,"Please insert product amount",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

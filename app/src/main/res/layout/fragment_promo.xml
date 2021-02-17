@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.Category">
 
     <androidx.cardview.widget.CardView
@@ -25,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:text="Promotions"
+                android:text="@string/promotions"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -98,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="There is no product on sale at this time!"
+            android:text="@string/there_is_no_product_on_sale_at_this_time"
             android:textSize="16sp"
             android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"

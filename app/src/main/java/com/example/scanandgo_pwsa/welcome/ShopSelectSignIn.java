@@ -39,7 +39,7 @@ import com.example.scanandgo_pwsa.adapters.ShopAdapter;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
 import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.helper.SessionManager;
-import com.example.scanandgo_pwsa.model.ExampleItem;
+import com.example.scanandgo_pwsa.model.ShopListItem;
 import com.example.scanandgo_pwsa.model.Shop;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -95,7 +95,7 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
 //SHOPS---------------------------------------------------------------------------------------------
 
     private Boolean flag;
-    ArrayList<ExampleItem> exampleList;
+    ArrayList<ShopListItem> exampleList;
     FirebaseFirestore db;
     LoadingDialog loadingDialog;
     HashMap<Integer, Shop> shopHashMap;
@@ -187,7 +187,7 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                                         name,
                                         0,
                                         document.getId()));
-                                exampleList.add(new ExampleItem(R.drawable.ic_home,
+                                exampleList.add(new ShopListItem(R.drawable.splash_logo,
                                         name, address,"", document.getId()));
                                 temp++;
                                 //moviesList.add(name);
@@ -231,7 +231,7 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                     welcome.setVisibility(View.VISIBLE);
                 }
                 else
-                Toast.makeText(context,"Please select your shop.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.Pleaseselectyourshop, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -256,7 +256,6 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
 
         mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
 
-        //Logout
         sessionManager.setLogin(false);
         mGoogleSignInClient.signOut();
 
@@ -349,10 +348,10 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
 
     protected void alertbox(String title, String mymessage) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Your Device's GPS is Disable")
+        builder.setMessage(R.string.YourGPSisOFF)
                 .setCancelable(false)
-                .setTitle("** Gps Status **")
-                .setPositiveButton("Enable GPS",
+                .setTitle(R.string.GpsStatus)
+                .setPositiveButton(R.string.EnableGPS,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // finish the current activity
@@ -411,7 +410,7 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                     Log.e(TAG, String.valueOf(en.getKey()));
                     Shop temp = shopHashMap.get(en.getKey());
                     double value = en.getValue()/1000.0;
-                    exampleList.add(new ExampleItem(R.drawable.ic_home, temp.getName(),
+                    exampleList.add(new ShopListItem(R.drawable.splash_logo, temp.getName(),
                             temp.getAddress(),
                      String.format(Locale.ENGLISH,
                      "%.1f",(value))+ "km",temp.getDocumentID()));
@@ -501,11 +500,10 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount acc = completedTask.getResult(ApiException.class);
-            Log.d("LOGIN", "Signed In Successfully");
             welcome.setVisibility(View.GONE);
             FirebaseGoogleAuth(acc);
         } catch (ApiException e) {
-            Toast.makeText(context, "Sign In Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.SignInFail, Toast.LENGTH_SHORT).show();
             FirebaseGoogleAuth(null);
             welcome.setVisibility(View.VISIBLE);
         }
@@ -522,17 +520,17 @@ public class ShopSelectSignIn extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(context, "Signed In Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.SignInSucces, Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
                     } else {
-                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.SignInFail, Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
                 }
             });
         } else {
-            Toast.makeText(context, "acc failed", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "acc failed", Toast.LENGTH_SHORT).show();
         }
     }
 

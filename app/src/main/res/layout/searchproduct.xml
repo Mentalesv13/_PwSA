@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="There is no such product in the store's offer"
+            android:text="@string/there_is_no_such_product_in_the_store"
             android:textSize="16sp"
             android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"

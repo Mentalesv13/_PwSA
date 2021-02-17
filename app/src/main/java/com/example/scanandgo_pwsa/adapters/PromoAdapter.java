@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.scanandgo_pwsa.MainActivity;
 import com.example.scanandgo_pwsa.R;
-import com.example.scanandgo_pwsa.fragments.SearchProduct;
 import com.example.scanandgo_pwsa.helper.DatabaseHandler;
 import com.example.scanandgo_pwsa.helper.LoadingDialog;
 import com.example.scanandgo_pwsa.model.Product;
@@ -54,15 +51,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 
 public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
     private Context context;
-    private List<String> moviesList;
-    private List<String> moviesListAll;
+    private List<String> promoList;
+    private List<String> promoListAll;
     private DatabaseHandler databaseHandler;
     private HashMap<String, Product> products;
     private StorageReference storageReference;
@@ -73,9 +68,9 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public PromoAdapter(List<String> itemList, List<String> allItem, Context context, Activity activity, Fragment fragment)  {
         this.context = context;
-        this.moviesList = itemList;
-        moviesListAll = new ArrayList<>();
-        moviesListAll.addAll(allItem);
+        this.promoList = itemList;
+        promoListAll = new ArrayList<>();
+        promoListAll.addAll(allItem);
         databaseHandler = new DatabaseHandler(context);
         products  = new HashMap<>();
         products = databaseHandler.getProductsDetail();
@@ -113,12 +108,12 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return moviesList == null ? 0 : moviesList.size();
+        return promoList == null ? 0 : promoList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return moviesList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        return promoList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
     @Override
@@ -134,9 +129,9 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             List<String> filteredList = new ArrayList<>();
 
             if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(moviesListAll);
+                filteredList.addAll(promoListAll);
             } else {
-                for (String movie: moviesListAll) {
+                for (String movie: promoListAll) {
                     if (movie.toLowerCase().contains(charSequence.toString().toLowerCase())) {
                         filteredList.add(movie);
                     }
@@ -149,14 +144,14 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            moviesList.clear();
+            promoList.clear();
             //moviesList.addAll((Collection<? extends String>) filterResults.values);
             ArrayList <String> searchList = new ArrayList<>();
             searchList.addAll((Collection<? extends String>) filterResults.values);
             int i = 0;
             while (i < 20) {
                 if (i < searchList.size()){
-                moviesList.add(searchList.get(i));
+                promoList.add(searchList.get(i));
                 i++;}
                 else {break;}
             }
@@ -207,7 +202,7 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @SuppressLint("SetTextI18n")
     private void populateItemRows(final ItemViewHolder viewHolder, int position) {
 
-        String item = moviesList.get(position);
+        String item = promoList.get(position);
         viewHolder.tvItem.setText(item);
         Product temp = products.get(item.trim());
         if (Double.parseDouble(temp.getDiscount().toString())>0)
@@ -232,10 +227,10 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     viewHolder.tvItem3.setText(decf.format(temp.getPrice()) + " zł");
                     viewHolder.zloty1.setVisibility(View.VISIBLE);
                     viewHolder.zloty2.setVisibility(View.GONE);
-                    String tempString = "Promotions Ends ";
+                    String tempString = context.getString(R.string.PromoEnds);
                     Date d4 = dfOld.parse(temp.getPromoEnd().split(" ")[0]);
                     String tempDate = dfNew.format(d4);
-                    viewHolder.promo.setText(tempString + tempDate);
+                    viewHolder.promo.setText(tempString + " " + tempDate);
 
                 }
                 else {
@@ -258,18 +253,18 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         //Picasso.load("https://www.officeroom.pl/environment/cache/images/0_0_productGfx_22066/dfdb2777cf2bc063e9188e28245a6a03.jpg").into(viewHolder.ivItem);
         final RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_placeholder);
+                .placeholder(R.drawable.ic_placehold)
+                .error(R.drawable.ic_placehold);
         //FF656565(TAG,temp.getBarcode());
-        storageReference.child("products/"+temp.getBarcode()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(viewHolder.ivItem.getContext())
-                .load(uri.toString())
-                .apply(requestOptions)
-                .into(viewHolder.ivItem);
-            }
-        });
+//        storageReference.child("products/"+temp.getBarcode()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//                Glide.with(viewHolder.ivItem.getContext())
+//                .load(uri.toString())
+//                .apply(requestOptions)
+//                .into(viewHolder.ivItem);
+//            }
+//        });
 
 //        StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
 //
@@ -281,7 +276,6 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void buyLayout(final String product, final int position) {
         final Product temp = products.get(product.trim());
-        //FF656565("TAG",product.trim());
 
         final ShoppingList[] tempSL = new ShoppingList[1];
         tempSL[0] = shoppingList.get(temp.getBarcode());
@@ -295,13 +289,13 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final Button btnAdd =dialogView.findViewById(R.id.btnAdd);
         final Button btnMark =dialogView.findViewById(R.id.btnMark);
         if (shoppingList.get(temp.getBarcode())==null) {
-            btnMark.setText("Mark as bought");
+            btnMark.setText(R.string.mark_as_bought);
         }
         else {
             if (tempSL[0].isBought()) {
-                btnMark.setText("Mark as not bought");
+                btnMark.setText(R.string.Mark_as_not_bought);
             } else {
-                btnMark.setText("Mark as bought");
+                btnMark.setText(R.string.mark_as_bought);
             }
         }
 
@@ -372,16 +366,16 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 if (!String.valueOf(editAmount.getText()).equals("")) {
                     tempSL[0] = shoppingList.get(barcode);
                     if (tempSL[0].isBought()) {
-                        btnMark.setText("Mark as bought");
+                        btnMark.setText(R.string.mark_as_bought);
                         databaseHandler.updateIsBoughtByName(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getPrice().toString());
                     } else {
-                        btnMark.setText("Mark as not bought");
+                        btnMark.setText(R.string.Mark_as_not_bought);
                         databaseHandler.updateIsBoughtByName(temp.getName(), String.valueOf(!tempSL[0].isBought()), String.valueOf(editAmount.getText()),temp.getPrice().toString());
                     }
                     refreshAdapter();
                     tempSL[0] = shoppingList.get(temp.getBarcode());
                 }
-                else {Toast.makeText(context,"Please insert product amount",Toast.LENGTH_SHORT).show();}
+                else {Toast.makeText(context,R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();}
             }
         });
 
@@ -403,14 +397,14 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if(shoppingList.get(temp.getBarcode())==null) {
             isOnListFalse.setVisibility(View.VISIBLE);
             isOnListTrue.setVisibility(View.GONE);
-            infoList.setText("This product is not on the shopping list");
+            infoList.setText(R.string.This_product_is_not);
             editAmount.setText("1");
 
         }
         else {
             isOnListFalse.setVisibility(View.GONE);
             isOnListTrue.setVisibility(View.VISIBLE);
-            infoList.setText("This product is already on shopping list");
+            infoList.setText(R.string.product_is_already_on_shopping_list);
             tempSL[0] = shoppingList.get(temp.getBarcode());
             editAmount.setText(String.valueOf(tempSL[0].getAmount()));
         }
@@ -453,16 +447,16 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_placeholder);
+                .placeholder(R.drawable.ic_placehold)
+                .error(R.drawable.ic_placehold);
 
 
-        StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
-
-        Glide.with(image.getContext())
-                .load(pathReference)
-                .apply(requestOptions)
-                .into(image);
+//        StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
+//
+//        Glide.with(image.getContext())
+//                .load(pathReference)
+//                .apply(requestOptions)
+//                .into(image);
 
         dialogBuilder.setView(dialogView);
         //dialogBuilder.setTitle("Select date");
@@ -480,15 +474,15 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public void onClick(View v) {
                         if(String.valueOf(editAmount.getText()).equals("")){
-                            Toast.makeText(context,"Please insert product amount.",Toast.LENGTH_SHORT).show();}
+                            Toast.makeText(context,R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();}
                         else{
                             databaseHandler.addToList(product,String.valueOf(editAmount.getText()),"false",temp.getBarcode(),temp.getPrice().toString());
                             tempSL[0] = shoppingList.get(temp.getBarcode());
 
                            isOnListTrue.setVisibility(View.VISIBLE);
                            isOnListFalse.setVisibility(View.GONE);
-                           infoList.setText("This product is already on shopping list");
-                           Toast.makeText(context,"Product added to list successfully.",Toast.LENGTH_SHORT).show();
+                           infoList.setText(R.string.product_is_already_on_shopping_list);
+                           Toast.makeText(context,R.string.Product_added,Toast.LENGTH_SHORT).show();
 
                            refreshAdapter();
 
@@ -517,10 +511,10 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     public void onClick(View v) {
                         //showCustomLoadingDialog();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setMessage("Are you sure to delete this product from your shopping list?")
+                        builder.setMessage(R.string.AreYouDeleteProd)
                                 .setCancelable(false)
-                                .setTitle("** Delete confirmation **")
-                                .setPositiveButton("Delete",
+                                .setTitle(R.string.delete_conf)
+                                .setPositiveButton(R.string.delete,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 databaseHandler.deleteFromShoppingList(temp.getBarcode());
@@ -528,11 +522,11 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                                 //tempSL[0] = shoppingList.get(product);
                                                 dialog.cancel();
                                                 alertDialog.dismiss();
-                                                moviesListAll.remove(position);
-                                                Toast.makeText(context,"Product deleted from list",Toast.LENGTH_SHORT).show();
+                                                promoListAll.remove(position);
+                                                Toast.makeText(context,R.string.ProdDeleteList,Toast.LENGTH_SHORT).show();
                                             }
                                         })
-                                .setNegativeButton("Cancel",
+                                .setNegativeButton(R.string.cancel,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 // cancel the dialog box
@@ -555,15 +549,13 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             refreshAdapter();
                             tempSL[0] = shoppingList.get(temp.getBarcode());
                             alertDialog.dismiss();
-                            Toast.makeText(context,"List updated successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,R.string.ListUpdateSuccess,Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(context,"Please insert product amount",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
-
             }
         });
 
@@ -579,7 +571,7 @@ public class PromoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             @Override
             public void run() {
                 loadingDialog.hideDialog();
-                buyLayout(moviesList.get(adapterPosition), adapterPosition);
+                buyLayout(promoList.get(adapterPosition), adapterPosition);
             }
         }, 500);
     }

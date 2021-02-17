@@ -6,15 +6,14 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 public class SessionManager {
-    // Logcat tag
+
     private static String TAG = SessionManager.class.getSimpleName();
  
-    // Shared Preferences
+
     private SharedPreferences pref;
  
     private Editor editor;
 
-    // Shared preferences file name
     private static final String PREF_NAME = "Projekt";
      
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
@@ -26,7 +25,7 @@ public class SessionManager {
     private static final String KEY_IS_SCANANDGOSTARTED = "isScanAndGoStarted";
 
     public SessionManager(Context context) {
-        // Shared pref mode
+
         int PRIVATE_MODE = 0;
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();

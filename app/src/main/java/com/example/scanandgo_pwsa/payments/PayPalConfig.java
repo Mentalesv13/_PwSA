@@ -2,6 +2,6 @@ package com.example.scanandgo_pwsa.payments;
 
 public class PayPalConfig {
 
-    public static final String PAYPAL_CLIENT_ID = "Ad81MOpd9V43I1THyUv3rBUn6zfjUhxom_oQB48qVhx5C6j35AOJawVAT74EYhKmhqEeL2W97zZgBEeu";
+    public static final String PAYPAL_CLIENT_ID = "Aa_IZuXhpyDH73JH2tofXcU5Gf299esnsXiAX6fG91zkTagvtSf4ba2Cb902KPAPuyqAqDNgdcZamzX9";
 
 }

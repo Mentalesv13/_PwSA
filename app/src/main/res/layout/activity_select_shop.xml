@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.SelectShop">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/ic_map"
-            android:text="Map"
+            android:text="@string/map"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:text="To choose a store use the map:"
+            android:text="@string/to_choose_a_store"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +76,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="or"
+            android:text="@string/or"
             android:textSize="18sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="112dp"
+            android:layout_marginBottom="65dp"
             android:translationZ="10dp"
             app:cardBackgroundColor="#00FFFFFF"
             app:cardCornerRadius="25dp"
@@ -101,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btnripple_effect"
-                android:text="SELECT" />
+                android:text="@string/select" />
         </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,7 +130,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:padding="2dp"
-                        app:srcCompat="@drawable/ic_home" />
+                        app:srcCompat="@drawable/splash_logo" />
 
                     <TextView
                         android:id="@+id/name"
@@ -172,7 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="My shop"
+            android:text="@string/my_shop"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -184,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Nearest shop"
+            android:text="@string/nearest_shop"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -221,7 +223,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_marginStart="16dp"
-                    android:text="Shop selection"
+                    android:text="@string/shop_selection"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -240,7 +242,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/btnripple_effect"
             android:drawableLeft="@drawable/ic_gps_fixed_black_24dp"
-            android:text="Click to enable location, we will help you find the nearest store"
+            android:text="@string/click_to_enable_location"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

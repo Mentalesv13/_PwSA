@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ACACAC"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragments.PriceReader">
 
     <me.dm7.barcodescanner.zxing.ZXingScannerView
@@ -22,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="140dp"
         android:textAllCaps="false"
-        android:text="Insert product code"
+        android:text="@string/insert_product_code"
         app:layout_constraintBottom_toBottomOf="@+id/zxscan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -32,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:text="OR"
+        android:text="@string/or"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="@+id/button"
@@ -43,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
-        android:text="Scan product code"
+        android:text="@string/scan_product_code"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -198,7 +198,7 @@ return view;
             TextView childItem = (TextView) convertView.findViewById(R.id.childItem);
             TextView childItem2 = (TextView) convertView.findViewById(R.id.childItem2);
             childItem.setText(detailInfo.getName().trim());
-            childItem2.setText(detailInfo.getPrice() + " zł / " + detailInfo.getAmount() + " pcs.");
+            childItem2.setText(detailInfo.getPrice() + " zł / " + detailInfo.getAmount() + " " + getString(R.string.pcs));
 
             return convertView;
         }
@@ -285,8 +285,10 @@ return view;
                         {
                             clEmpty.setVisibility(View.VISIBLE);
                         }
+                    } else
+                    {
+                        clEmpty.setVisibility(View.VISIBLE);
                     }
-
                 }
 
                 simpleExpandableListView = (ExpandableListView) view.findViewById(R.id.listView);
@@ -314,5 +316,4 @@ return view;
             }
         });
     }
-
 }

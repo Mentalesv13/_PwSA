@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,7 +114,7 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
         final Button cancel = dialogView.findViewById(R.id.btnCancel);
         final Button apply = dialogView.findViewById(R.id.btnApply);
         final EditText barcode = dialogView.findViewById(R.id.barcode);
-        dialogBuilder.setTitle("Insert product barcode ( EAN-13 )");
+        dialogBuilder.setTitle(getString(R.string.insert_barcode));
         dialogBuilder.setView(dialogView);
 
         dialogBuilder.setCancelable(true);
@@ -149,8 +148,8 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
                             showCustomLoadingDialog(barcode.getText().toString());
                         }
                         else {
-                            Toast.makeText(getContext(), "No product with this code!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getContext(), "Try Again...!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.NoProductWithCode, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), R.string.TryAgain, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -182,8 +181,8 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
             mScannerView.stopCameraPreview();
         }
         else {
-            Toast.makeText(getActivity(), "No product with this code ( or the code was read incorrectly )!", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(), "Try Again...!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.NoProductWithCode, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.TryAgain, Toast.LENGTH_SHORT).show();
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -300,11 +299,11 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
         }
 
         if(shoppingList.get(temp.getBarcode())==null) {
-            infoList.setText("This product is not on the shopping list");
+            infoList.setText(R.string.This_product_is_not);
 
         }
         else {
-            infoList.setText("This product is already on shopping list");
+            infoList.setText(R.string.This_product_is_already);
         }
 
         if (String.valueOf(editAmount.getText()).equals("1")){
@@ -337,25 +336,23 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
         else {
             price.setText(temp.getPrice().toString() + "zł");
         }
 
-        RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_placeholder);
-
-        StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
-
-        Glide.with(image.getContext())
-                .load(pathReference)
-                .apply(requestOptions)
-                .into(image);
+//        RequestOptions requestOptions = new RequestOptions()
+//                .placeholder(R.drawable.ic_placehold)
+//                .error(R.drawable.ic_placehold);
+//
+//        StorageReference pathReference = storageReference.child("products/"+temp.getBarcode()+".jpg");
+//
+//        Glide.with(image.getContext())
+//                .load(pathReference)
+//                .apply(requestOptions)
+//                .into(image);
 
         dialogBuilder.setView(dialogView);
-
 
         final AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -363,17 +360,17 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
             public void onShow(final DialogInterface dialog) {
                 final Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 b.setVisibility(View.GONE);
-                btnAdd.setText("Add to shopping list");
+                btnAdd.setText(R.string.Add_to_shopping_small);
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(String.valueOf(editAmount.getText()).equals("")){
-                            Toast.makeText(getContext(),"Please insert product amount.",Toast.LENGTH_SHORT).show();}
+                            Toast.makeText(getContext(),R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();}
                         else{
                             databaseHandler.addToShopAndGoList(product,String.valueOf(editAmount.getText()),temp.getBarcode(),temp.getPrice().toString());
                             ((MainActivity)getActivity()).setFragment(new ScanAndGo(false));
                             alertDialog.dismiss();
-                            Toast.makeText(getContext(),"Product added to list successfully.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),R.string.Product_added,Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -402,10 +399,10 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("Are you sure to delete this product from your shopping list?")
+                        builder.setMessage(R.string.AreYouDeleteProd)
                                 .setCancelable(false)
-                                .setTitle("** Delete confirmation **")
-                                .setPositiveButton("Delete",
+                                .setTitle(R.string.delete_conf)
+                                .setPositiveButton(R.string.delete,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 databaseHandler.deleteFromScanAndGoList(product);
@@ -414,10 +411,10 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
                                                 dialog.cancel();
                                                 alertDialog.dismiss();
                                                 ((MainActivity)getActivity()).setFragment(new ScanAndGo(false));
-                                                Toast.makeText(getContext(),"Product deleted from list",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getContext(),R.string.ProdDeleteList,Toast.LENGTH_SHORT).show();
                                             }
                                         })
-                                .setNegativeButton("Cancel",
+                                .setNegativeButton(R.string.cancel,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 // cancel the dialog box
@@ -440,18 +437,16 @@ public class BarcodeScanner extends Fragment implements ZXingScannerView.ResultH
                             refreshAdapter();
                             tempSL[0] = sagList.get(product);
                             //alertDialog.dismiss();
-                            Toast.makeText(getContext(),"List updated successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),R.string.ListUpdateSuccess,Toast.LENGTH_SHORT).show();
                             dialog.cancel();
                             alertDialog.dismiss();
                             ((MainActivity)getActivity()).setFragment(new ScanAndGo(false));
                         }
                         else {
-                            Toast.makeText(getContext(),"Please insert product amount",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),R.string.pleaseInsertProductAmount,Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
-
             }
         });
 

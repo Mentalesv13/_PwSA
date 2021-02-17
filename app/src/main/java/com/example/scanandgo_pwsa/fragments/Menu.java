@@ -26,6 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -76,12 +77,13 @@ public class Menu extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!sessionManager.isScanAndGoStarted()) {
+                    ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(false);
                     ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new SelectShop());
                 }
                 else
                 {
-                    Toast.makeText(getContext(),"Your Scan&Go transcation in progress...",Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(),"End it or Cancel to use 'Shop selection'!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), R.string.transcation_in_progress,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), R.string.EndItOrCancel,Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -95,12 +97,14 @@ public class Menu extends Fragment {
         cvReader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragmentNoAnim(new PriceReader());
             }
         });
         cvShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragmentNoAnim(new ShoppingList());
             }
         });
@@ -108,6 +112,7 @@ public class Menu extends Fragment {
         cvCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new Category());
             }
         });
@@ -115,6 +120,7 @@ public class Menu extends Fragment {
         cvPromotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new Promotions());
             }
         });
@@ -122,6 +128,7 @@ public class Menu extends Fragment {
         cvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new Profile());
             }
         });
@@ -131,10 +138,10 @@ public class Menu extends Fragment {
             public void onClick(View v) {
                 if (!sessionManager.isScanAndGoStarted()) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setMessage("Are you sure want to logout?")
+                    builder.setMessage(getString(R.string.AreYouSureLogout))
                             .setCancelable(false)
-                            .setTitle("** Logout confirmation **")
-                            .setPositiveButton("LOGOUT",
+                            .setTitle(getString(R.string.LogoutConf))
+                            .setPositiveButton(R.string.logout,
                                     new DialogInterface.OnClickListener() {
                                         @SuppressLint("SetTextI18n")
                                         public void onClick(DialogInterface dialog, int id) {
@@ -142,14 +149,14 @@ public class Menu extends Fragment {
                                             sessionManager.setLogin(false);
                                             databaseHandler.resetLogin();
                                             mGoogleSignInClient.signOut();
-                                            hello.setText("HELLO");
-                                            helloDesc.setText("Login to use all functionality of our service");
+                                            hello.setText(R.string.hello);
+                                            helloDesc.setText(R.string.please_log_in);
                                             cvLogout.setVisibility(View.GONE);
-                                            Toast.makeText(getContext(), "You are successfully logout.",
+                                            Toast.makeText(getContext(), R.string.success_logout,
                                                     Toast.LENGTH_SHORT).show();
                                         }
                                     })
-                            .setNegativeButton("Cancel",
+                            .setNegativeButton(R.string.cancel,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // cancel the dialog box
@@ -161,8 +168,8 @@ public class Menu extends Fragment {
                 }
                 else
                 {
-                    Toast.makeText(getContext(),"Your Scan&Go transcation in progress...",Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(),"End it or Cancel to use 'Logout'!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),R.string.transcation_in_progress,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), R.string.EndItLogout,Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -172,12 +179,13 @@ public class Menu extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!sessionManager.isScanAndGoStarted()) {
+                    ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(false);
                     ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new SelectShop());
                 }
                 else
                 {
-                    Toast.makeText(getContext(),"Your Scan&Go transcation in progress...",Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(),"End it or Cancel to use 'Shop selection'!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),R.string.transcation_in_progress,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),R.string.EndItOrCancel,Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -190,12 +198,14 @@ public class Menu extends Fragment {
         btnReader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragmentNoAnim(new PriceReader());
             }
         });
         btnShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragmentNoAnim(new ShoppingList());
             }
         });
@@ -203,6 +213,7 @@ public class Menu extends Fragment {
         btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new Category());
             }
         });
@@ -210,6 +221,7 @@ public class Menu extends Fragment {
         btnPromotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new Promotions());
             }
         });
@@ -217,6 +229,7 @@ public class Menu extends Fragment {
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).setFabScanGo(true);
                 ((MainActivity) Objects.requireNonNull(getActivity())).setFragment(new Profile());
             }
         });
@@ -226,10 +239,10 @@ public class Menu extends Fragment {
             public void onClick(View v) {
                 if (!sessionManager.isScanAndGoStarted()) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setMessage("Are you sure want to logout?")
+                    builder.setMessage(getString(R.string.AreYouSureLogout))
                             .setCancelable(false)
-                            .setTitle("** Logout confirmation **")
-                            .setPositiveButton("LOGOUT",
+                            .setTitle(getString(R.string.LogoutConf))
+                            .setPositiveButton(R.string.logout,
                                     new DialogInterface.OnClickListener() {
                                         @SuppressLint("SetTextI18n")
                                         public void onClick(DialogInterface dialog, int id) {
@@ -237,14 +250,14 @@ public class Menu extends Fragment {
                                             sessionManager.setLogin(false);
                                             databaseHandler.resetLogin();
                                             mGoogleSignInClient.signOut();
-                                            hello.setText("HELLO");
+                                            hello.setText(R.string.hello);
+                                            helloDesc.setText(R.string.please_log_in);
                                             cvLogout.setVisibility(View.GONE);
-                                            helloDesc.setText("Login to use all functionality of our service");
-                                            Toast.makeText(getContext(), "You are successfully logout.",
+                                            Toast.makeText(getContext(), R.string.success_logout,
                                                     Toast.LENGTH_SHORT).show();
                                         }
                                     })
-                            .setNegativeButton("Cancel",
+                            .setNegativeButton(R.string.cancel,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // cancel the dialog box
@@ -256,8 +269,8 @@ public class Menu extends Fragment {
                 }
                 else
                 {
-                    Toast.makeText(getContext(),"Your Scan&Go transcation in progress...",Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(),"End it or Cancel to use 'Logout'!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),R.string.transcation_in_progress,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), R.string.EndItLogout,Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -271,15 +284,17 @@ public class Menu extends Fragment {
         if(sessionManager.isLoggedIn())
         {
             userDetails = databaseHandler.getUserDetails();
-
-            hello.setText("Hello " + userDetails.get("fname"));
-            helloDesc.setText("YOUR PROFILE");
+            if(Locale.getDefault().getDisplayLanguage().equals("polski"))
+            hello.setText("Witaj " + userDetails.get("fname"));
+            else
+                hello.setText("Hello " + userDetails.get("fname"));
+            helloDesc.setText(R.string.your_profile);
             cvLogout.setVisibility(View.VISIBLE);
         }
         else
         {
-            hello.setText("HELLO");
-            helloDesc.setText("Login to use all functionality of our service");
+            hello.setText(R.string.hello);
+            helloDesc.setText(R.string.please_log_in);
             cvLogout.setVisibility(View.GONE);
 
         }

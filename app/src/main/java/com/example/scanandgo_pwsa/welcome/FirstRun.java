@@ -17,6 +17,7 @@ import com.example.scanandgo_pwsa.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FirstRun extends AppCompatActivity {
 
@@ -44,16 +45,19 @@ public class FirstRun extends AppCompatActivity {
         });
 
         models = new ArrayList<>();
-        models.add(new Model(R.drawable.trackspending, "Track your spending", "Use the app and know exactly how much you’re spending as you go."));
-        models.add(new Model(R.drawable.scanpaygop, "Scan&Go", "Say goodbye to checkout lines!"));
-        models.add(new Model(R.drawable.planyourlist, "Plan your shopping", "Use the shopping list to plan your purchases."));
-        models.add(new Model(R.drawable.discount, "Discount", "Buy discounted products and save money using the app."));
+        if(Locale.getDefault().getDisplayLanguage().equals("polski"))
+            models.add(new Model(R.drawable.trackspendingpl, getString(R.string.Trackyourspending), getString(R.string.Usetheappandknow)));
+        else
+        models.add(new Model(R.drawable.trackspending, getString(R.string.Trackyourspending), getString(R.string.Usetheappandknow)));
+        models.add(new Model(R.drawable.scanpaygop, "Scan&Go", getString(R.string.Saygoodbye)));
+        models.add(new Model(R.drawable.planyourlist, getString(R.string.Planyourshopping), getString(R.string.Usetheshopping)));
+        models.add(new Model(R.drawable.discount, getString(R.string.DiscountL), getString(R.string.Buydiscountedproducts)));
 
         adapter = new Adapter(models, this);
 
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
-        viewPager.setPadding(130, 0, 130, 0);
+        viewPager.setPadding(75, 0, 75, 0);
 
         Integer[] colors_temp = {
                 getResources().getColor(R.color.color1),

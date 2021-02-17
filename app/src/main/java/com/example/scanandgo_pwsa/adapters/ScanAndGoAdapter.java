@@ -10,13 +10,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -53,8 +50,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -228,19 +223,19 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                     }
                     final RequestOptions requestOptions = new RequestOptions()
-                            .placeholder(R.drawable.ic_placeholder)
-                            .error(R.drawable.ic_placeholder);
+                            .placeholder(R.drawable.ic_placehold)
+                            .error(R.drawable.ic_placehold);
                     //Log.e(TAG, temp.getBarcode());
-                    storageReference.child("products/" + temp.getBarcode() + ".jpg").getDownloadUrl()
-                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Glide.with(viewHolder.ivItem.getContext())
-                                            .load(uri.toString())
-                                            .apply(requestOptions)
-                                            .into(viewHolder.ivItem);
-                                }
-                            });
+//                    storageReference.child("products/" + temp.getBarcode() + ".jpg").getDownloadUrl()
+//                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                                @Override
+//                                public void onSuccess(Uri uri) {
+//                                    Glide.with(viewHolder.ivItem.getContext())
+//                                            .load(uri.toString())
+//                                            .apply(requestOptions)
+//                                            .into(viewHolder.ivItem);
+//                                }
+//                            });
                     ColorMatrix matrix = new ColorMatrix();
                     matrix.setSaturation(1);
                     ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
@@ -270,18 +265,18 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder.toPay.setText(decf.format(Double.valueOf(temporary.getPrice()) * temporary.getAmount()));
 
                 final RequestOptions requestOptions = new RequestOptions()
-                        .placeholder(R.drawable.ic_placeholder)
-                        .error(R.drawable.ic_placeholder);
-                storageReference.child("products/" + temporary.getBarcode() + ".jpg").getDownloadUrl()
-                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Glide.with(viewHolder.ivItem.getContext())
-                                        .load(uri.toString())
-                                        .apply(requestOptions)
-                                        .into(viewHolder.ivItem);
-                            }
-                        });
+                        .placeholder(R.drawable.ic_placehold)
+                        .error(R.drawable.ic_placehold);
+//                storageReference.child("products/" + temporary.getBarcode() + ".jpg").getDownloadUrl()
+//                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                            @Override
+//                            public void onSuccess(Uri uri) {
+//                                Glide.with(viewHolder.ivItem.getContext())
+//                                        .load(uri.toString())
+//                                        .apply(requestOptions)
+//                                        .into(viewHolder.ivItem);
+//                            }
+//                        });
             }
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
@@ -407,15 +402,14 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
             RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(R.drawable.ic_placeholder)
-                    .error(R.drawable.ic_placeholder);
+                    .placeholder(R.drawable.ic_placehold)
+                    .error(R.drawable.ic_placehold);
 
-            StorageReference pathReference = storageReference.child("products/" + temp.getBarcode() + ".jpg");
-
-            Glide.with(image.getContext())
-                    .load(pathReference)
-                    .apply(requestOptions)
-                    .into(image);
+//            StorageReference pathReference = storageReference.child("products/" + temp.getBarcode() + ".jpg");
+//            Glide.with(image.getContext())
+//                    .load(pathReference)
+//                    .apply(requestOptions)
+//                    .into(image);
 
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(1);
@@ -435,12 +429,12 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     final Button btnClose = dialogView.findViewById(R.id.btnClose);
 
                     if(shoppingList.get(temp.getBarcode())==null) {
-                        infoList.setText("This product is not on the shopping list");
+                        infoList.setText(R.string.This_product_is_not);
 
                     }
                     else {
                         isOnListTrue.setVisibility(View.VISIBLE);
-                        infoList.setText("This product is already on shopping list");
+                        infoList.setText(R.string.This_product_is_already);
                     }
 
                     btnClose.setOnClickListener(new View.OnClickListener() {
@@ -455,10 +449,10 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         public void onClick(View v) {
                             //showCustomLoadingDialog();
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setMessage("Are you sure to delete this product from your shopping list?")
+                            builder.setMessage(R.string.AreYouDeleteProd)
                                     .setCancelable(false)
-                                    .setTitle("** Delete confirmation **")
-                                    .setPositiveButton("Delete",
+                                    .setTitle(R.string.delete_conf)
+                                    .setPositiveButton(R.string.delete,
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
                                                     databaseHandler.deleteFromScanAndGoList(product);
@@ -468,10 +462,10 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                                     alertDialog.dismiss();
                                                     moviesListAll.remove(position);
                                                     fragment.updateValues();
-                                                    Toast.makeText(context, "Product deleted from list", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(context, R.string.ProdDeleteList, Toast.LENGTH_SHORT).show();
                                                 }
                                             })
-                                    .setNegativeButton("Cancel",
+                                    .setNegativeButton(R.string.cancel,
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
                                                     // cancel the dialog box
@@ -496,9 +490,9 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 tempSL[0] = scanAndGoList.get(product);
                                 alertDialog.dismiss();
                                 fragment.updateValues();
-                                Toast.makeText(context, "List updated successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.ListUpdateSuccess, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(context, "Please insert product amount", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.pleaseInsertProductAmount, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -576,21 +570,20 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             price.setText(tempSL[0].getPrice() + "zł");
 
             RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(R.drawable.ic_placeholder)
-                    .error(R.drawable.ic_placeholder);
+                    .placeholder(R.drawable.ic_placehold)
+                    .error(R.drawable.ic_placehold);
 
             cardViewUpdate.setVisibility(View.INVISIBLE);
             btnPlus.setVisibility(View.INVISIBLE);
             btnMinus.setVisibility(View.INVISIBLE);
             editAmount.setEnabled(false);
 
-            StorageReference pathReference = storageReference.child("products/" +
-                    tempSL[0].getBarcode() + ".jpg");
-
-            Glide.with(image.getContext())
-                    .load(pathReference)
-                    .apply(requestOptions)
-                    .into(image);
+//            StorageReference pathReference = storageReference.child("products/" +
+//                    tempSL[0].getBarcode() + ".jpg");
+//            Glide.with(image.getContext())
+//                    .load(pathReference)
+//                    .apply(requestOptions)
+//                    .into(image);
 
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
@@ -619,10 +612,10 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         public void onClick(View v) {
                             //showCustomLoadingDialog();
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setMessage("Are you sure to delete this product from your shopping list?")
+                            builder.setMessage(R.string.AreYouDeleteProd)
                                     .setCancelable(false)
-                                    .setTitle("** Delete confirmation **")
-                                    .setPositiveButton("Delete",
+                                    .setTitle(R.string.delete_conf)
+                                    .setPositiveButton(R.string.delete_conf,
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id)
                                                 {
@@ -632,10 +625,10 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                                     alertDialog.dismiss();
                                                     moviesListAll.remove(position);
                                                     fragment.updateValues();
-                                                    Toast.makeText(context, "Product deleted from list", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(context, R.string.ProdDeleteList, Toast.LENGTH_SHORT).show();
                                                 }
                                             })
-                                    .setNegativeButton("Cancel",
+                                    .setNegativeButton(R.string.cancel,
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id)
                                                 {
@@ -659,11 +652,11 @@ public class ScanAndGoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 tempSL[0] = scanAndGoList.get(product);
                                 alertDialog.dismiss();
                                 fragment.updateValues();
-                                Toast.makeText(context, "List updated successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.ListUpdateSuccess, Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
-                                Toast.makeText(context, "Please insert product amount", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.pleaseInsertProductAmount, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

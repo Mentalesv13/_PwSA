@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="35sp"
-            android:text="Biedronka - 2020.06.15 17:49:57"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="35sp"
-                android:text="Łęczyca, Belwederska 12"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="10sp"
                 android:textStyle="italic" />
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingEnd="15sp"
-                android:text="17.97 zł"
+                android:text=""
                 android:textAlignment="textEnd"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="12sp"

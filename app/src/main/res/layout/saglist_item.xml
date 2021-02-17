@@ -67,7 +67,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Product is already on shopping list"
+                        android:text="@string/product_is_already_on_shopping_list"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textStyle="italic" />
@@ -79,7 +79,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Amount"
+                        android:text="@string/amount"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small" />
                 </LinearLayout>
@@ -132,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
-                        android:text="pcs."
+                        android:text="@string/pcs"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/editText"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -175,7 +175,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/btnripple_effect"
-                        android:text="UPDATE YOUR LIST" />
+                        android:text="@string/update_your_list" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -198,7 +198,7 @@
                         android:background="@drawable/btnripple_effect"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
-                        android:text="DELELE FROM SHOPPING LIST"
+                        android:text="@string/delele_from_shopping_list"
                         android:textColor="#FF0000" />
                 </androidx.cardview.widget.CardView>
 
@@ -224,7 +224,7 @@
                         android:background="@drawable/btnripple_effect"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
-                        android:text="CLOSE"
+                        android:text="@string/close"
                         android:textColor="@android:color/primary_text_light" />
                 </androidx.cardview.widget.CardView>
 

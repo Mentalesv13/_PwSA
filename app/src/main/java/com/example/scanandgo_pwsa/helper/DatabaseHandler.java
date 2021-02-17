@@ -15,31 +15,28 @@ import java.util.HashMap;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    // Database Version
     private static final int DATABASE_VERSION = 1;
 
-    // Database Name
     private static final String DATABASE_NAME = "localdatabase_ScanAndGo_PwSA";
 
-    // Login table name
     private static final String TABLE_LOGIN = "login";
     private static final String TABLE_PRODUCTS = "products";
     private static final String TABLE_SHOP = "shops";
     private static final String TABLE_LIST = "list";
     private static final String TABLE_SAG_LIST = "sag_list";
     private static final String TABLE_CATEGORY = "category";
+    private static final String TABLE_CATEGORY_PL = "category_pl";
 
-    // Login Table Columns names
     private static final String KEY_FNAME = "firstname";
     private static final String KEY_LNAME = "lastname";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_UID = "uid";
 
-    // Category Table Columns names
     private static final String KEY_CATEGORY_MAIN = "categorymain";
     private static final String KEY_CATEGORY_SEC = "categorysec";
+    private static final String KEY_CATEGORY_PL_MAIN = "categorymain";
+    private static final String KEY_CATEGORY_PL_SEC = "categorysec";
 
-    //Product Table Columns names
     private static final String KEY_BARCODE = "barcode";
     private static final String KEY_PNAME = "productname";
     private static final String KEY_PRICE = "price";
@@ -50,21 +47,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_CATEGORY1 = "category1";
     private static final String KEY_CATEGORY2 = "category2";
 
-    //Shops Table Columns names
     private static final String KEY_SNAME = "sname";
     private static final String KEY_LOCALIZATION = "localization";
     private static final String KEY_ADDRESS = "address";
     private static final String KEY_SCODE = "shopcode";
     private static final String KEY_SHOPID = "shopID";
 
-    //Shopping List Table Columns name
     private static final String KEY_LIST_PNAME = "productname";
     private static final String KEY_AMOUNT = "amount";
     private static final String KEY_BOUGHT = "isBought";
     private static final String KEY_SLBARCODE = "slbarcode";
     private static final String KEY_SLPRICE = "slprice";
 
-    //ScanAndGo List Table Columns name
     private static final String KEY_SAG_LIST_PNAME = "sag_productname";
     private static final String KEY_SAG_AMOUNT = "sag_amount";
     private static final String KEY_SAG_SLBARCODE = "sag_slbarcode";
@@ -74,7 +68,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // Table Create Statement
     private static final String CREATE_LOGIN_TABLE = " CREATE TABLE " + TABLE_LOGIN + "("
             + KEY_FNAME + " TEXT,"
             + KEY_LNAME + " TEXT,"
@@ -117,6 +110,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + KEY_CATEGORY_MAIN + " TEXT,"
             + KEY_CATEGORY_SEC + " TEXT" + ")";
 
+    private static final String CREATE_CATEGORY_PL_TABLE = " CREATE TABLE " + TABLE_CATEGORY_PL + "("
+            + KEY_CATEGORY_PL_MAIN + " TEXT,"
+            + KEY_CATEGORY_PL_SEC + " TEXT" + ")";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_LOGIN_TABLE);
@@ -125,36 +122,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_LIST_TABLE);
         db.execSQL(CREATE_SAG_LIST_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
+        db.execSQL(CREATE_CATEGORY_PL_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGIN);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOP);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAG_LIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
-        // Create tables again
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY_PL);
+
         onCreate(db);
     }
 
-    /**
-     * Storing user details in database
-     * */
+
     public void addUser(String fname, String lname, String email, String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_FNAME, fname); // FirstName
-        values.put(KEY_LNAME, lname); // LastName
-        values.put(KEY_EMAIL, email); // Email
-        values.put(KEY_UID, uid); // uid
+        values.put(KEY_FNAME, fname);
+        values.put(KEY_LNAME, lname);
+        values.put(KEY_EMAIL, email);
+        values.put(KEY_UID, uid);
 
-        // Inserting Row
+
         db.insert(TABLE_LOGIN, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
 
     public void addCategory(String category1, String category2) {
@@ -164,24 +161,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_CATEGORY_MAIN, category1);
         values.put(KEY_CATEGORY_SEC, category2);
 
-        // Inserting Row
         db.insert(TABLE_CATEGORY, null, values);
-        db.close(); // Closing database connection
+        db.close();
+    }
+
+    public void addCategoryPL(String category1, String category2) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_CATEGORY_PL_MAIN, category1);
+        values.put(KEY_CATEGORY_PL_SEC, category2);
+
+        db.insert(TABLE_CATEGORY_PL, null, values);
+        db.close();
     }
 
     public void addShop(String sname, String localization, String address, String scode, String shopID) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_SNAME, sname); // FirstName
-        values.put(KEY_LOCALIZATION, localization); // LastName
-        values.put(KEY_ADDRESS, address); // Email
-        values.put(KEY_SCODE, scode); // Phone
+        values.put(KEY_SNAME, sname);
+        values.put(KEY_LOCALIZATION, localization);
+        values.put(KEY_ADDRESS, address);
+        values.put(KEY_SCODE, scode);
         values.put(KEY_SHOPID, shopID);
 
-        // Inserting Row
         db.insert(TABLE_SHOP, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
 
     public void addProduct(String barcode, String pName, String price, String promoEnd, String promoStart, String discount, String quantity, String category1, String category2) {
@@ -198,9 +204,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_CATEGORY1, category1.trim());
         values.put(KEY_CATEGORY2, category2.trim());
 
-        // Inserting Row
         db.insert(TABLE_PRODUCTS, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
 
     public void addToList(String pName, String amount, String isBought, String barcode, String price ) {
@@ -213,9 +218,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_SLBARCODE, barcode);
         values.put(KEY_SLPRICE, price);
 
-        // Inserting Row
         db.insert(TABLE_LIST, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
 
     public void addToShopAndGoList(String pName, String amount, String barcode, String price ) {
@@ -227,9 +231,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_SAG_SLBARCODE, barcode);
         values.put(KEY_SAG_SLPRICE, price);
 
-        // Inserting Row
         db.insert(TABLE_SAG_LIST, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
 
     public HashMap<String, String> getUserDetails(){
@@ -238,7 +241,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
             user.put("fname", cursor.getString(0));
@@ -248,7 +250,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        // return user
         return user;
     }
 
@@ -258,7 +259,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
+
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
             //Log.e("TAG",cursor.getString(0) + " " + cursor.getString(1));
@@ -266,7 +267,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        // return category
+        return category;
+    }
+
+    public HashMap<String, String> getCategoryPLDetails(){
+        HashMap<String, String> category = new HashMap<String, String>();
+        String selectQuery = "SELECT  * FROM " + TABLE_CATEGORY_PL;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        cursor.moveToFirst();
+        if(cursor.getCount() > 0){
+            //Log.e("TAG",cursor.getString(0) + " " + cursor.getString(1));
+            category.put(cursor.getString(0),  cursor.getString(1));
+        }
+        cursor.close();
+        db.close();
+
         return category;
     }
 
@@ -276,7 +294,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
+
         cursor.moveToFirst();
         do
         {
@@ -293,7 +311,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } while (cursor.moveToNext());
         cursor.close();
         db.close();
-        // return events
+
         return products;
     }
 
@@ -303,7 +321,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
+
         cursor.moveToFirst();
         do
         {
@@ -320,7 +338,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } while (cursor.moveToNext());
         cursor.close();
         db.close();
-        // return events
+
         return products;
     }
 
@@ -330,7 +348,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
+
         cursor.moveToFirst();
         do
         {
@@ -347,7 +365,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } while (cursor.moveToNext());
         cursor.close();
         db.close();
-        // return events
+
         return products;
     }
 
@@ -357,7 +375,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
+
         cursor.moveToFirst();
         do
         {
@@ -374,7 +392,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } while (cursor.moveToNext());
         cursor.close();
         db.close();
-        // return events
+
         return products;
     }
 
@@ -384,7 +402,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
+
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
             shop.put("shopname", cursor.getString(0));
@@ -395,7 +413,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        // return user
+
         return shop;
     }
 
@@ -405,7 +423,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
+
         cursor.moveToFirst();
         do
         {
@@ -421,7 +439,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } while (cursor.moveToNext());
         cursor.close();
         db.close();
-        // return user
+
         return list;
     }
 
@@ -431,7 +449,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
+
         cursor.moveToFirst();
         do
         {
@@ -446,7 +464,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } while (cursor.moveToNext());
         cursor.close();
         db.close();
-        // return user
+
         return list;
     }
 
@@ -506,47 +524,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    /**
-     * Recreate database
-     * Delete all tables and create them again
-     * */
     public void resetLogin() {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Delete All Rows
+
         db.delete(TABLE_LOGIN, null, null);
         db.close();
     }
 
     public void resetProducts() {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Delete All Rows
+
         db.delete(TABLE_PRODUCTS, null, null);
         db.close();
     }
 
     public void resetShop() {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Delete All Rows
+
         db.delete(TABLE_SHOP, null, null);
         db.close();
     }
     public void resetList() {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Delete All Rows
+
         db.delete(TABLE_LIST, null, null);
         db.close();
     }
     public void resetShopAndGoList() {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Delete All Rows
+
         db.delete(TABLE_SAG_LIST, null, null);
         db.close();
     }
 
     public void resetCategory() {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Delete All Rows
+
         db.delete(TABLE_CATEGORY, null, null);
+        db.close();
+    }
+    public void resetCategoryPL() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_CATEGORY_PL, null, null);
         db.close();
     }
 }

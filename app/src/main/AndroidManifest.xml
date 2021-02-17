@@ -50,7 +50,6 @@
             android:name=".maps.MapsActivity"
             android:screenOrientation="portrait"
             android:label="mapsactivity">
-
         </activity>
 
     </application>
